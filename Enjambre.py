@@ -2,7 +2,6 @@ import random
 
 class Vector:
     pass
-# algo
 
 
 class Particle:
