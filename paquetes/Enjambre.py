@@ -26,7 +26,6 @@ class Particle:
 
     def initialize_particle(self,dominio):
         """definir su posicion y velocidad inicial"""
-
         self.speed = random.uniform(0,1) # 0 min velocidad, 1 maxima
         self.position = random.uniform(dominio) #! habria que mirar que se le pasa a uniform, si sirve una lista o no
         self.initialize = True
@@ -40,7 +39,6 @@ class Particle:
                 self.p_best_position = self.position
         else:
             return "hay que inicializar la particula antes"
-        
 
 class swarm: #enjambre 
     def __init__(self, dimension = 2, number_of_particles = 0, dominio = []):
