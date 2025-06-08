@@ -28,7 +28,7 @@ class Particle:
         """definir su posicion y velocidad inicial"""
 
         self.speed = random.uniform(0,1) # 0 min velocidad, 1 maxima
-        self.position = random.uniform(dominio) 
+        self.position = random.uniform(dominio) #! habria que mirar que se le pasa a uniform, si sirve una lista o no
         self.initialize = True
 
     def calculate_value(self):
