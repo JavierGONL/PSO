@@ -1,5 +1,5 @@
-def funcion_objetivo_1(x):
-    return x^2
+def funcion_objetivo_1():
+    pass
 
 def funcion_objetivo_2():
     pass
