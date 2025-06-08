@@ -64,7 +64,7 @@ class swarm: #enjambre
 
     def define_initial_vel_to_each_particle(self):
         for i in self.particulas:
-            i.vel_i = random.uniform(0,1)
+            i.vel_i = random.uniform(0,1) # 0 min velocidad, 1 maxima
     
     def define_initial_pos_to_each_particle(self, funcion):
         for i in self.particulas:
