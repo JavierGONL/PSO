@@ -18,22 +18,29 @@ class Particle:
     def __init__(self, posicion = [], velocidad_inicial = [], dimension = 2): # la dimencion es del dominio
         self.p_position = posicion*dimension
         self.speed = velocidad_inicial
-        self.value = 0 #! no se si calcular esto aca en el enjambre / btw seria el rango?
+        self.value = 0 #! no se si calcular esto aca en el enjambre, btw seria el rango?
         self.p_best_value = 0
         self.p_best_position = []
         self.historial_positions = []
+        self.initialize = False
 
-    def inicialice_particle():
-        """
-        definir su posicion y velocidad inicial
-        """
-        pass
+    def initialize_particle(self,dominio):
+        """definir su posicion y velocidad inicial"""
+
+        self.speed = random.uniform(0,1) # 0 min velocidad, 1 maxima
+        self.position = random.uniform(dominio) 
+        self.initialize = True
 
     def calculate_value(self):
-        self.value = funcion_objetivo_1(self.position)
-        if self.value > self.best_value:
-            self.best_value = self.value
-            self.best_position = self.position
+        if self.initialize:
+            self.historial_positions.append(self.position) #! toca inicializar la particula antes
+            self.value = funcion_objetivo_1(self.position)
+            if self.value > self.best_value:
+                self.p_best_value = self.value
+                self.p_best_position = self.position
+        else:
+            return "hay que inicializar la particula antes"
+        
 
 class swarm: #enjambre 
     def __init__(self, dimension = 2, number_of_particles = 0, dominio = []):
@@ -44,16 +51,11 @@ class swarm: #enjambre
         self.g_best_position = [0]*dimension
         self.maximice = False # min por defecto
 
-    def define_initial_vel_to_each_particle(self): #! falta revisar si funciona D:
+    def inicialize_each_particle(self): #! falta revisar si funciona D:
         for i in self.particulas:
-            i.speed = random.uniform(0,1) # 0 min velocidad, 1 maxima
-    
-    def define_initial_pos_to_each_particle(self, funcion): #! falta revisar si funciona D:
-        for i in self.particulas:
-            for j in range(i.position):
-                i.position[j] = random.uniform(i.dominio[j]) # en teoria esto funciona
+            i.initialize_particle(self.dominio)
 
-    def update_particles(self, w, c1, c2): #! creo que esto va en swarm
+    def update_particles(self, w, c1, c2): #! creo que esto si va en swarm
         """
         Mover una partícula implica actualizar su velocidad y posición. 
         Este paso es el más importante ya que otorga al algoritmo la capacidad de optimizar.
@@ -82,9 +84,8 @@ class swarm: #enjambre
             # aca se actualiza la posicion 
             # Actualiza la posición de la partícula sumando la velocidad actual a la posición anterior.
             #* Fórmula: x_i(t+1) = x_i(t) + v_i(t+1)
-            i.p_position = i.p_position + i.speed #! asi?? 
-        pass
+            i.p_position = i.p_position + i.speed #! asi??
 
-    def next_iteration(self): 
+    def next_iteration(self, number_iterations):
         # debe permitirte avanzar o retroceder, esto serviria para debugear llegado el caso
         pass
