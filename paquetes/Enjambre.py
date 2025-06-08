@@ -44,25 +44,23 @@ class swarm: #enjambre
         self.g_best_position = [0]*dimension
         self.maximice = False # min por defecto
 
-    def define_initial_vel_to_each_particle(self):
+    def define_initial_vel_to_each_particle(self): #! falta revisar si funciona D:
         for i in self.particulas:
-            i.vel_i = random.uniform(0,1) # 0 min velocidad, 1 maxima
+            i.speed = random.uniform(0,1) # 0 min velocidad, 1 maxima
     
-    def define_initial_pos_to_each_particle(self, funcion):
+    def define_initial_pos_to_each_particle(self, funcion): #! falta revisar si funciona D:
         for i in self.particulas:
-            for j in i.position:
-                i.position[j] = random.uniform(self.dominio[0],self.dominio[1])
-            i.position[-1] = i.calculate_value(funcion)
+            for j in range(i.position):
+                i.position[j] = random.uniform(i.dominio[j]) # en teoria esto funciona
 
     def update_particles(self, w, c1, c2): #! creo que esto va en swarm
         """
         Mover una partícula implica actualizar su velocidad y posición. 
         Este paso es el más importante ya que otorga al algoritmo la capacidad de optimizar.
         
-        vi(t+1)=wvi(t)+c1r1[^xi(t)−xi(t)]+c2r2[g(t)−xi(t)] 
+        vi(t+1)=wvi(t)+c1r1[^xi(t)- xi(t)]+c2r2[g(t) - xi(t)] 
         
         donde:
-
         vi(t+1): velocidad de la partícula i en el momento  t+1, es decir, la nueva velocidad.
         vi(t): velocidad de la partícula  i en el momento  t, es decir, la velocidad actual.
         w: coeficiente de inercia, reduce o aumenta a la velocidad de la partícula.
@@ -73,7 +71,6 @@ class swarm: #enjambre
         c2: coeficiente social.
         r2: vector de valores aleatorios entre 0 y 1 de longitud igual a la del vector velocidad.
         g(t): posición de todo el enjambre en el momento t, el mejor valor global.
-        
         """
         r1 = random.uniform(0,1)
         r2 = random.uniform(0,1)
@@ -85,8 +82,9 @@ class swarm: #enjambre
             # aca se actualiza la posicion 
             # Actualiza la posición de la partícula sumando la velocidad actual a la posición anterior.
             #* Fórmula: x_i(t+1) = x_i(t) + v_i(t+1)
-            i.p_position = i.p_position + i.speed #! asi??
+            i.p_position = i.p_position + i.speed #! asi?? 
         pass
 
-    def next_iteration(self):
+    def next_iteration(self): 
+        # debe permitirte avanzar o retroceder, esto serviria para debugear llegado el caso
         pass
