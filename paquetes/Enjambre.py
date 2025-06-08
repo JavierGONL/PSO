@@ -1,5 +1,7 @@
 import random
 
+from Funciones_objetivo import *
+
 class Vector: # no se si definir una clase vector
     pass
 
@@ -14,10 +16,11 @@ class Particle:
     """
 
     def __init__(self, posicion = [], velocidad_inicial = [], dimension = 2): # la dimencion es del dominio
-        self.position = posicion*dimension
-        self.vel_i = velocidad_inicial
-        self.valor = 0 #! no se si calcular esto aca en el enjambre / btw seria el rango?
-        self.best_position = []
+        self.p_position = posicion*dimension
+        self.speed = velocidad_inicial
+        self.value = 0 #! no se si calcular esto aca en el enjambre / btw seria el rango?
+        self.p_best_value = 0
+        self.p_best_position = []
         self.historial_positions = []
 
     def inicialice_particle():
@@ -27,9 +30,31 @@ class Particle:
         pass
 
     def calculate_value(self):
-        self.position[-1] = None # para esto falta la funcion objetivo
+        self.value = funcion_objetivo_1(self.position)
+        if self.value > self.best_value:
+            self.best_value = self.value
+            self.best_position = self.position
 
-    def update_particle(self, w, c1, r1, c2, r2):
+class swarm: #enjambre 
+    def __init__(self, dimension = 2, number_of_particles = 0, dominio = []):
+        self.number_of_particles : int = number_of_particles
+        self.dominio = dominio
+        self.particulas = [0]*dimension
+        self.g_best_value : float = 0
+        self.g_best_position = [0]*dimension
+        self.maximice = False # min por defecto
+
+    def define_initial_vel_to_each_particle(self):
+        for i in self.particulas:
+            i.vel_i = random.uniform(0,1) # 0 min velocidad, 1 maxima
+    
+    def define_initial_pos_to_each_particle(self, funcion):
+        for i in self.particulas:
+            for j in i.position:
+                i.position[j] = random.uniform(self.dominio[0],self.dominio[1])
+            i.position[-1] = i.calculate_value(funcion)
+
+    def update_particles(self, w, c1, c2): #! creo que esto va en swarm
         """
         Mover una partícula implica actualizar su velocidad y posición. 
         Este paso es el más importante ya que otorga al algoritmo la capacidad de optimizar.
@@ -48,29 +73,20 @@ class Particle:
         c2: coeficiente social.
         r2: vector de valores aleatorios entre 0 y 1 de longitud igual a la del vector velocidad.
         g(t): posición de todo el enjambre en el momento t, el mejor valor global.
+        
         """
-        primer_termino = w*self.vel_i # es vel_i en la iteracion / T actual
-        segundo_termno = c1*r1*(self.best_position - self.position)
+        r1 = random.uniform(0,1)
+        r2 = random.uniform(0,1)
+        for i in self.particulas:
+            primer_termino = w*self.speed #* es speed en la iteracion / T actual, nercia
+            segundo_termino = c1*r1*(i.p_best_position - i.p_position) #* cognitivo
+            tercer_termino = c2*r2*(self.g_best_position - i.p_position) #* social
+            i.speed = primer_termino + segundo_termino + tercer_termino #* aca se actualiza la velocidad
+            # aca se actualiza la posicion 
+            # Actualiza la posición de la partícula sumando la velocidad actual a la posición anterior.
+            #* Fórmula: x_i(t+1) = x_i(t) + v_i(t+1)
+            i.p_position = i.p_position + i.speed #! asi??
         pass
-
-class swarm: #enjambre 
-    def __init__(self, dimension = 2, number_of_particles = 0, dominio = []):
-        self.number_of_particles = number_of_particles
-        self.dominio = dominio
-        self.particulas = [0]*dimension
-        self.best_value = 0
-        self.best_position = [0]*dimension
-        self.maximice = False # min por defecto
-
-    def define_initial_vel_to_each_particle(self):
-        for i in self.particulas:
-            i.vel_i = random.uniform(0,1) # 0 min velocidad, 1 maxima
-    
-    def define_initial_pos_to_each_particle(self, funcion):
-        for i in self.particulas:
-            for j in i.position:
-                i.position[j] = random.uniform(self.dominio[0],self.dominio[1])
-            i.position[-1] = i.calculate_value(funcion)
 
     def next_iteration(self):
         pass
