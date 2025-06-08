@@ -13,7 +13,7 @@ class Particle:
     el resto de valores no se conocen hasta que la partícula es evaluada.
     """
 
-    def __init__(self, posicion = [], velocidad_inicial = [0,0], dimension = 2):
+    def __init__(self, posicion = [], velocidad_inicial = [], dimension = 2): # la dimencion es del dominio
         self.position = posicion*dimension
         self.vel_i = velocidad_inicial
         self.valor = 0 #! no se si calcular esto aca en el enjambre / btw seria el rango?
@@ -27,15 +27,14 @@ class Particle:
         pass
 
     def calculate_value(self):
-        self.position[-1] = 
+        self.position[-1] = None # para esto falta la funcion objetivo
 
-
-    def update_particle():
+    def update_particle(self, w, c1, r1, c2, r2):
         """
         Mover una partícula implica actualizar su velocidad y posición. 
         Este paso es el más importante ya que otorga al algoritmo la capacidad de optimizar.
         
-        vi(t+1)=wvi(t)+c1r1[x^i(t)−xi(t)]+c2r2[g(t)−xi(t)] 
+        vi(t+1)=wvi(t)+c1r1[^xi(t)−xi(t)]+c2r2[g(t)−xi(t)] 
         
         donde:
 
@@ -44,12 +43,14 @@ class Particle:
         w: coeficiente de inercia, reduce o aumenta a la velocidad de la partícula.
         c1: coeficiente cognitivo.
         r1: vector de valores aleatorios entre 0 y 1 de longitud igual a la del vector velocidad.
-        x^i(t): mejor posición en la que ha estado la partícula i hasta el momento.
+        ^xi(t): mejor posición en la que ha estado la partícula i hasta el momento.
         xi(t): posición de la partícula  i en el momento  t.
         c2: coeficiente social.
         r2: vector de valores aleatorios entre 0 y 1 de longitud igual a la del vector velocidad.
         g(t): posición de todo el enjambre en el momento t, el mejor valor global.
         """
+        primer_termino = w*self.vel_i # es vel_i en la iteracion / T actual
+        segundo_termno = c1*r1*(self.best_position - self.position)
         pass
 
 class swarm: #enjambre 
@@ -71,6 +72,5 @@ class swarm: #enjambre
                 i.position[j] = random.uniform(self.dominio[0],self.dominio[1])
             i.position[-1] = i.calculate_value(funcion)
 
-
-
-
+    def next_iteration(self):
+        pass
