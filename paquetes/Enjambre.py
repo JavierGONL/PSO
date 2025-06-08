@@ -46,14 +46,20 @@ class swarm: #enjambre
     def __init__(self, dimension = 2, number_of_particles = 0, dominio = []):
         self.number_of_particles : int = number_of_particles
         self.dominio = dominio
-        self.particulas = [0]*dimension
+        self.particulas = [Particle]*dimension
         self.g_best_value : float = 0
-        self.g_best_position = [0]*dimension
+        self.g_best_position = []*dimension
         self.maximice = False # min por defecto
 
     def inicialize_each_particle(self): #! falta revisar si funciona D:
         for i in self.particulas:
             i.initialize_particle(self.dominio)
+
+    def update_gbest(self):
+        g_best = 0
+        for i in self.particulas:
+            if i.value > g_best:
+                g_best = i.value
 
     def update_particles(self, w, c1, c2): #! creo que esto si va en swarm
         """
