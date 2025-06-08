@@ -1,8 +1,7 @@
 import random
 
-class Vector:
+class Vector: # no se si definir una clase vector
     pass
-
 
 class Particle:
     """
@@ -14,13 +13,12 @@ class Particle:
     el resto de valores no se conocen hasta que la partícula es evaluada.
     """
 
-    def __init__(self, posicion = [0,0], velocidad_inicial = [0,0]):
-        self.position = posicion
+    def __init__(self, posicion = [], velocidad_inicial = [0,0], dimension = 2):
+        self.position = posicion*dimension
         self.vel_i = velocidad_inicial
-        self.valor = 0 # no se si calcular esto aca en el enjambre
+        self.valor = 0 #! no se si calcular esto aca en el enjambre / btw seria el rango?
         self.best_position = []
-        self.actual_position = []
-        self.maximice = False # min por defecto
+        self.historial_positions = []
 
     def inicialice_particle():
         """
@@ -28,9 +26,8 @@ class Particle:
         """
         pass
 
-    def calculate_value(self, funcion):
-        
-        pass
+    def calculate_value(self):
+        self.position[-1] = 
 
 
     def update_particle():
@@ -56,13 +53,13 @@ class Particle:
         pass
 
 class swarm: #enjambre 
-    pass
     def __init__(self, dimension = 2, number_of_particles = 0, dominio = []):
         self.number_of_particles = number_of_particles
         self.dominio = dominio
         self.particulas = [0]*dimension
         self.best_value = 0
         self.best_position = [0]*dimension
+        self.maximice = False # min por defecto
 
     def define_initial_vel_to_each_particle(self):
         for i in self.particulas:
