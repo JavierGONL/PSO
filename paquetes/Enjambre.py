@@ -33,7 +33,7 @@ class Particle:
     def calculate_value(self):
         if self.initialize:
             self.historial_positions.append(self.position) #! toca inicializar la particula antes
-            self.value = funcion_objetivo_1(self.position)
+            self.value = Rastrigin_function(self.position)
             if self.value > self.best_value:
                 self.p_best_value = self.value
                 self.p_best_position = self.position
