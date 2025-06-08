@@ -13,7 +13,7 @@ class Particle:
     el resto de valores no se conocen hasta que la partícula es evaluada.
     """
 
-    def __init__(self, posicion = [], velocidad_inicial = [0,0], dimension = 2):
+    def __init__(self, posicion = [], velocidad_inicial = [], dimension = 2):
         self.position = posicion*dimension
         self.vel_i = velocidad_inicial
         self.valor = 0 #! no se si calcular esto aca en el enjambre / btw seria el rango?
@@ -27,7 +27,7 @@ class Particle:
         pass
 
     def calculate_value(self):
-        self.position[-1] = 
+        self.position[-1] = 1 # calculo el rango???
 
 
     def update_particle():
