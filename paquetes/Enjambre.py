@@ -13,7 +13,7 @@ class Particle:
     el resto de valores no se conocen hasta que la partícula es evaluada.
     """
 
-    def __init__(self, posicion = [], velocidad_inicial = [], dimension = 2): # la dimencion es del dominio
+    def __init__(self, posicion = [Vector], velocidad_inicial = [Vector], dimension = 2): # la dimencion es del dominio
         self.p_position : list = posicion*dimension
         self.speed : "Vector" = velocidad_inicial
         self.value : float = 0 #! no se si calcular esto aca en el enjambre, btw seria el rango?
@@ -24,7 +24,7 @@ class Particle:
 
     def initialize_particle(self,dominio):
         """definir su posicion y velocidad inicial"""
-        self.speed = (Vector(random.uniform(0,1), random.uniform(0,1)).get_direction())
+        self.speed = Vector(random.uniform(0,1), random.uniform(0,1))
         self.position = random.uniform(dominio) #! habria que mirar que se le pasa a uniform, si sirve una lista o no
         self.initialize = True
 
@@ -76,13 +76,13 @@ class swarm: #enjambre
         r2: vector de valores aleatorios entre 0 y 1 de longitud igual a la del vector velocidad.
         g(t): posición de todo el enjambre en el momento t, el mejor valor global.
         """
-        r1 : "Vector" = random.uniform(0,1) # debe ser de longitud del vector velocidad
-        r2 : "Vector" = random.uniform(0,1) 
+        r1 : "Vector" = Vector(random.uniform(0,1),random.uniform(0,1))  # debe ser de longitud del vector velocidad, con longitud se refierea la dim
+        r2 : "Vector" = Vector(random.uniform(0,1),random.uniform(0,1))
         for i in self.particulas:
-            primer_termino = w*self.speed #* es speed en la iteracion / T actual, nercia
+            primer_termino = w*i.speed #* es speed en la iteracion / T actual, nercia
             segundo_termino = c1*r1*(i.p_best_position - i.p_position) #* cognitivo
             tercer_termino = c2*r2*(self.g_best_position - i.p_position) #* social
-            i.speed = primer_termino + segundo_termino + tercer_termino #* aca se actualiza la velocidad
+            i.speed = primer_termino + segundo_termino + tercer_termino #* aca se actualiza la velocidad y debe ser un vector?
             # aca se actualiza la posicion 
             # Actualiza la posición de la partícula sumando la velocidad actual a la posición anterior.
             #* Fórmula: x_i(t+1) = x_i(t) + v_i(t+1) !!! esto es un vector
