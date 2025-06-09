@@ -11,6 +11,8 @@ class Vector:
         return print(str(self.x)+ "i + " + str(self.y) + "j + " + str(self.z) + "k")
     def __add__(self, v:"Vector"):
         return Vector(self.x + v.x, self.y + v.y, self.z + v.z)
+    def __sub__(self,v: "Vector"):
+        return Vector(self.x-v.x, self.y-v.y, self.z-v.z)
     def __mul__(self, v):
         if type(v) == (float or int):
             return Vector(v*self.x,v*self.y,v*self.z)
