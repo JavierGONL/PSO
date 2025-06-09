@@ -3,7 +3,7 @@ from math import cos, pi
 
 def Rastrigin_function(posicion, A_constante = 10): # le entra la posicion y calcula el valor
     # where A=10 (generalmente and posicion ∈ [-5.12,5.12]
-    n = len(posicion)
+    n = len(posicion) # dimension
     A = A_constante
     suma = 0
     for i in posicion:

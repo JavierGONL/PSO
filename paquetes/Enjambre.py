@@ -14,18 +14,19 @@ class Particle:
     """
 
     def __init__(self, posicion = [Vector], velocidad_inicial = [Vector], dimension = 2): # la dimencion es del dominio
-        self.p_position : list = posicion*dimension
+        self.p_position : list = []
         self.speed : "Vector" = velocidad_inicial
         self.value : float = 0 #! no se si calcular esto aca en el enjambre, btw seria el rango?
         self.p_best_value : float = 0
         self.p_best_position : "Vector"
-        self.historial_positions = [Vector]
+        self.historial_positions = []
         self.initialize : bool = False
+        self.dimension = dimension
 
     def initialize_particle(self,dominio):
-        """definir su posicion y velocidad inicial"""
-        self.speed = Vector(random.uniform(0,1), random.uniform(0,1))
-        self.position = random.uniform(dominio) #! habria que mirar que se le pasa a uniform, si sirve una lista o no
+        """definir su posicion y velocidad inicial para cualquier dimension"""
+        self.speed = [random.uniform(-1, 1) for _ in range(self.dimension)] # usando list comprehension
+        self.position = [random.uniform(dominio[0], dominio[1]) for _ in range(self.dimension)]
         self.initialize = True
 
     def calculate_value(self):
@@ -42,11 +43,12 @@ class swarm: #enjambre
     def __init__(self, dimension = 2, number_of_particles = 0, dominio = []):
         self.number_of_particles : int = number_of_particles
         self.dominio : list = dominio
-        self.particulas = [Particle]*dimension
+        self.particulas = [Particle() for _ in range(number_of_particles)]
         self.g_best_value : float = 0
-        self.g_best_position : list = []*dimension
+        self.g_best_position : list = []
         self.maximice : bool = False # min por defecto
-
+        self.dimension = dimension
+        
     def inicialize_each_particle(self): #! falta revisar si funciona D:
         for i in self.particulas:
             i.initialize_particle(self.dominio)
@@ -86,7 +88,8 @@ class swarm: #enjambre
             # aca se actualiza la posicion 
             # Actualiza la posición de la partícula sumando la velocidad actual a la posición anterior.
             #* Fórmula: x_i(t+1) = x_i(t) + v_i(t+1) !!! esto es un vector
-            i.p_position = i.p_position + i.speed #! asi??
+            #! asi?? abajo, creo que si dado que ambos son vectores(deberia ser un vector y un punto) y esta definido la suma aunque creo que hay que definir una clase punto con el metodo de sumar definido para que sume bien entre un vector y un punto
+            i.p_position = i.p_position + i.speed 
 
     def next_iteration(self, number_iterations):
         # debe permitirte avanzar o retroceder, esto serviria para debugear llegado el caso
