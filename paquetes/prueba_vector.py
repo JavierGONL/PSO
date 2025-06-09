@@ -8,7 +8,7 @@ class Vector:
     def get_direction(self):
         return Vector((self.x/self.magnitud),(self.y/self.magnitud),(self.z/self.magnitud))
     def __str__(self):
-        return print(str(self.x)+ "i + " + str(self.y) + "j + " + str(self.z) + "k")
+        return (str(self.x)+ "i + " + str(self.y) + "j + " + str(self.z) + "k")
     def __add__(self, v:"Vector"):
         return Vector(self.x + v.x, self.y + v.y, self.z + v.z)
     def __sub__(self,v: "Vector"):
