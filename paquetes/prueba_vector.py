@@ -1,8 +1,8 @@
 class Vector:
-    def __init__(self, x:float, y:float, z:float):
-        self.x:float = x
-        self.y:float = y
-        self.z:float = z
+    def __init__(self, x:float, y:float, z:float = 0):
+        self.x = x
+        self.y = y
+        self.z = z
         self.magnitud:float = (x**2 + y**2 + z**2)**0.5
         self.comp_to_list: list = (self.x,self.y,self.z)
     def get_direction(self):
