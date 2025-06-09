@@ -59,7 +59,7 @@ class swarm: #enjambre
             if i.value > g_best:
                 g_best = i.value
 
-    def update_particles(self, w, c1, c2): #! creo que esto si va en swarm
+    def update_particles(self, w, c1, c2): #! creo que esto si va en swarm, la velocidad es un vector
         """
         Mover una partícula implica actualizar su velocidad y posición. 
         Este paso es el más importante ya que otorga al algoritmo la capacidad de optimizar.
