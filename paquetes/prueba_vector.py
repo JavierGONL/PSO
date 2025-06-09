@@ -7,9 +7,8 @@ class Vector:
         self.comp_to_list: list = (self.x,self.y,self.z)
     def get_direction(self):
         return Vector((self.x/self.magnitud),(self.y/self.magnitud),(self.z/self.magnitud))
-    def __add__(self,v):
-        if type(v) == Vector:
-            return Vector(self.x + v.x, self.y + v.y, self.z + v.z)
+    def __add__(self,v:"Vector"):
+        return Vector(self.x + v.x, self.y + v.y, self.z + v.z)
     def escalar_product(k:float,v):
         return Vector(k*(v.x),k*(v.y),k*(v.z))
     def dot_product(v1,v2)->float:
