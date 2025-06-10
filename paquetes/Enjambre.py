@@ -14,7 +14,7 @@ class Particle:
     """
 
     def __init__(self, posicion = [Point], velocidad_inicial = [Vector], dimension = 2): # la dimencion es del dominio
-        self.p_position : list = posicion
+        self.p_position : Point = posicion
         self.speed : "Vector" = velocidad_inicial
         self.value : float = 0 #! no se si calcular esto aca en el enjambre, btw seria el rango?
         self.p_best_value : float = 0
@@ -39,15 +39,15 @@ class Particle:
         else:
             return "hay que inicializar la particula antes"
 
-class swarm: #enjambre 
-    def __init__(self, dimension = 2, number_of_particles = 0, dominio = []):
+class Swarm: #enjambre 
+    def __init__(self,  number_of_particles = 0, dominio = [float], dimension = 2,): #! para el dominio solo pasamos como si fuera una variable, pero en verdad seria un rectangulo
         self.number_of_particles : int = number_of_particles
         self.dominio : list = dominio
         self.particulas = [Particle() for _ in range(number_of_particles)]
         self.g_best_value : float = 0
         self.g_best_position : list = []
         self.maximice : bool = False # min por defecto
-        self.dimension = dimension
+        self.dimension : list = dimension
         
     def inicialize_each_particle(self): #! falta revisar si funciona D:
         for i in self.particulas:
