@@ -1,3 +1,6 @@
+class Point():
+    pass
+
 class Vector:
     def __init__(self, x:float, y:float, z:float = 0):
         self.x = x

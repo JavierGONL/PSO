@@ -13,8 +13,8 @@ class Particle:
     el resto de valores no se conocen hasta que la partícula es evaluada.
     """
 
-    def __init__(self, posicion = [Vector], velocidad_inicial = [Vector], dimension = 2): # la dimencion es del dominio
-        self.p_position : list = []
+    def __init__(self, posicion = [Point], velocidad_inicial = [Vector], dimension = 2): # la dimencion es del dominio
+        self.p_position : list = posicion
         self.speed : "Vector" = velocidad_inicial
         self.value : float = 0 #! no se si calcular esto aca en el enjambre, btw seria el rango?
         self.p_best_value : float = 0
