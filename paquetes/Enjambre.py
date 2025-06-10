@@ -78,13 +78,15 @@ class swarm: #enjambre
         r2: vector de valores aleatorios entre 0 y 1 de longitud igual a la del vector velocidad.
         g(t): posición de todo el enjambre en el momento t, el mejor valor global.
         """
-        r1 : "Vector" = Vector(random.uniform(0,1),random.uniform(0,1))  # debe ser de longitud del vector velocidad, con longitud se refierea la dim
-        r2 : "Vector" = Vector(random.uniform(0,1),random.uniform(0,1))
+        valores_randoms_1 = [random.uniform(-1, 1) for _ in range(self.dimension)]
+        valores_randoms_2 = [random.uniform(-1, 1) for _ in range(self.dimension)]
+        r1 : "Vector" = Vector(*valores_randoms_1)  # debe ser de longitud del vector velocidad, con longitud se refierea la dim, el *valores_random desempaqueta la lista
+        r2 : "Vector" = Vector(*valores_randoms_2)
         for i in self.particulas:
             primer_termino = w*i.speed #* es speed en la iteracion / T actual, nercia
             segundo_termino = c1*r1*(i.p_best_position - i.p_position) #* cognitivo
             tercer_termino = c2*r2*(self.g_best_position - i.p_position) #* social
-            i.speed = primer_termino + segundo_termino + tercer_termino #* aca se actualiza la velocidad y debe ser un vector?
+            i.speed = primer_termino + segundo_termino + tercer_termino #! aca se actualiza la velocidad y debe ser un vector?
             # aca se actualiza la posicion 
             # Actualiza la posición de la partícula sumando la velocidad actual a la posición anterior.
             #* Fórmula: x_i(t+1) = x_i(t) + v_i(t+1) !!! esto es un vector
