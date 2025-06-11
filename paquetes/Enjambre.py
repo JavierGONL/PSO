@@ -1,7 +1,7 @@
 import random
 
 from Funciones_objetivo import *
-from vector import *
+from prueba_vector import *
 
 class Particle:
     """
@@ -22,7 +22,7 @@ class Particle:
         self.speed: Vector = velocidad_inicial
         self.value: float = 0
         self.p_best_value: float = 0
-        self.p_best_position: Point = Point(0, 0)
+        self.p_best_position: Point = Point()
         self.historial_positions = []
         self.initialize: bool = False
         self.dimension: int = dimension

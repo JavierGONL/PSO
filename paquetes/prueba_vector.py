@@ -1,5 +1,5 @@
 class Point: #este es el punto que me robe de la clase shape, tiene un metodo para rehacerlo en tal caso que lo necesitemos
-    def __init__(self, x: float, y: float, z:float): 
+    def __init__(self, x: float = 0, y: float=0, z:float=0): 
         self.x = x
         self.y = y
         self.z = z
@@ -32,9 +32,11 @@ class Point: #este es el punto que me robe de la clase shape, tiene un metodo pa
         return (f"({self.x},{self.y},{self.z})")
   
 class Vector(Point):
+
     def __init__(self, x:float, y:float, z:float = 0):
         super().__init__(x,y,z)
         self.magnitud:float = (x**2 + y**2 + z**2)**0.5
+
     def get_direction(self):
             if self.magnitud == 0:
                 return Vector(0,0,0)
