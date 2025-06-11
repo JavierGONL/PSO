@@ -26,7 +26,7 @@ if __name__ == "__main__":
     print("[0,0] =", Rastrigin_function([0,0]))  # Debe dar 0
     print("[1,1] =", Rastrigin_function([1,1])) # 2
     print("[5.12,5.12] =", Rastrigin_function([5.12,5.12]))
-if __name__ == "__main__":
+
     # Dominio de ejemplo para cada dimensión (por ejemplo, [-5, 5])
     dominio = [-5, 5]
     dimension = 2
