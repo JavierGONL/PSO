@@ -18,7 +18,7 @@ class Point: #este es el punto que me robe de la clase shape, tiene un metodo pa
         self.x = x
         self.y = y
         self.z = z
-        self.comp_to_list: list = (self.x, self.y, self.z)
+        self.comp_to_list: list = [self.x, self.y, self.z]
 
     def redo(self, nx , ny, nz):
         self.x = nx

@@ -1,4 +1,5 @@
 from math import cos, pi
+from prueba_vector import Point, Vector as Point, Vector
 #? creamos una clase para elegir funciones objetivo??? 
 
 def Rastrigin_function(posicion, A_constante = 10)-> float: # le entra la posicion y calcula el valor
@@ -16,7 +17,7 @@ def funcion_objetivo_2():
 def funcion_objetivo_3():
     pass
 
-def funcion_objetivo_4():
+def shekel_function(x,y):
     pass
 
 
