@@ -1,8 +1,8 @@
 class Point: 
     #! tuve que hacer un monton de cosas raras aca, usar copilot :(
     #!  2 horas buscando una solucion por mi mismo
-    #! y resulta que el malp python cuando hace un escalar + un vector 
-    #! es diferente que un vector por un escalar y segun cada caso invoca o __mul__ o __rmul__ :/ 
+    #! y resulta que el malp python cuando hace un (escalar * un vector)
+    #! es diferente que un (vector * un escalar) y segun cada caso invoca o __mul__ o __rmul__ :/ 
     #! y pasa lo mismo con la hpta suma y resta.
     #! yo solo iba a agregar un clase punto re basica para hacer pruebas y nop dos horas arreglando esta cosa JAJAJAJAJAJA, :[
 
