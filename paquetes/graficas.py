@@ -39,10 +39,13 @@ if __name__ == "__main__":
     x = np.linspace(-5, 5,100)
     y = np.linspace(-5, 5,100)
     x, y = np.meshgrid(x,y) #hace el sistema de coordenadas
-    z = x*y #funcion de X,Y
+    z = np.cos(x) + np.cos(y) #funcion de X,Y
     
     fig = plt.figure(figsize=(14,16))
     ax = fig.add_subplot(111,projection = '3d')
     ax.plot_surface(x,y,z, cmap ='viridis')
     ax.set_title("gráfica 3D")
+    ax.set_xlabel("eje X")
+    ax.set_ylabel("eje Y")
+    ax.set_zlabel("Eje Z")
     plt.show()
