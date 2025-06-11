@@ -1,7 +1,7 @@
 import random
 
 from Funciones_objetivo import *
-from prueba_vector import *
+from vector import *
 
 class Particle:
     """
@@ -14,25 +14,27 @@ class Particle:
     """
 
     def __init__(self, posicion = [Point], velocidad_inicial = [Vector], dimension = 2): # la dimencion es del dominio
-        self.p_position : Point = posicion
-        self.speed : "Vector" = velocidad_inicial
+        self.p_position : Point = posicion # hay que acmbiarlo a point
+        self.speed : Vector = velocidad_inicial
         self.value : float = 0 #! no se si calcular esto aca en el enjambre, btw seria el rango?
         self.p_best_value : float = 0
-        self.p_best_position : "Vector"
+        self.p_best_position : Point = Point(0,0)  # Inicializa como Point
         self.historial_positions = []
         self.initialize : bool = False
         self.dimension = dimension
 
     def initialize_particle(self,dominio):
         """definir su posicion y velocidad inicial para cualquier dimension"""
-        self.speed = [random.uniform(-1, 1) for _ in range(self.dimension)] # usando list comprehension
-        self.position = [random.uniform(dominio[0], dominio[1]) for _ in range(self.dimension)]
+        random_para_V = [random.uniform(-1, 1) for _ in range(self.dimension)] # list comprehension
+        random_para_p = [random.uniform(dominio[0], dominio[1]) for _ in range(self.dimension)]
+        self.speed = Vector(*random_para_V)
+        self.p_position = Point(*random_para_p)
         self.initialize = True
 
     def calculate_value(self):
         if self.initialize:
-            self.historial_positions.append(self.position) #! toca inicializar la particula antes
-            self.value = Rastrigin_function(self.position) # de ejempo toca ver como variar la funcion 
+            self.historial_positions.append(self.p_position) #! toca inicializar la particula antes
+            self.value = Rastrigin_function(self.p_position.comp_to_list) # de ejempo toca ver como variar la funcion 
             if self.value > self.p_best_value:
                 self.p_best_value = self.value
                 self.p_best_position = self.p_position
@@ -45,7 +47,7 @@ class Swarm: #enjambre
         self.dominio : list = dominio
         self.particulas = [Particle() for _ in range(number_of_particles)]
         self.g_best_value : float = 0
-        self.g_best_position : list = []
+        self.g_best_position : Point = Point(0,0)  # Inicializa como Point
         self.maximice : bool = False # min por defecto
         self.dimension : list = dimension
         
@@ -83,15 +85,16 @@ class Swarm: #enjambre
         r1 : "Vector" = Vector(*valores_randoms_1)  # debe ser de longitud del vector velocidad, con longitud se refierea la dim, el *valores_random desempaqueta la lista
         r2 : "Vector" = Vector(*valores_randoms_2)
         for i in self.particulas:
+            i.calculate_value()
             primer_termino = w*i.speed #* es speed en la iteracion / T actual, nercia
-            segundo_termino = c1*r1*(i.p_best_position - i.p_position) #* cognitivo
-            tercer_termino = c2*r2*(self.g_best_position - i.p_position) #* social
+            segundo_termino = (c1*r1)*(i.p_best_position - i.p_position) #* cognitivo
+            tercer_termino = (c2*r2)*(self.g_best_position - i.p_position) #* social
             i.speed = primer_termino + segundo_termino + tercer_termino #! aca se actualiza la velocidad y debe ser un vector?
             # aca se actualiza la posicion 
             # Actualiza la posición de la partícula sumando la velocidad actual a la posición anterior.
             #* Fórmula: x_i(t+1) = x_i(t) + v_i(t+1) !!! esto es un vector
             #! asi?? abajo, creo que si dado que ambos son vectores(deberia ser un vector y un punto) y esta definido la suma aunque creo que hay que definir una clase punto con el metodo de sumar definido para que sume bien entre un vector y un punto
-            i.p_position = i.p_position + i.speed 
+            i.p_position = Point(i.p_position.x + i.speed.x, i.p_position.y + i.speed.y)
 
     def next_iteration(self, number_iterations):
         # debe permitirte avanzar o retroceder, esto serviria para debugear llegado el caso

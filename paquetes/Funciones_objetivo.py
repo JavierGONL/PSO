@@ -7,7 +7,7 @@ def Rastrigin_function(posicion, A_constante = 10): # le entra la posicion y cal
     A = A_constante
     suma = 0
     for i in posicion:
-          suma += i**2 - A * cos(2*pi*i)
+        suma += i**2 - A * cos(2*pi*i)
     return A*n + suma #! revisar si esta bien implementada
 
 def funcion_objetivo_2():
@@ -18,4 +18,10 @@ def funcion_objetivo_3():
 
 def funcion_objetivo_4():
     pass
-#hola :)
+
+
+# Test para verificar la función Rastrigin
+if __name__ == "__main__":
+    print("[0,0] =", Rastrigin_function([0,0]))  # Debe dar 0
+    print("[1,1] =", Rastrigin_function([1,1])) # 2
+    print("[5.12,5.12] =", Rastrigin_function([5.12,5.12]))
