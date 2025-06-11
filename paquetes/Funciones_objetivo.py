@@ -18,7 +18,19 @@ def funcion_objetivo_3():
     pass
 
 def shekel_function(x,y):
-    pass
+    vinc : list = [x,y]
+    m : int = 10
+    n : int = 2
+    c1= [1/10,2/10,2/10,4/10,4/10,6/10,3/10,7/10,5/10,5/10] #arreglo de constantes 1
+    c2= [[4 ,1, 8, 6, 3, 2, 5, 8, 6, 7],[4, 1, 8, 6, 7, 9, 3, 1, 2, 3.6]] #matriz de constantes 2
+    ni= 0
+    mj= 0
+    pr = 0
+    r = 0
+    while mj <= m:
+        while ni <= n:
+            pr = pr + (vinc[ni-1]-c2[ni-1][mj-1]**2 + c1[mj-1])
+
 
 
 # Test para verificar la función Rastrigin
