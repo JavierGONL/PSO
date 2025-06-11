@@ -17,7 +17,7 @@
 import random
 
 from Funciones_objetivo import *
-from prueba_vector import *
+from vector import *
 
 class Particle:
     """
@@ -29,17 +29,13 @@ class Particle:
     el resto de valores no se conocen hasta que la partícula es evaluada.
     """
 
-    def __init__(self, posicion=None, velocidad_inicial=None, dimension=2):
-        if posicion is None:
-            posicion = Point(0, 0)
-        if velocidad_inicial is None:
-            velocidad_inicial = Vector(0, 0)
-        self.p_position: Point = posicion
-        self.speed: Vector = velocidad_inicial
+    def __init__(self, dimension=2):
+        self.p_position: Point = Point(0,0)
+        self.speed: Vector = Vector(0,0)
         self.value: float = 0
         self.p_best_value: float = 0
         self.p_best_position: Point = Point(0,0)
-        self.historial_positions = []
+        self.historial_positions : list = []
         self.initialize: bool = False
         self.dimension: int = dimension
 
@@ -114,7 +110,7 @@ class Swarm: #enjambre
             # Actualiza la posición de la partícula sumando la velocidad actual a la posición anterior.
             #* Fórmula: x_i(t+1) = x_i(t) + v_i(t+1) !!! esto es un vector
             #! asi?? abajo, creo que si dado que ambos son vectores(deberia ser un vector y un punto) y esta definido la suma aunque creo que hay que definir una clase punto con el metodo de sumar definido para que sume bien entre un vector y un punto
-            i.p_position = Point(i.p_position.x + i.speed.x, i.p_position.y + i.speed.y)
+            i.p_position = i.p_position.x + i.speed.x, i.p_position.y + i.speed.y
 
     def next_iteration(self, number_iterations):
         # debe permitirte avanzar o retroceder, esto serviria para debugear llegado el caso
