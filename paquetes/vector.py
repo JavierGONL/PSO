@@ -11,7 +11,7 @@ class Point:
             raise ValueError(f"Point solo acepta 2 componentes, se recibieron: {2 + len(args)}")
         self.x = x
         self.y = y
-        self.comp_to_list = [self.x, self.y]
+        self.comp_to_list : list = [self.x, self.y]
 
     def __add__(self, other):
         if isinstance(other, Point):
