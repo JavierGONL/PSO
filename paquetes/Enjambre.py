@@ -46,6 +46,7 @@ class Particle:
         self.speed = Vector(*random_para_V)
         self.p_position = Point(*random_para_p)
         self.initialize = True
+        self.value = self.calculate_value()
 
     def calculate_value(self):
         if self.initialize:
@@ -110,8 +111,12 @@ class Swarm: #enjambre
             # Actualiza la posición de la partícula sumando la velocidad actual a la posición anterior.
             #* Fórmula: x_i(t+1) = x_i(t) + v_i(t+1) !!! esto es un vector
             #! asi?? abajo, creo que si dado que ambos son vectores(deberia ser un vector y un punto) y esta definido la suma aunque creo que hay que definir una clase punto con el metodo de sumar definido para que sume bien entre un vector y un punto
-            i.p_position = i.p_position.x + i.speed.x, i.p_position.y + i.speed.y
+            i.p_position = i.p_position + i.speed
 
-    def next_iteration(self, number_iterations):
-        # debe permitirte avanzar o retroceder, esto serviria para debugear llegado el caso
-        pass
+    def iterations(self, number_iterations, w,c1,c2):
+        while number_iterations > 0:
+            self.update_particles(w, c1, c2)
+            for i in self.particulas:
+                print(f"P: {i.speed},   V: {i.speed}, Value: {i.value}")
+            number_iterations -= 1
+        return True 
