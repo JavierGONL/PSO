@@ -1,3 +1,18 @@
+'''
+    * Descripción: 
+    * documentos relacionados: paquetes
+    * autores: kevin javier gonzalez luna, ivan felipe maluche, david Montes
+    * --------------------------------- TODO -------------------------------------------------
+    * Lista de feature por hacer:
+    * - 
+    *
+    * --------------------------------- ISSUES -----------------------------------------------
+    * Lista de problemas conocidos:
+    * - 
+    *
+    * ----------------------------------------------------------------------------------------
+'''
+
 class Point: #este es el punto que me robe de la clase shape, tiene un metodo para rehacerlo en tal caso que lo necesitemos
     def __init__(self, x: float = 0, y: float=0, z:float=0): 
         self.x = x

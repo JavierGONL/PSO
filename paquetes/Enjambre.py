@@ -1,3 +1,19 @@
+'''
+    * Descripción: clase particula y enjambre
+    * documentos relacionados: paquetes
+    * autores: kevin javier gonzalez luna, ivan felipe maluche, david Montes
+    * --------------------------------- TODO -------------------------------------------------
+    * Lista de feature por hacer:
+    * - iteracion en Swarm
+    * 
+    *
+    * --------------------------------- ISSUES -----------------------------------------------
+    * Lista de problemas conocidos:
+    * - optimizar el codigo y seguir el pep8
+    *
+    * ----------------------------------------------------------------------------------------
+'''
+
 import random
 
 from Funciones_objetivo import *

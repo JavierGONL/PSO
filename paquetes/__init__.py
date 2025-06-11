@@ -1,3 +1,19 @@
+'''
+    * Descripción: 
+    * documentos relacionados: paquetes
+    * autores: kevin javier gonzalez luna, ivan felipe maluche, david Montes
+    * --------------------------------- TODO -------------------------------------------------
+    * Lista de feature por hacer:
+    * - que funcione con prueba vector
+    *
+    * --------------------------------- ISSUES -----------------------------------------------
+    * Lista de problemas conocidos:
+    * - prueba vector no sirve como con vector
+    * - speed devuelve 4 componentes, deben ser 2
+    *
+    * ----------------------------------------------------------------------------------------
+'''
+
 from Enjambre import *
 
 enjambre = Swarm(50, [-5.12, 5.12])
