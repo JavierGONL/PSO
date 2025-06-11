@@ -1,7 +1,7 @@
 import random
 
 from Funciones_objetivo import *
-from vector import *
+from prueba_vector import *
 
 class Particle:
     """
