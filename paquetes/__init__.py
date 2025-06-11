@@ -8,4 +8,4 @@
     
 #* por ahora crea las particulas bien y les da un valor de la funcion bien, 
 #* me falta ver la iteracion y comprobar la speed
-"Esta parte del codigo esta generando problemas, no me deja iniciar en el main"
+"Esta parte del codigo esta generando problemas, no me deja debuggear en el main porque suelta un error"
