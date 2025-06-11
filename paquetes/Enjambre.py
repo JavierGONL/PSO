@@ -1,7 +1,7 @@
 import random
 
 from Funciones_objetivo import *
-from prueba_vector import *
+from vector import *
 
 class Particle:
     """
@@ -13,15 +13,19 @@ class Particle:
     el resto de valores no se conocen hasta que la partícula es evaluada.
     """
 
-    def __init__(self, posicion = [Point], velocidad_inicial = [Vector], dimension = 2): # la dimencion es del dominio
-        self.p_position : Point = posicion # hay que acmbiarlo a point
-        self.speed : Vector = velocidad_inicial
-        self.value : float = 0 #! no se si calcular esto aca en el enjambre, btw seria el rango?
-        self.p_best_value : float = 0
-        self.p_best_position : Point = Point(0,0)  # Inicializa como Point
+    def __init__(self, posicion=None, velocidad_inicial=None, dimension=2):
+        if posicion is None:
+            posicion = Point(0, 0)
+        if velocidad_inicial is None:
+            velocidad_inicial = Vector(0, 0)
+        self.p_position: Point = posicion
+        self.speed: Vector = velocidad_inicial
+        self.value: float = 0
+        self.p_best_value: float = 0
+        self.p_best_position: Point = Point(0, 0)
         self.historial_positions = []
-        self.initialize : bool = False
-        self.dimension = dimension
+        self.initialize: bool = False
+        self.dimension: int = dimension
 
     def initialize_particle(self,dominio):
         """definir su posicion y velocidad inicial para cualquier dimension"""
@@ -42,14 +46,14 @@ class Particle:
             return "hay que inicializar la particula antes"
 
 class Swarm: #enjambre 
-    def __init__(self,  number_of_particles = 0, dominio = [float], dimension = 2,): #! para el dominio solo pasamos como si fuera una variable, pero en verdad seria un rectangulo
+    def __init__(self,  number_of_particles = 0, dominio = [float], dimension = 2): #! para el dominio solo pasamos como si fuera una variable, pero en verdad seria un rectangulo
         self.number_of_particles : int = number_of_particles
         self.dominio : list = dominio
-        self.particulas = [Particle() for _ in range(number_of_particles)]
+        self.particulas = [Particle(dimension=dimension) for _ in range(number_of_particles)]
         self.g_best_value : float = 0
         self.g_best_position : Point = Point(0,0)  # Inicializa como Point
         self.maximice : bool = False # min por defecto
-        self.dimension : list = dimension
+        self.dimension : int = dimension
         
     def inicialize_each_particle(self): #! falta revisar si funciona D:
         for i in self.particulas:

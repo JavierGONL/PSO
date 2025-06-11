@@ -37,14 +37,13 @@ class Point:
         return self.__mul__(k)
 
     def __str__(self):
-        return (str(self.x) + "i + " + str(self.y) + "j")
+        return f"{self.x},{ self.y}"
 
 
 class Vector(Point):
     def __init__(self, x: float, y: float):
         super().__init__(x, y)
         self.magnitud: float = self.calculate_magnitude()
-        self.comp_to_list = [self.x, self.y]
 
     def calculate_magnitude(self):
         return (self.x**2 + self.y**2)**0.5
@@ -53,15 +52,11 @@ class Vector(Point):
         if self.magnitud == 0:
             return Vector(0.0, 0.0, 0.0)
         return Vector((self.x / self.magnitud), (self.y / self.magnitud))
-    """
+
     def __add__(self, other):
         if isinstance(other, Vector):
             return Vector(self.x + other.x, self.y + other.y)
-        else: 
-            return "no es un vector"
+        raise TypeError(f"No se puede sumar Vector con {type(other)}")
 
     def __rmul__(self, k):
         return self.__mul__(k)
-    """
-    def __str__(self):
-        return (str(self.x) + "i + " + str(self.y) + "j")
