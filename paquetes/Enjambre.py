@@ -55,6 +55,7 @@ class Particle:
             if self.value > self.p_best_value:
                 self.p_best_value = self.value
                 self.p_best_position = self.p_position
+            return self.value
         else:
             return "hay que inicializar la particula antes"
 
@@ -63,7 +64,7 @@ class Swarm: #enjambre
         self.number_of_particles : int = number_of_particles
         self.dominio : list = dominio
         self.particulas = [Particle(dimension=dimension) for _ in range(number_of_particles)]
-        self.g_best_value : float = 0
+        self.g_best_value : float = 100
         self.g_best_position : Point = Point(0,0)  # Inicializa como Point
         self.maximice : bool = False # min por defecto
         self.dimension : int = dimension
@@ -72,11 +73,11 @@ class Swarm: #enjambre
         for i in self.particulas:
             i.initialize_particle(self.dominio)
 
-    def update_gbest(self):
-        g_best = 0
+    def update_gbestv_and_gbestpos(self):
         for i in self.particulas:
-            if i.value > g_best:
-                g_best = i.value
+            if i.value < self.g_best_value:
+                self.g_best_value = i.value
+                self.g_best_position = i.p_position
 
     def update_particles(self, w, c1, c2): #! creo que esto si va en swarm, la velocidad es un vector
         """
@@ -112,11 +113,13 @@ class Swarm: #enjambre
             #* Fórmula: x_i(t+1) = x_i(t) + v_i(t+1) !!! esto es un vector
             #! asi?? abajo, creo que si dado que ambos son vectores(deberia ser un vector y un punto) y esta definido la suma aunque creo que hay que definir una clase punto con el metodo de sumar definido para que sume bien entre un vector y un punto
             i.p_position = i.p_position + i.speed
+            self.update_gbestv_and_gbestpos()
 
     def iterations(self, number_iterations, w,c1,c2):
         while number_iterations > 0:
             self.update_particles(w, c1, c2)
-            for i in self.particulas:
-                print(f"P: {i.speed},   V: {i.speed}, Value: {i.value}")
+            #for i in self.particulas:
+                # print(f"P: {i.speed},   V: {i.speed}, Value: {i.value}")
+                #print(i.p_best_position)
             number_iterations -= 1
-        return True 
+        return print(f"la mejor posicion es {self.g_best_position}, con valor de {self.g_best_value}")

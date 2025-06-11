@@ -11,8 +11,11 @@ def Rastrigin_function(posicion, A_constante = 10)-> float: # le entra la posici
         suma += i**2 - A * cos(2*pi*i)
     return A*n + suma #! revisar si esta bien implementada
 
-def funcion_objetivo_2():
-    pass
+def Himmelblaus_function(posicion):
+    primer_termino = (posicion[0]**2 + posicion[1] - 11)**2
+    segundo_termino = (posicion[0] + posicion[1]**2 - 7)**2
+    return primer_termino + segundo_termino
+
 
 def funcion_objetivo_3():
     pass
