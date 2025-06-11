@@ -4,7 +4,7 @@ class Point:
     #! y resulta que el malp python cuando hace un escalar + un vector 
     #! es diferente que un vector por un escalar y segun cada caso invoca o __mul__ o __rmul__ :/ 
     #! y pasa lo mismo con la hpta suma y resta, 2 horas perdidas :C
-    #! yo solo iba a agregar un clase punto re basica y nop dos horas arreglando esta cosa JAJAJAJAJAJA :C
+    #! yo solo iba a agregar un clase punto re basica y nop dos horas arreglando esta cosa JAJAJAJAJAJA, :[
     def __init__(self, x: float, y: float):
         self.x = x
         self.y = y
