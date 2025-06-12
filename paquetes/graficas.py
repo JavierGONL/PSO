@@ -29,16 +29,18 @@ if __name__ == "__main__":
     print("[1,1] =", Rastrigin_function([1,1])) # 2
     print("[5.12,5.12] =", Rastrigin_function([5.12,5.12]))
     # Dominio de ejemplo para cada dimensión (por ejemplo, [-5, 5])
-    dominio = [-5, 5]
+    dominio_upper = 10
+    dominio_down = -10
+    dominio = [dominio_down, dominio_upper]
     dimension = 2
-    swarm = Swarm(number_of_particles=20, dominio=dominio, dimension=dimension)
+    swarm = Swarm(number_of_particles=500, dominio=dominio, dimension=dimension)
     swarm.inicialize_each_particle()
     # Mostrar posiciones iniciales de las partículas
     for idx, p in enumerate(swarm.particulas):
         print(f"Partícula {idx+1}: posición = {p.p_position}, velocidad = {p.speed}")
 
-    x = np.linspace(-5, 5,100)
-    y = np.linspace(-5, 5,100)
+    x = np.linspace(dominio_down, dominio_upper,100)
+    y = np.linspace(dominio_down, dominio_upper,100)
     x, y = np.meshgrid(x,y) #hace el sistema de coordenadas
     z = np.cos(x) + np.cos(y) #funcion de X,Y 
     #probar poner puntos
@@ -61,7 +63,7 @@ if __name__ == "__main__":
     ax_2 = fig.add_subplot(2,2,2)
     contour = ax_2.contourf(x, y, z, cmap ="viridis")
     ax_2.scatter(x_particulas,y_particulas,c = 'red', s = 100, edgecolor = 'k', linewidth = 1)
-    fig.colorbar(contour, ax = ax_2, shrink = 0.5, aspect = 5)
+    fig.colorbar(contour, ax = ax_2, shrink = 0.5, aspect = 5) #!problema con los colores, luego arreglar
     
     ax_2.set_title("vista superior")
     ax_2.set_xlabel("eje X")
