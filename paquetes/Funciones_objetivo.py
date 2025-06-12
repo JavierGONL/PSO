@@ -34,10 +34,13 @@ def shekel_function(x,y):
         while nj <= n-1:
             pr = pr + ((vinc[nj]-((c2[nj])[mi]))**2 + c1[mi])
             nj = nj + 1
-        print(1/pr)
+        #print(1/pr)
         r = r + (1/pr)
         mi = mi +1 
         pr= 0
         nj = 0
     return -r
 #APARENTEMENTE ya esta ;)
+
+if __name__ == "__main__":
+    print(shekel_function(4,4))
