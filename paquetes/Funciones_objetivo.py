@@ -45,7 +45,7 @@ def shekel_function(x,y):
 
 # Test para verificar la función Rastrigin
 if __name__ == "__main__":
-    #print("[0,0] =", Rastrigin_function([0,0]))  # Debe dar 0
+    print("[0,0] =", Himmelblaus_function([3,2]))  # Debe dar 0
     #print("[1,1] =", Rastrigin_function([4.5,4.5])) # 2
 #print("[5.12,5.12] =", Rastrigin_function([5.12,5.12]))
-    print( shekel_function(1,2))
+    #print( shekel_function(1,2))

@@ -1,10 +1,4 @@
 class Point: 
-    #! tuve que hacer un monton de cosas raras aca, usar copilot :(
-    #!  2 horas buscando una solucion por mi mismo
-    #! y resulta que el malp python cuando hace un (escalar * un vector)
-    #! es diferente que un (vector * un escalar) y segun cada caso invoca o __mul__ o __rmul__ :/ 
-    #! y pasa lo mismo con la hpta suma y resta.
-    #! yo solo iba a agregar un clase punto re basica para hacer pruebas y nop dos horas arreglando esta cosa JAJAJAJAJAJA, :[
 
     def __init__(self, x: float, y: float, *args):
         if len(args) > 0:
@@ -46,6 +40,9 @@ class Point:
         if isinstance(k, (int, float)):
             return Point(self.x ** k, self.y ** k)
         raise TypeError(f"No se puede elevar Point a {type(k)}")
+    
+    def __round__(self, n=0):
+        return Point(round(self.x, n), round(self.y, n))
 
 
 class Vector(Point):
@@ -63,23 +60,38 @@ class Vector(Point):
 
     def __add__(self, other):
         if isinstance(other, Vector):
-            return Vector(float(self.x) + float(other.x), float(self.y) + float(other.y))
+            if len(self.comp_to_list) != len(other.comp_to_list):
+                raise ValueError("Dimensiones incompatibles para suma de vectores")
+            return Vector(*(float(x) + float(y) for x, y in zip(self.comp_to_list, other.comp_to_list)))
         raise TypeError(f"No se puede sumar Vector con {type(other)}")
 
     def __rsub__(self, p):
         return self.__sub__(p)
 
-    def __sub__(self, p):
-        return Vector(float(self.x) - float(p.x), float(self.y) - float(p.y))
+    def __sub__(self, other):
+        if isinstance(other, Vector):
+            if len(self.comp_to_list) != len(other.comp_to_list):
+                raise ValueError("Dimensiones incompatibles para resta de vectores")
+            return Vector(*(float(x) - float(y) for x, y in zip(self.comp_to_list, other.comp_to_list)))
+        raise TypeError(f"No se puede restar Vector con {type(other)}")
 
     def __mul__(self, k):
+        # Multiplicación Hadamard o por escalar para cualquier dimensión
         if isinstance(k, (int, float)):
-            return Vector(float(self.x) * float(k), float(self.y) * float(k))
+            return Vector(*(float(x) * float(k) for x in self.comp_to_list))
         elif isinstance(k, Vector):
-            return Vector(float(self.x) * float(k.x), float(self.y) * float(k.y))
+            if len(self.comp_to_list) != len(k.comp_to_list):
+                raise ValueError("Dimensiones incompatibles para multiplicación Hadamard")
+            return Vector(*(float(x) * float(y) for x, y in zip(self.comp_to_list, k.comp_to_list)))
         raise TypeError(f"Solo se puede multiplicar Vector por un escalar o por otro Vector, no por {type(k)}")
 
     def __pow__(self, k):
         if isinstance(k, (int, float)):
             return Vector(self.x ** k, self.y ** k)
         raise TypeError(f"No se puede elevar Vector a {type(k)}")
+
+    def __round__(self, n=0):
+        return Vector(*(round(x, n) for x in self.comp_to_list))
+
+    def __str__(self):
+        return ','.join(str(x) for x in self.comp_to_list)

@@ -51,8 +51,8 @@ class Particle:
     def calculate_value(self):
         if self.initialize:
             self.historial_positions.append(self.p_position) #! toca inicializar la particula antes
-            self.value = Rastrigin_function(self.p_position.comp_to_list) # de ejempo toca ver como variar la funcion 
-            if self.value > self.p_best_value:
+            self.value = Himmelblaus_function(self.p_position.comp_to_list) # de ejempo toca ver como variar la funcion 
+            if self.value < self.p_best_value:
                 self.p_best_value = self.value
                 self.p_best_position = self.p_position
             return self.value
@@ -64,7 +64,7 @@ class Swarm: #enjambre
         self.number_of_particles : int = number_of_particles
         self.dominio : list = dominio
         self.particulas = [Particle(dimension=dimension) for _ in range(number_of_particles)]
-        self.g_best_value : float = 100
+        self.g_best_value : float = 10000
         self.g_best_position : Point = Point(0,0)  # Inicializa como Point
         self.maximice : bool = False # min por defecto
         self.dimension : int = dimension
@@ -98,28 +98,49 @@ class Swarm: #enjambre
         r2: vector de valores aleatorios entre 0 y 1 de longitud igual a la del vector velocidad.
         g(t): posición de todo el enjambre en el momento t, el mejor valor global.
         """
-        valores_randoms_1 = [random.uniform(-1, 1) for _ in range(self.dimension)]
-        valores_randoms_2 = [random.uniform(-1, 1) for _ in range(self.dimension)]
-        r1 : "Vector" = Vector(*valores_randoms_1)  # debe ser de longitud del vector velocidad, con longitud se refierea la dim, el *valores_random desempaqueta la lista
-        r2 : "Vector" = Vector(*valores_randoms_2)
+        valores_randoms_1 = [random.uniform(0, 1) for _ in range(self.dimension)]
+        valores_randoms_2 = [random.uniform(0, 1) for _ in range(self.dimension)]
+        r1 = Vector(*valores_randoms_1)
+        r2 = Vector(*valores_randoms_2)
         for i in self.particulas:
-            i.calculate_value()
-            primer_termino = w*i.speed #* es speed en la iteracion / T actual, nercia
-            segundo_termino = (c1*r1)*(i.p_best_position - i.p_position) #* cognitivo
-            tercer_termino = (c2*r2)*(self.g_best_position - i.p_position) #* social
-            i.speed = primer_termino + segundo_termino + tercer_termino #! aca se actualiza la velocidad y debe ser un vector?
-            # aca se actualiza la posicion 
-            # Actualiza la posición de la partícula sumando la velocidad actual a la posición anterior.
-            #* Fórmula: x_i(t+1) = x_i(t) + v_i(t+1) !!! esto es un vector
-            #! asi?? abajo, creo que si dado que ambos son vectores(deberia ser un vector y un punto) y esta definido la suma aunque creo que hay que definir una clase punto con el metodo de sumar definido para que sume bien entre un vector y un punto
+            # Termino de inercia
+            primer_termino = w * i.speed
+            # Termino cognitivo
+            segundo_termino = c1 * r1 * (i.p_best_position - i.p_position)
+            # Termino social
+            tercer_termino = c2 * r2 * (self.g_best_position - i.p_position)
+            # Actualiza la velocidad
+            i.speed = primer_termino + segundo_termino + tercer_termino
+            # Limita la velocidad (opcional pero mejora convergencia)
+            speed_limit = (self.dominio[1] - self.dominio[0]) * 0.2
+            if i.speed.x > speed_limit:
+                i.speed.x = speed_limit
+            elif i.speed.x < -speed_limit:
+                i.speed.x = -speed_limit
+            if i.speed.y > speed_limit:
+                i.speed.y = speed_limit
+            elif i.speed.y < -speed_limit:
+                i.speed.y = -speed_limit
+            # Actualiza la posición
             i.p_position = i.p_position + i.speed
+            # Restringe la posición al dominio
+            if i.p_position.x < self.dominio[0]:
+                i.p_position.x = self.dominio[0]
+            elif i.p_position.x > self.dominio[1]:
+                i.p_position.x = self.dominio[1]
+            if i.p_position.y < self.dominio[0]:
+                i.p_position.y = self.dominio[0]
+            elif i.p_position.y > self.dominio[1]:
+                i.p_position.y = self.dominio[1]
+            # calcula el valor y actualiza las best globales
+            i.calculate_value()
             self.update_gbestv_and_gbestpos()
+
 
     def iterations(self, number_iterations, w,c1,c2):
         while number_iterations > 0:
             self.update_particles(w, c1, c2)
-            #for i in self.particulas:
-                # print(f"P: {i.speed},   V: {i.speed}, Value: {i.value}")
-                #print(i.p_best_position)
+            # for i in self.particulas:
+            #     print(f"P: {i.p_position},   V: {i.speed}, Value: {i.value}")
             number_iterations -= 1
         return print(f"la mejor posicion es {self.g_best_position}, con valor de {self.g_best_value}")
