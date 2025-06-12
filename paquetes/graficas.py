@@ -33,11 +33,11 @@ if __name__ == "__main__":
     dominio_down = -10
     dominio = [dominio_down, dominio_upper]
     dimension = 2
-    swarm = Swarm(number_of_particles=500, dominio=dominio, dimension=dimension)
+    swarm = Swarm(number_of_particles=50, dominio=dominio, dimension=dimension)
     swarm.inicialize_each_particle()
     # Mostrar posiciones iniciales de las partículas
-    for idx, p in enumerate(swarm.particulas):
-        print(f"Partícula {idx+1}: posición = {p.p_position}, velocidad = {p.speed}")
+    #for idx, p in enumerate(swarm.particulas):
+        #print(f"Partícula {idx+1}: posición = {p.p_position}, velocidad = {p.speed}")
 
     x = np.linspace(dominio_down, dominio_upper,100)
     y = np.linspace(dominio_down, dominio_upper,100)
@@ -46,7 +46,7 @@ if __name__ == "__main__":
     #probar poner puntos
     x_particulas = np.array([p.p_position.x for idx,p in enumerate(swarm.particulas)]) #! se consigue el arreglo para los puntos de las partículas
     y_particulas = np.array([p.p_position.y for idx,p in enumerate(swarm.particulas)]) #ni pinche idea por qué no llama a idx, pero si lo quito no funciona
-    print(x_particulas)
+    #print(x_particulas)
     #print(y_particulas)
     #print(str(z))
     fig = plt.figure(figsize=(16,12))

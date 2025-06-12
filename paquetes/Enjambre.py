@@ -51,7 +51,7 @@ class Particle:
     def calculate_value(self):
         if self.initialize:
             self.historial_positions.append(self.p_position) #! toca inicializar la particula antes
-            self.value = Rastrigin_function(self.p_position.comp_to_list) # de ejempo toca ver como variar la funcion 
+            self.value = Rastrigin_function(*self.p_position.comp_to_list) # de ejempo toca ver como variar la funcion 
             if self.value < self.p_best_value:
                 self.p_best_value = self.value
                 self.p_best_position = self.p_position
@@ -64,7 +64,7 @@ class Swarm: #enjambre
         self.number_of_particles : int = number_of_particles
         self.dominio : list = dominio
         self.particulas = [Particle(dimension=dimension) for _ in range(number_of_particles)]
-        self.g_best_value : float = 10000
+        self.g_best_value : float = float("inf")
         self.g_best_position : Point = Point(0,0)  # Inicializa como Point
         self.maximice : bool = False # min por defecto
         self.dimension : int = dimension
