@@ -1,9 +1,8 @@
 from math import cos, pi
 
-from prueba_vector import Point, Vector as Point, Vector
 #? creamos una clase para elegir funciones objetivo??? 
 
-def Rastrigin_function(posicion, A_constante = 10)-> float: # le entra la posicion y calcula el valor
+def rastrigin_function(posicion, A_constante = 10)-> float: # le entra la posicion y calcula el valor
     # where A=10 (generalmente and posicion ∈ [-5.12,5.12]
     n = len(posicion) # dimension
     A = A_constante
@@ -12,7 +11,7 @@ def Rastrigin_function(posicion, A_constante = 10)-> float: # le entra la posici
         suma += i**2 - A * cos(2*pi*i)
     return A*n + suma #! revisar si esta bien implementada
 
-def Himmelblaus_function(posicion):
+def himmelblaus_function(posicion):
     primer_termino = (posicion[0]**2 + posicion[1] - 11)**2
     segundo_termino = (posicion[0] + posicion[1]**2 - 7)**2
     return primer_termino + segundo_termino
@@ -21,8 +20,8 @@ def Himmelblaus_function(posicion):
 def funcion_objetivo_3():
     pass
 
-def shekel_function(x,y):
-    vinc : list = [x,y]
+def shekel_function(posicion):
+    vinc : list = posicion
     m : int = 10
     n : int = 2
     c1 = [0.1, 0.2, 0.2, 0.4, 0.4, 0.6, 0.3, 0.7, 0.5, 0.5] #arreglo de constantes 1

@@ -1,7 +1,7 @@
  # a chambear :v
 import random
 from Enjambre import *
-from Funciones_objetivo import *
+from Funciones_objetivo import rastrigin_function
 from vector import *
 
 import numpy as np
@@ -13,28 +13,19 @@ from mpl_toolkits import mplot3d
 #creo que esta vuelta toca rehacerla
 
 
-def Rastrigin_function(posicion, A_constante = 10): # le entra la posicion y calcula el valor
-    # where A=10 (generalmente and posicion ∈ [-5.12,5.12]
-    n = len(posicion) # dimension
-    A = A_constante
-    suma = 0
-    for i in posicion:
-        suma += i**2 - A * cos(2*pi*i)
-    return A*n + suma #! revisar si esta bien implementada
 
 
 # Test para verificar la función Rastrigin
 if __name__ == "__main__":
-    print("[0,0] =", Rastrigin_function([0,0]))  # Debe dar 0
-    print("[1,1] =", Rastrigin_function([1,1])) # 2
-    print("[5.12,5.12] =", Rastrigin_function([5.12,5.12]))
     # Dominio de ejemplo para cada dimensión (por ejemplo, [-5, 5])
     dominio_upper = 10
     dominio_down = -10
     dominio = [dominio_down, dominio_upper]
     dimension = 2
-    swarm = Swarm(number_of_particles=50, dominio=dominio, dimension=dimension)
-    swarm.inicialize_each_particle()
+    enjambre = Swarm(50, [-5.12, 5.12])
+    enjambre.inicialize_each_particle()
+    enjambre.iterations(10, 0.4, 1, 2) # el problemas es que las particulas se salen del domino
+
     # Mostrar posiciones iniciales de las partículas
     #for idx, p in enumerate(swarm.particulas):
         #print(f"Partícula {idx+1}: posición = {p.p_position}, velocidad = {p.speed}")
@@ -44,8 +35,8 @@ if __name__ == "__main__":
     x, y = np.meshgrid(x,y) #hace el sistema de coordenadas
     z = np.cos(x) + np.cos(y) #funcion de X,Y 
     #probar poner puntos
-    x_particulas = np.array([p.p_position.x for idx,p in enumerate(swarm.particulas)]) #! se consigue el arreglo para los puntos de las partículas
-    y_particulas = np.array([p.p_position.y for idx,p in enumerate(swarm.particulas)]) #ni pinche idea por qué no llama a idx, pero si lo quito no funciona
+    x_particulas = np.array([p.p_position.x for idx,p in enumerate(enjambre.particulas)]) #! se consigue el arreglo para los puntos de las partículas
+    y_particulas = np.array([p.p_position.y for idx,p in enumerate(enjambre.particulas)]) #ni pinche idea por qué no llama a idx, pero si lo quito no funciona
     #print(x_particulas)
     #print(y_particulas)
     #print(str(z))
@@ -70,17 +61,22 @@ if __name__ == "__main__":
     ax_2.set_ylabel("eje Y")
     
     # segundas gráficas
-    z = x**2 +y**2 #funcion de X,Y
+    lista = []
+    for i in enjambre.particulas:
+        lista.append(rastrigin_function(i.p_position.comp_to_list))
+    z_1 = np.array(lista)
+    z_2 = np.array(rastrigin_function(np.linspace(dominio_down, dominio_upper,100)))
+
     ax_3 = fig.add_subplot(2,2,3,projection = '3d')
-    ax_3.plot_surface(x,y,z, cmap ='viridis', alpha = 0.6 )
-    ax_3.scatter3D(x_particulas,y_particulas, x_particulas**2 + y_particulas**2,c = 'red', s = 100, edgecolor = 'k', linewidth = 1.5)
+    ax_3.plot_surface(x,y,z_2, cmap ='viridis', alpha = 0.6 )
+    ax_3.scatter3D(x_particulas,y_particulas, z_1,c = 'red', s = 100, edgecolor = 'k', linewidth = 1.5)
     ax_3.set_title("gráfica 3D 2")
     ax_3.set_xlabel("eje X")
     ax_3.set_ylabel("eje Y")
     ax_3.set_zlabel("Eje Z")
     
     ax_4 = fig.add_subplot(2,2,4)
-    contour = ax_4.contourf(x, y, z, cmap ="viridis")
+    contour = ax_4.contourf(x, y, cmap ="viridis")
     ax_4.scatter(x_particulas,y_particulas, c = 'red', s = 100, edgecolor = 'k', linewidth = 1)
     fig.colorbar(contour, ax = ax_2, shrink = 0.5, aspect = 5)
     
@@ -90,3 +86,20 @@ if __name__ == "__main__":
 
     plt.tight_layout()
     plt.show()
+    
+"""```mermaid
+---
+title: clase gráfica
+---
+classDiagram
+    note "como hacer que las gráficas no sean un copypaste"
+    class gráfica{
+        +lista_x
+        +lista_y
+        +lista_z
+        +addsubplot() -> gráfica 3D
+        +Scatter() -> gráfica de puntos
+        +cambiar_ventana() 
+
+        }
+```"""
