@@ -51,7 +51,7 @@ class Particle:
     def calculate_value(self):
         if self.initialize:
             self.historial_positions.append(self.p_position) #! toca inicializar la particula antes
-            self.value = Rastrigin_function(*self.p_position.comp_to_list) # de ejempo toca ver como variar la funcion 
+            self.value = Rastrigin_function(self.p_position.comp_to_list) # de ejempo toca ver como variar la funcion 
             if self.value < self.p_best_value:
                 self.p_best_value = self.value
                 self.p_best_position = self.p_position
@@ -143,4 +143,4 @@ class Swarm: #enjambre
             # for i in self.particulas:
             #     print(f"P: {i.p_position},   V: {i.speed}, Value: {i.value}")
             number_iterations -= 1
-        return print(f"la mejor posicion es {round(self.g_best_position,10)}, con valor de {round(self.g_best_value, 10)}")
+        return print(f"la mejor posicion es {round(self.g_best_position, 3)}, con valor de {round(self.g_best_value, 3)}")
