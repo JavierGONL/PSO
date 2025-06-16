@@ -5,6 +5,43 @@
 <figcaption><b></b></figcaption></figure>
 </div>
 
+## diagrama de clase particle
+```mermaid
+classDiagram
+    class Particle{
+        p_position
+        speed
+        value
+        p_best_value
+        p_best_position
+        historial_positions
+        initialize
+        dimension
+        initialize_particle()
+        calculate_value()
+    }
+```
+## diagrama de clase Swarm
+```mermaid
+classDiagram
+    class Swarm{
+        number_of_particles
+        dominio
+        particulas
+        g_best_value
+        g_best_position
+        maximice
+        dimension
+        inicialize_each_particle()
+        update_gbestv_and_gbestpos()
+        update_particles()
+        iterations()
+    }
+```
+Cosas pendientes por hacer:
+* optimizar codigo y hacerlo presentable
+
+
 ## diagrama de clase vector
 
 ```mermaid
