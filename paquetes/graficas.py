@@ -86,3 +86,20 @@ if __name__ == "__main__":
 
     plt.tight_layout()
     plt.show()
+    
+"""```mermaid
+---
+title: clase gráfica
+---
+classDiagram
+    note "como hacer que las gráficas no sean un copypaste"
+    class gráfica{
+        +lista_x
+        +lista_y
+        +lista_z
+        +addsubplot() -> gráfica 3D
+        +Scatter() -> gráfica de puntos
+        +cambiar_ventana() 
+
+        }
+```"""
