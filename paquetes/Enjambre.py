@@ -51,7 +51,7 @@ class Particle:
     def calculate_value(self):
         if self.initialize:
             self.historial_positions.append(self.p_position) #! toca inicializar la particula antes
-            self.value = Rastrigin_function(self.p_position.comp_to_list) # de ejempo toca ver como variar la funcion 
+            self.value = Himmelblaus_function(self.p_position.comp_to_list) # de ejempo toca ver como variar la funcion 
             if self.value < self.p_best_value:
                 self.p_best_value = self.value
                 self.p_best_position = self.p_position
@@ -84,7 +84,7 @@ class Swarm: #enjambre
         Mover una partícula implica actualizar su velocidad y posición. 
         Este paso es el más importante ya que otorga al algoritmo la capacidad de optimizar.
         
-        vi(t+1)=wvi(t)+c1r1[^xi(t)- xi(t)]+c2r2[g(t) - xi(t)] 
+        vi(t+1)= wvi(t)+c1r1[^xi(t)- xi(t)]+c2r2[g(t) - xi(t)] 
         
         donde:
         vi(t+1): velocidad de la partícula i en el momento  t+1, es decir, la nueva velocidad.
@@ -111,6 +111,7 @@ class Swarm: #enjambre
             tercer_termino = c2 * r2 * (self.g_best_position - i.p_position)
             # Actualiza la velocidad
             i.speed = primer_termino + segundo_termino + tercer_termino
+
             # Limita la velocidad (opcional pero mejora convergencia)
             speed_limit = (self.dominio[1] - self.dominio[0]) * 0.2
             if i.speed.x > speed_limit:
@@ -121,8 +122,10 @@ class Swarm: #enjambre
                 i.speed.y = speed_limit
             elif i.speed.y < -speed_limit:
                 i.speed.y = -speed_limit
+
             # Actualiza la posición
             i.p_position = i.p_position + i.speed
+
             # Restringe la posición al dominio
             if i.p_position.x < self.dominio[0]:
                 i.p_position.x = self.dominio[0]
@@ -132,6 +135,7 @@ class Swarm: #enjambre
                 i.p_position.y = self.dominio[0]
             elif i.p_position.y > self.dominio[1]:
                 i.p_position.y = self.dominio[1]
+
             # calcula el valor y actualiza las best globales
             i.calculate_value()
             self.update_gbestv_and_gbestpos()
@@ -143,4 +147,4 @@ class Swarm: #enjambre
             # for i in self.particulas:
             #     print(f"P: {i.p_position},   V: {i.speed}, Value: {i.value}")
             number_iterations -= 1
-        return print(f"la mejor posicion es {round(self.g_best_position, 3)}, con valor de {round(self.g_best_value, 3)}")
+        return print(f"la mejor posicion es {round(self.g_best_position, 5)}, con valor de {round(self.g_best_value, 5)}")

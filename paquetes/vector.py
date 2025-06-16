@@ -25,7 +25,7 @@ class Point:
     def __rsub__(self, p):
         return self.__sub__(p)
 
-    def __mul__(self, k):
+    def __mul__(self , k):
         if not isinstance(k, (int, float)):
             raise TypeError(f"Solo se puede multiplicar Point por un escalar, no por {type(k)}")
         return Point(float(self.x) * float(k), float(self.y) * float(k))
@@ -76,7 +76,6 @@ class Vector(Point):
         raise TypeError(f"No se puede restar Vector con {type(other)}")
 
     def __mul__(self, k):
-        # Multiplicación Hadamard o por escalar para cualquier dimensión
         if isinstance(k, (int, float)):
             return Vector(*(float(x) * float(k) for x in self.comp_to_list))
         elif isinstance(k, Vector):

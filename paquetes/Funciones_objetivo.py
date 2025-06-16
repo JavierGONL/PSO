@@ -42,5 +42,3 @@ def shekel_function(x,y):
     return -r
 #APARENTEMENTE ya esta ;)
 
-if __name__ == "__main__":
-    print(shekel_function(4,4))
