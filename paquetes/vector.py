@@ -1,4 +1,4 @@
-class Point: 
+class Point: #a
 
     def __init__(self, x: float, y: float, *args):
         if len(args) > 0:
