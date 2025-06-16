@@ -15,10 +15,10 @@
 '''
 import random
 
-from Funciones_objetivo import *
-from vector import *
+from paquetes.Funciones_objetivo import *
+from paquetes.vector import Point, Vector
 
-class Particle:
+class Particle: # particula
     """
     Cada partícula está definida por una posición, 
     velocidad y valor que varían a medida que la partícula se mueve. 
@@ -28,30 +28,36 @@ class Particle:
     (normalmente iniciada como cero), el resto de valores no se conocen hasta que 
     la partícula es evaluada.
     """
-    def __init__(self, dimension = 2):
-        self.p_position: Point = Point(0,0)
-        self.speed: Vector = Vector(0,0)
+    def __init__(self,  dimension = 2, ):
+        self.p_position= Point(0,0)
+        self.speed = Vector(0,0)
         self.value: float = 0
         self.p_best_value: float = 0
-        self.p_best_position: Point = Point(0,0)
-        self.historial_positions : list = []
-        self.initialize: bool = False
-        self.dimension: int = dimension
+        self.p_best_position = Point(0,0)
+        self.historial_positions  = []
+        self.initialize = False
+        self.dimension = dimension
+        self.maximice : bool = False
 
-    def initialize_particle(self,dominio):
-        """definir su posicion y velocidad inicial para cualquier dimension"""
-        random_para_V = [random.uniform(-1, 1) for _ in range(self.dimension)] # list comprehension
+
+    def initialize_particle(self, maximice, dominio):
+        """definirle una posicion y velocidad inicial aleatoria"""
+        random_para_V = [random.uniform(-1, 1) for _ in range(self.dimension)] # usando list comprehension
         random_para_p = [random.uniform(dominio[0], dominio[1]) for _ in range(self.dimension)]
         self.speed = Vector(*random_para_V)
         self.p_position = Point(*random_para_p)
-        self.initialize = True
+        self.initialize : bool = True
+        self.maximice = maximice
         self.value = self.calculate_value()
 
     def calculate_value(self):
         if self.initialize:
             self.historial_positions.append(self.p_position)
-            self.value = Rastrigin_function(self.p_position.comp_to_list) # de ejempo toca ver como variar la funcion 
-            if self.value < self.p_best_value:
+            self.value = himmelblaus_function(self.p_position.comp_to_list) #! de ejempo toca ver como variar la funcion 
+            if self.value < self.p_best_value and not self.maximice: # minimizar
+                self.p_best_value = self.value
+                self.p_best_position = self.p_position
+            elif self.value > self.p_best_value and self.maximice: # maximizar
                 self.p_best_value = self.value
                 self.p_best_position = self.p_position
             return self.value
@@ -59,22 +65,30 @@ class Particle:
             return "hay que inicializar la particula antes"
 
 class Swarm: #enjambre 
-    def __init__(self, number_of_particles = 0, dominio = [], dimension = 2): 
-        self.number_of_particles : int = number_of_particles
-        self.dominio : list = dominio #! para el dominio solo pasamos como si fuera una variable, pero en verdad seria un rectangulo
-        self.particulas = [Particle(dimension=dimension) for _ in range(number_of_particles)]
+    def __init__(self, 
+                number_of_particles = 0, 
+                dominio = [], 
+                maximice = False, 
+                dimension = 2
+                ): 
+        self.number_of_particles = number_of_particles
+        self.dominio : list = dominio #! para el dominio solo pasamos como si fuera de una variable, pero en verdad seria un rectangulo
+        self.particulas = [Particle(dimension) for _ in range(number_of_particles)]
         self.g_best_value : float = float("inf")
-        self.g_best_position : Point = Point(0,0)  # Inicializa como Point
-        self.maximice : bool = False # min por defecto
+        self.g_best_position = Point(0,0)  # Inicializa como Point
+        self.maximice = maximice 
         self.dimension : int = dimension
         
     def inicialize_each_particle(self): #! falta revisar si funciona D:
         for i in self.particulas:
-            i.initialize_particle(self.dominio)
+            i.initialize_particle(self.maximice, self.dominio)
 
     def update_gbestv_and_gbestpos(self):
         for i in self.particulas:
-            if i.value < self.g_best_value:
+            if i.value < self.g_best_value and not self.maximice:
+                self.g_best_value = i.value
+                self.g_best_position = i.p_position
+            elif i.value > self.g_best_value and self.maximice:
                 self.g_best_value = i.value
                 self.g_best_position = i.p_position
 
@@ -149,7 +163,7 @@ class Swarm: #enjambre
             self.listas_para_david() 
         return print(f"la mejor posicion es {round(self.g_best_position, 5)}, con valor de {round(self.g_best_value, 5)}")
     
-    def listas_para_david(self): # ojala a david no lo rechacen de la escuela de arte
+    def listas_para_david(self):
         lista_x = []
         lista_y = []
         lista_z = []
