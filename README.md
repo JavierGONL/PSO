@@ -72,7 +72,7 @@ classDiagram
     }
 ```
 
-Ya teniendo la clase partícula, se hace necesario crear la clase ya que esta es sobre la que se va a aplicar el PSO. De esta resalta la posibilidad de instanciar las partículas en un momento inicial y actualizar cada partícula en cada iteración.
+Ya teniendo la clase partícula, se hace necesario crear la clase Swarm (enjambre de partículas) ya que esta es sobre la que se va a aplicar el PSO. De esta resalta la posibilidad de instanciar las partículas en un momento inicial y actualizar cada partícula en cada iteración.
 ### Diagrama de clase Swarm
 ```mermaid
 classDiagram
