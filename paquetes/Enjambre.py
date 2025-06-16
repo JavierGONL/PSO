@@ -50,7 +50,7 @@ class Particle:
     def calculate_value(self):
         if self.initialize:
             self.historial_positions.append(self.p_position)
-            self.value = Himmelblaus_function(self.p_position.comp_to_list) # de ejempo toca ver como variar la funcion 
+            self.value = Rastrigin_function(self.p_position.comp_to_list) # de ejempo toca ver como variar la funcion 
             if self.value < self.p_best_value:
                 self.p_best_value = self.value
                 self.p_best_position = self.p_position
