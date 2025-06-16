@@ -13,7 +13,6 @@
     *
     * ----------------------------------------------------------------------------------------
 '''
-
 import random
 
 from Funciones_objetivo import *
@@ -24,12 +23,12 @@ class Particle:
     Cada partícula está definida por una posición, 
     velocidad y valor que varían a medida que la partícula se mueve. 
     Además, también almacena la mejor posición en la que ha estado hasta el momento. 
-    Cuando se crea aun nueva partícula, 
-    únicamente se dispone de información sobre su posición y velocidad (normalmente iniciada como cero), 
-    el resto de valores no se conocen hasta que la partícula es evaluada.
+    Cuando se crea una nueva partícula, 
+    únicamente se dispone de información sobre su posición y velocidad 
+    (normalmente iniciada como cero), el resto de valores no se conocen hasta que 
+    la partícula es evaluada.
     """
-
-    def __init__(self, dimension=2):
+    def __init__(self, dimension = 2):
         self.p_position: Point = Point(0,0)
         self.speed: Vector = Vector(0,0)
         self.value: float = 0
@@ -50,7 +49,7 @@ class Particle:
 
     def calculate_value(self):
         if self.initialize:
-            self.historial_positions.append(self.p_position) #! toca inicializar la particula antes
+            self.historial_positions.append(self.p_position)
             self.value = Himmelblaus_function(self.p_position.comp_to_list) # de ejempo toca ver como variar la funcion 
             if self.value < self.p_best_value:
                 self.p_best_value = self.value
@@ -60,9 +59,9 @@ class Particle:
             return "hay que inicializar la particula antes"
 
 class Swarm: #enjambre 
-    def __init__(self,  number_of_particles = 0, dominio = [float], dimension = 2): #! para el dominio solo pasamos como si fuera una variable, pero en verdad seria un rectangulo
+    def __init__(self, number_of_particles = 0, dominio = [], dimension = 2): 
         self.number_of_particles : int = number_of_particles
-        self.dominio : list = dominio
+        self.dominio : list = dominio #! para el dominio solo pasamos como si fuera una variable, pero en verdad seria un rectangulo
         self.particulas = [Particle(dimension=dimension) for _ in range(number_of_particles)]
         self.g_best_value : float = float("inf")
         self.g_best_position : Point = Point(0,0)  # Inicializa como Point
@@ -98,8 +97,8 @@ class Swarm: #enjambre
         r2: vector de valores aleatorios entre 0 y 1 de longitud igual a la del vector velocidad.
         g(t): posición de todo el enjambre en el momento t, el mejor valor global.
         """
-        valores_randoms_1 = [random.uniform(0, 1) for _ in range(self.dimension)]
-        valores_randoms_2 = [random.uniform(0, 1) for _ in range(self.dimension)]
+        valores_randoms_1 = [random.uniform(0,1) for _ in range(self.dimension)]
+        valores_randoms_2 = [random.uniform(0,1) for _ in range(self.dimension)]
         r1 = Vector(*valores_randoms_1)
         r2 = Vector(*valores_randoms_2)
         for i in self.particulas:
@@ -112,7 +111,8 @@ class Swarm: #enjambre
             # Actualiza la velocidad
             i.speed = primer_termino + segundo_termino + tercer_termino
 
-            # Limita la velocidad (opcional pero mejora convergencia)
+            #! Limita la velocidad (opcional pero mejora convergencia)
+            #! esta horrible, luego lo mejoro
             speed_limit = (self.dominio[1] - self.dominio[0]) * 0.2
             if i.speed.x > speed_limit:
                 i.speed.x = speed_limit
@@ -126,7 +126,7 @@ class Swarm: #enjambre
             # Actualiza la posición
             i.p_position = i.p_position + i.speed
 
-            # Restringe la posición al dominio
+            #! Restringe la posición al dominio
             if i.p_position.x < self.dominio[0]:
                 i.p_position.x = self.dominio[0]
             elif i.p_position.x > self.dominio[1]:
@@ -140,11 +140,25 @@ class Swarm: #enjambre
             i.calculate_value()
             self.update_gbestv_and_gbestpos()
 
-
     def iterations(self, number_iterations, w,c1,c2):
         while number_iterations > 0:
             self.update_particles(w, c1, c2)
             # for i in self.particulas:
             #     print(f"P: {i.p_position},   V: {i.speed}, Value: {i.value}")
             number_iterations -= 1
+            self.listas_para_david() 
         return print(f"la mejor posicion es {round(self.g_best_position, 5)}, con valor de {round(self.g_best_value, 5)}")
+    
+    def listas_para_david(self): # ojala a david no lo rechacen de la escuela de arte
+        lista_x = []
+        lista_y = []
+        lista_z = []
+        lista_de_listas = []
+        for i in self.particulas:
+            lista_x.append(i.p_position.x)
+            lista_y.append(i.p_position.y)
+            lista_z.append(i.value)
+        lista_de_listas.append(lista_x)
+        lista_de_listas.append(lista_y)
+        lista_de_listas.append(lista_z)
+        return lista_de_listas

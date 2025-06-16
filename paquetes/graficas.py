@@ -21,8 +21,8 @@ def Rastrigin_function(posicion, A_constante = 10): # le entra la posicion y cal
     for i in posicion:
         suma += i**2 - A * cos(2*pi*i)
     return A*n + suma #! revisar si esta bien implementada
-def primera_funcion(x,y):
-    pass
+
+
 # Test para verificar la función Rastrigin
 if __name__ == "__main__":
     print("[0,0] =", Rastrigin_function([0,0]))  # Debe dar 0

@@ -1,4 +1,5 @@
 from math import cos, pi
+
 from prueba_vector import Point, Vector as Point, Vector
 #? creamos una clase para elegir funciones objetivo??? 
 
