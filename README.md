@@ -3,6 +3,7 @@
 <figcaption><b></b></figcaption></figure>
 </div>
 # diagrama vector 
+
 ```mermaid
 classDiagram
 direction TB
