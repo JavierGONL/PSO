@@ -1,8 +1,11 @@
+# Hola, bienvenidos a nuestro repositorio
+
 <div align='center'>
 <figure> <img src="https://res.cloudinary.com/dm0p2ljin/image/upload/v1714416338/error-418_dtb3ak.png" alt="" width="300" height="auto"/></br>
 <figcaption><b></b></figcaption></figure>
 </div>
- diagrama vector 
+
+## diagrama de clase vector
 
 ```mermaid
 classDiagram
@@ -36,4 +39,31 @@ direction TB
     }
 
     Point <|-- Vector
+```
+
+
+Cosas pendientes por hacer:
+* dormir bien
+* hacer que los enjambres puedan recibir diferentes funciones
+* hacer que los enjambres devuelvan las listas X,Y,Z para gráficar
+* Crear la clase de gráfica
+* revisar si matplotlib puede 
+
+## diagrama de clase graficar
+
+```mermaid
+---
+title: clase gráfica
+---
+classDiagram
+    note "como hacer que las gráficas no sean un copypaste"
+    class gráfica{
+        +lista_x
+        +lista_y
+        +lista_z
+        +addsubplot() -> gráfica 3D
+        +Scatter() -> gráfica de puntos
+        +cambiar_ventana() 
+
+        }
 ```
