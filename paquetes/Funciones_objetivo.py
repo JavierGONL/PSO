@@ -1,4 +1,4 @@
-from math import cos, pi
+from math import e, pi, cos, exp 
 
 #? creamos una clase para elegir funciones objetivo??? 
 
@@ -16,8 +16,27 @@ def himmelblaus_function(posicion):
     segundo_termino = (posicion[0] + posicion[1]**2 - 7)**2
     return primer_termino + segundo_termino
 
+def ackley_function(posicion):
+    primer_termino = -20*exp(-0.2*(0.5(posicion[0]**2 + posicion[1]**2))**(1/2))
+    segundo_termino = -exp(0.59(cos(2*pi*posicion[0])+cos(2*pi*posicion[1])+e+20))
+    return primer_termino + segundo_termino
 
-def funcion_objetivo_3():
+def sphere_function(posicion):
+    suma = 0
+    for i in posicion:
+        suma += i**2
+    return suma
+
+def rosenbrock_function(posicion):
+    pass
+
+def bukin_function_N6(posicion):
+    pass
+
+def beale_function(posicion):
+    pass
+
+def Goldstein_Price_function(posicion):
     pass
 
 def shekel_function(posicion):

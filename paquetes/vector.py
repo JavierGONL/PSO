@@ -35,11 +35,6 @@ class Point: #a
 
     def __str__(self):
         return f"{self.x},{ self.y}"
-
-    # def __pow__(self, k):
-    #     if isinstance(k, (int, float)):
-    #         return Point(self.x ** k, self.y ** k)
-    #     raise TypeError(f"No se puede elevar Point a {type(k)}")
     
     def __round__(self, n=0):
         return Point(round(self.x, n), round(self.y, n))
