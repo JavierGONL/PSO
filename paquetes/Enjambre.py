@@ -5,7 +5,7 @@
     * --------------------------------- TODO -------------------------------------------------
     * Lista de feature por hacer:
     * - iteracion en Swarm
-    * 
+    * - coeficiente inercial dinámico
     *
     * --------------------------------- ISSUES -----------------------------------------------
     * Lista de problemas conocidos:
@@ -17,6 +17,21 @@ import random
 
 from paquetes.Funciones_objetivo import *
 from paquetes.vector import Point, Vector
+
+import numpy as np
+
+import matplotlib.pyplot as plt
+from mpl_toolkits import mplot3d
+
+dominio_upper = 10
+dominio_down = -10
+dominio = [dominio_down, dominio_upper]
+dimension = 2
+x = np.linspace(dominio_down, dominio_upper,100)
+y = np.linspace(dominio_down, dominio_upper,100)
+x, y = np.meshgrid(x,y) #hace el sistema de coordenadas
+
+funcion = rastrigin_function
 
 class Particle: # particula
     """
@@ -53,7 +68,7 @@ class Particle: # particula
     def calculate_value(self):
         if self.initialize:
             self.historial_positions.append(self.p_position)
-            self.value = himmelblaus_function(self.p_position.comp_to_list) #! de ejempo toca ver como variar la funcion 
+            self.value = funcion(self.p_position.comp_to_list) #! de ejempo toca ver como variar la funcion 
             if self.value < self.p_best_value and not self.maximice: # minimizar
                 self.p_best_value = self.value
                 self.p_best_position = self.p_position
@@ -155,12 +170,36 @@ class Swarm: #enjambre
             self.update_gbestv_and_gbestpos()
 
     def iterations(self, number_iterations, w,c1,c2):
+        x = np.linspace(dominio_down, dominio_upper,100)
+        y = np.linspace(dominio_down, dominio_upper,100)
+        x, y = np.meshgrid(x,y) #hace el sistema de coordenadas
+        fig = plt.figure(figsize=(16,12))
+        #graficar la función:
+        z = [] #funcion de X,Y aún sin valores
+        for k in range(0,len(x),1):
+            z_momentaneo = funcion((x[k],y[k]))
+            z.append(z_momentaneo)
+        z = np.array(z)
+        print(z)
+        ax = fig.add_subplot(1,1,1,projection = '3d') #gráfica #1 de la malla 2x2
+        ax.plot_surface(x,y,z, cmap ='viridis', alpha = 0.6)
+        ax.set_title("gráfica 3D")
+        ax.set_xlabel("eje X")
+        ax.set_ylabel("eje Y")
+        ax.set_zlabel("Eje Z")
+        plt.show()
+        #x_particulas = np.array([p.p_position.x for idx,p in enumerate(enjambre.particulas)]) #! se consigue el arreglo para los puntos de las partículas
+        #y_particulas = np.array([p.p_position.y for idx,p in enumerate(enjambre.particulas)]) #ni pinche idea por qué no llama a idx, pero si lo quito no funciona
+        #print(x_particulas)
+        #print(y_particulas)
+        #print(str(z))
+        fig = plt.figure(figsize=(16,12))
         while number_iterations > 0:
             self.update_particles(w, c1, c2)
             # for i in self.particulas:
             #     print(f"P: {i.p_position},   V: {i.speed}, Value: {i.value}")
             number_iterations -= 1
-            self.listas_para_david() 
+            #print(self.listas_para_david())
         return print(f"la mejor posicion es {round(self.g_best_position, 5)}, con valor de {round(self.g_best_value, 5)}")
     
     def listas_para_david(self):
