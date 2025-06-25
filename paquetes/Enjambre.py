@@ -107,7 +107,7 @@ class Swarm: #enjambre
                 self.g_best_value = i.value
                 self.g_best_position = i.p_position
 
-    def update_particles(self, w, c1, c2): #! creo que esto si va en swarm, la velocidad es un vector
+    def update_particles(self, c1, c2, iteraciones): #! creo que esto si va en swarm, la velocidad es un vector
         """
         Mover una partícula implica actualizar su velocidad y posición. 
         Este paso es el más importante ya que otorga al algoritmo la capacidad de optimizar.
@@ -126,6 +126,8 @@ class Swarm: #enjambre
         r2: vector de valores aleatorios entre 0 y 1 de longitud igual a la del vector velocidad.
         g(t): posición de todo el enjambre en el momento t, el mejor valor global.
         """
+        w = 0.7
+        decaimiento = 0.7/iteraciones # decaimiento inercia
         valores_randoms_1 = [random.uniform(0,1) for _ in range(self.dimension)]
         valores_randoms_2 = [random.uniform(0,1) for _ in range(self.dimension)]
         r1 = Vector(*valores_randoms_1)
@@ -139,6 +141,8 @@ class Swarm: #enjambre
             tercer_termino = c2 * r2 * (self.g_best_position - i.p_position)
             # Actualiza la velocidad
             i.speed = primer_termino + segundo_termino + tercer_termino
+            # Actualiza la inercia
+            w = w - decaimiento
 
             #! Limita la velocidad (opcional pero mejora convergencia)
             #! esta horrible, luego lo mejoro
@@ -169,7 +173,7 @@ class Swarm: #enjambre
             i.calculate_value()
             self.update_gbestv_and_gbestpos()
 
-    def iterations(self, number_iterations, w,c1,c2):
+    def iterations(self, number_iterations, c1,c2):
         x = np.linspace(dominio_down, dominio_upper,100)
         y = np.linspace(dominio_down, dominio_upper,100)
         x, y = np.meshgrid(x,y) #hace el sistema de coordenadas
@@ -195,7 +199,7 @@ class Swarm: #enjambre
         #print(str(z))
         fig = plt.figure(figsize=(16,12))
         while number_iterations > 0:
-            self.update_particles(w, c1, c2)
+            self.update_particles(c1, c2, number_iterations)
             # for i in self.particulas:
             #     print(f"P: {i.p_position},   V: {i.speed}, Value: {i.value}")
             number_iterations -= 1
