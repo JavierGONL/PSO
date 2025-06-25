@@ -22,14 +22,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
 
-dominio_upper = 10
-dominio_down = -10
-dominio = [dominio_down, dominio_upper]
-dimension = 2
-x = np.linspace(dominio_down, dominio_upper,100)
-y = np.linspace(dominio_down, dominio_upper,100)
-x, y = np.meshgrid(x,y) #hace el sistema de coordenadas
-
 funcion = rastrigin_function
 
 class Particle: # particula
@@ -177,8 +169,8 @@ class Swarm: #enjambre
             self.update_gbestv_and_gbestpos()
 
     def iterations(self, number_iterations, c1,c2):
-        x = np.linspace(dominio_down, dominio_upper,100)
-        y = np.linspace(dominio_down, dominio_upper,100)
+        x = np.linspace(self.dominio[0], self.dominio[1],100)
+        y = np.linspace(self.dominio[0], self.dominio[1],100)
         x, y = np.meshgrid(x,y) #hace el sistema de coordenadas
         plt.ion()
         fig = plt.figure(figsize=(16,12))
@@ -188,17 +180,12 @@ class Swarm: #enjambre
             z_momentaneo = funcion((x[k],y[k]))
             z.append(z_momentaneo)
         z = np.array(z)
-        # print(z)
         ax = fig.add_subplot(2,1,1,projection = '3d') #gráfica #1 de la malla 2x2
-        # x_particulas = np.array([p.p_position.x for idx,p in enumerate(enjambre.particulas)]) #! se consigue el arreglo para los puntos de las partículas
-        # y_particulas = np.array([p.p_position.y for idx,p in enumerate(enjambre.particulas)]) #ni pinche idea por qué no llama a idx, pero si lo quito no funciona
-        # print(x_particulas)
-        # print(y_particulas)
-        # print(str(z))
         it = number_iterations
         while number_iterations > 0: #! *colocar condición de salida urgentemente 
             self.update_particles(c1, c2, it)
             number_iterations -= 1
+            # actualizar grafica
             listas = np.array(self.listas_para_david())
             all_scatters = plt.gca().collections
             for scatter in all_scatters:
@@ -219,7 +206,6 @@ class Swarm: #enjambre
             ax_2.set_xlabel("eje X")
             ax_2.set_ylabel("eje Y")
             plt.pause(1/500)
-            # print(number_iterations)
         plt.ioff()
         plt.show()
         return print(f"la mejor posicion es {round(self.g_best_position, 5)}, con valor de {round(self.g_best_value, 5)}")
