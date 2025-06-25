@@ -15,7 +15,7 @@
 '''
 import random
 
-from paquetes.Funciones_objetivo import rastrigin_function
+from paquetes.Funciones_objetivo import rastrigin_function,shekel_function
 from paquetes.vector import Point, Vector
 
 import numpy as np
@@ -31,7 +31,7 @@ x = np.linspace(dominio_down, dominio_upper,100)
 y = np.linspace(dominio_down, dominio_upper,100)
 x, y = np.meshgrid(x,y) #hace el sistema de coordenadas
 
-funcion = rastrigin_function
+funcion = shekel_function
 
 class Particle: # particula
     """
@@ -148,8 +148,8 @@ class Swarm: #enjambre
             # Actualiza la velocidad
             i.speed = primer_termino + segundo_termino + tercer_termino
 
-            #! Limita la velocidad (opcional pero mejora convergencia)
-            #! esta horrible, luego lo mejoro
+    #! los limites de vel y pos deberiamos colocar una funcion aparte para eso
+
             speed_limit = (self.dominio[1] - self.dominio[0]) * 0.2
             if i.speed.x > speed_limit:
                 i.speed.x = speed_limit

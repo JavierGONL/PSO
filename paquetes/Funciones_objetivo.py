@@ -26,18 +26,6 @@ def sphere_function(posicion):
         suma += i**2
     return suma
 
-def rosenbrock_function(posicion):
-    pass
-
-def bukin_function_N6(posicion):
-    pass
-
-def beale_function(posicion):
-    pass
-
-def Goldstein_Price_function(posicion):
-    pass
-
 def shekel_function(posicion):
     vinc : list = posicion
     m : int = 10
@@ -59,4 +47,3 @@ def shekel_function(posicion):
         nj = 0
     return -r
 #APARENTEMENTE ya esta ;)
-
