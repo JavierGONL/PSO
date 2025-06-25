@@ -14,16 +14,15 @@
 '''
 import random
 import time
-from paquetes.Funciones_objetivo import rastrigin_function,shekel_function
+
+from paquetes.Funciones_objetivo import rastrigin_function,shekel_function, himmelblaus_function,sphere_function
 from paquetes.vector import Point, Vector
 
 import numpy as np
-
 import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
 
-
-funcion = rastrigin_function
+funcion = sphere_function
 
 class Particle: # particula
     """
@@ -50,7 +49,7 @@ class Particle: # particula
     def initialize_particle(self, maximice, dominio):
         """definirle una posicion y velocidad inicial aleatoria"""
         random_para_V = [random.uniform(-1, 1) for _ in range(self.dimension)] # usando list comprehension
-        random_para_p = [random.uniform(dominio[0], dominio[1]) for _ in range(self.dimension)]
+        random_para_p = [random.uniform(dominio[1], dominio[0]) for _ in range(self.dimension)]
         self.speed = Vector(*random_para_V)
         self.p_position = Point(*random_para_p)
         self.initialize : bool = True
@@ -82,9 +81,12 @@ class Swarm: #enjambre
         self.number_of_particles = number_of_particles
         self.dominio : list = dominio #! para el dominio solo pasamos como si fuera de una variable, pero en verdad seria un rectangulo
         self.particulas = [Particle(dimension) for _ in range(number_of_particles)]
-        self.g_best_value : float = float("inf")
-        self.g_best_position = Point(0,0)  # Inicializa como Point
         self.maximice = maximice 
+        if self.maximice:
+            self.g_best_value = float("-inf")
+        else:
+            self.g_best_value = float("inf")
+        self.g_best_position = Point(0,0)  # Inicializa como Point
         self.dimension : int = dimension
         self.w = 0.7
 
@@ -125,7 +127,7 @@ class Swarm: #enjambre
             self.w = self.w - decaimiento  # actualiza la inercia
         else:
             self.w = 0.1
-        print(self.w)
+        # print(self.w)
         valores_randoms_1 = [random.uniform(0,1) for _ in range(self.dimension)]
         valores_randoms_2 = [random.uniform(0,1) for _ in range(self.dimension)]
         r1 = Vector(*valores_randoms_1)
@@ -170,8 +172,8 @@ class Swarm: #enjambre
             self.update_gbestv_and_gbestpos()
 
     def iterations(self, number_iterations, c1,c2):
-        x = np.linspace(self.dominio[0],self.dominio[1] ,100)
-        y = np.linspace(self.dominio[0],self.dominio[1] ,100)
+        x = np.linspace(self.dominio[0], self.dominio[1],100)
+        y = np.linspace(self.dominio[0], self.dominio[1],100)
         x, y = np.meshgrid(x,y) #hace el sistema de coordenadas
         plt.ion()
         fig = plt.figure(figsize=(16,12))
@@ -226,7 +228,7 @@ class Swarm: #enjambre
             
             plt.pause(1/500)
             
-            print(number_iterations)
+            # print(number_iterations)#
         plt.ioff()
         plt.show()
         return print(f"la mejor posicion es {round(self.g_best_position, 5)}, con valor de {round(self.g_best_value, 5)}")
