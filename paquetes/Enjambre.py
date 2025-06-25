@@ -4,13 +4,12 @@
     * autores: kevin javier gonzalez luna, ivan felipe maluche, david Montes
     * --------------------------------- TODO -------------------------------------------------
     * Lista de feature por hacer:
-    * - iteracion en Swarm
-    * - coeficiente inercial dinámico
+    * 
     *
     * --------------------------------- ISSUES -----------------------------------------------
     * Lista de problemas conocidos:
     * - optimizar el codigo y seguir el pep8
-    *
+    * - las graficas, 2 veces ejecute el programa y en la segunda casi no sobrevive el pc
     * ----------------------------------------------------------------------------------------
 '''
 import random
@@ -31,7 +30,7 @@ x = np.linspace(dominio_down, dominio_upper,100)
 y = np.linspace(dominio_down, dominio_upper,100)
 x, y = np.meshgrid(x,y) #hace el sistema de coordenadas
 
-funcion = shekel_function
+funcion = rastrigin_function
 
 class Particle: # particula
     """
