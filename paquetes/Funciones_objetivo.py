@@ -1,5 +1,4 @@
-from math import e, pi, cos, exp 
-import numpy as np
+from numpy import e, pi, cos, exp 
 #? creamos una clase para elegir funciones objetivo??? 
 
 def rastrigin_function(posicion, A_constante = 10)-> float: # le entra la posicion y calcula el valor
@@ -8,7 +7,7 @@ def rastrigin_function(posicion, A_constante = 10)-> float: # le entra la posici
     A = A_constante
     suma = 0
     for i in posicion:
-        suma += i**2 - A * np.cos(2*pi*i)
+        suma += i**2 - A * cos(2*pi*i)
     return A*n + suma #! revisar si esta bien implementada
 
 def himmelblaus_function(posicion):
