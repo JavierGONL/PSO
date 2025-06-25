@@ -15,6 +15,6 @@
 
 from paquetes.Enjambre import Swarm
 
-enjambre = Swarm(50, [-5.12, 5.12])
+enjambre = Swarm(100, [-5.12, 5.12])
 enjambre.inicialize_each_particle()
-enjambre.iterations(500, 1, 2) # el problemas es que las particulas se salen del domino
+enjambre.iterations(50, 1, 2) # el problemas es que las particulas se salen del domino
