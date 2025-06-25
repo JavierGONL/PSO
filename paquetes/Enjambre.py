@@ -31,7 +31,7 @@ x = np.linspace(dominio_down, dominio_upper,100)
 y = np.linspace(dominio_down, dominio_upper,100)
 x, y = np.meshgrid(x,y) #hace el sistema de coordenadas
 
-funcion = shekel_function
+funcion = rastrigin_function
 
 class Particle: # particula
     """
@@ -190,37 +190,36 @@ class Swarm: #enjambre
             z.append(z_momentaneo)
         z = np.array(z)
         # print(z)
-        ax = fig.add_subplot(2,1,1,projection = '3d') #gráfica #1 de la malla 2x2
-        # x_particulas = np.array([p.p_position.x for idx,p in enumerate(enjambre.particulas)]) #! se consigue el arreglo para los puntos de las partículas
-        # y_particulas = np.array([p.p_position.y for idx,p in enumerate(enjambre.particulas)]) #ni pinche idea por qué no llama a idx, pero si lo quito no funciona
-        # print(x_particulas)
-        # print(y_particulas)
-        # print(str(z))
+        ax = fig.add_subplot(1,2,1,projection = '3d') #gráfica #1 de la malla 2x2
+        ax_2 = fig.add_subplot(1,2,2)
+        contour = ax_2.contourf(x, y, z, cmap ="viridis")
+        fig.colorbar(contour, ax = ax_2, shrink = 0.5, aspect = 5)
         it = number_iterations
         while number_iterations > 0: #! *colocar condición de salida urgentemente 
             self.update_particles(c1, c2, it)
             number_iterations -= 1
             listas = np.array(self.listas_para_david())
-            all_scatters = plt.gca().collections
-            for scatter in all_scatters:
-                scatter.remove()
+
+            ax.clear()
+            ax_2.clear()
             ax.plot_surface(x,y,z, cmap ='viridis', alpha = 0.6)
-            ax.set_title("gráfica 3D")
+            ax.set_title(f"gráfica 3D de la función {str(funcion.__name__)}")
             ax.set_xlabel("eje X")
             ax.set_ylabel("eje Y")
             ax.set_zlabel("Eje Z")
             ax.scatter3D(listas[0],listas[1], listas[2],c = 'red', s = 100, edgecolor = 'k', linewidth = 1.5)
             
-            ax_2 = fig.add_subplot(2,1,2)
+            #se grafíca la vista superior
             contour = ax_2.contourf(x, y, z, cmap ="viridis")
-            ax_2.scatter(listas[0],listas[1],c = 'red', s = 100, edgecolor = 'k', linewidth = 1.5)
-            fig.colorbar(contour, ax = ax_2, shrink = 0.5, aspect = 5) #!problema con los colores, luego arreglar
             
             ax_2.set_title("vista superior")
             ax_2.set_xlabel("eje X")
             ax_2.set_ylabel("eje Y")
+            
+            ax_2.scatter(listas[0],listas[1],c = 'red', s = 100, edgecolor = 'k', linewidth = 1.5)
             plt.pause(1/500)
-            # print(number_iterations)
+            
+            print(number_iterations)
         plt.ioff()
         plt.show()
         return print(f"la mejor posicion es {round(self.g_best_position, 5)}, con valor de {round(self.g_best_value, 5)}")
