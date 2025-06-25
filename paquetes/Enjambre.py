@@ -15,7 +15,7 @@
 '''
 import random
 
-from paquetes.Funciones_objetivo import *
+from paquetes.Funciones_objetivo import rastrigin_function
 from paquetes.vector import Point, Vector
 
 import numpy as np
@@ -64,6 +64,7 @@ class Particle: # particula
         self.initialize : bool = True
         self.maximice = maximice
         self.value = self.calculate_value()
+        
 
     def calculate_value(self):
         if self.initialize:
@@ -93,7 +94,8 @@ class Swarm: #enjambre
         self.g_best_position = Point(0,0)  # Inicializa como Point
         self.maximice = maximice 
         self.dimension : int = dimension
-        
+        self.w = 0.7
+
     def inicialize_each_particle(self): #! falta revisar si funciona D:
         for i in self.particulas:
             i.initialize_particle(self.maximice, self.dominio)
@@ -126,23 +128,25 @@ class Swarm: #enjambre
         r2: vector de valores aleatorios entre 0 y 1 de longitud igual a la del vector velocidad.
         g(t): posición de todo el enjambre en el momento t, el mejor valor global.
         """
-        w = 0.7
-        decaimiento = 0.7/iteraciones # decaimiento inercia
+        if self.w > 0.1: #para mas exploracion al inicio y convergencia al final
+            decaimiento = 0.7/iteraciones # decaimiento inercia
+            self.w = self.w - decaimiento  # actualiza la inercia
+        else:
+            self.w = 0.1
+        print(self.w)
         valores_randoms_1 = [random.uniform(0,1) for _ in range(self.dimension)]
         valores_randoms_2 = [random.uniform(0,1) for _ in range(self.dimension)]
         r1 = Vector(*valores_randoms_1)
         r2 = Vector(*valores_randoms_2)
         for i in self.particulas:
             # Termino de inercia
-            primer_termino = w * i.speed
+            primer_termino = self.w * i.speed
             # Termino cognitivo
             segundo_termino = c1 * r1 * (i.p_best_position - i.p_position)
             # Termino social
             tercer_termino = c2 * r2 * (self.g_best_position - i.p_position)
             # Actualiza la velocidad
             i.speed = primer_termino + segundo_termino + tercer_termino
-            # Actualiza la inercia
-            w = w - decaimiento
 
             #! Limita la velocidad (opcional pero mejora convergencia)
             #! esta horrible, luego lo mejoro
@@ -185,41 +189,43 @@ class Swarm: #enjambre
             z_momentaneo = funcion((x[k],y[k]))
             z.append(z_momentaneo)
         z = np.array(z)
-        print(z)
+        # print(z)
         ax = fig.add_subplot(2,1,1,projection = '3d') #gráfica #1 de la malla 2x2
         # x_particulas = np.array([p.p_position.x for idx,p in enumerate(enjambre.particulas)]) #! se consigue el arreglo para los puntos de las partículas
         # y_particulas = np.array([p.p_position.y for idx,p in enumerate(enjambre.particulas)]) #ni pinche idea por qué no llama a idx, pero si lo quito no funciona
         # print(x_particulas)
         # print(y_particulas)
         # print(str(z))
+        it = number_iterations
         while number_iterations > 0: #! *colocar condición de salida urgentemente 
-            self.update_particles(w, c1, c2)
+
+            self.update_particles(c1, c2, it)
             # for i in self.particulas:
             #     print(f"P: {i.p_position},   V: {i.speed}, Value: {i.value}")
             number_iterations -= 1
-            listas = np.array(self.listas_para_david())
-            all_scatters = plt.gca().collections
-            for scatter in all_scatters:
-                scatter.remove()
-            ax.plot_surface(x,y,z, cmap ='viridis', alpha = 0.6)
-            ax.set_title("gráfica 3D")
-            ax.set_xlabel("eje X")
-            ax.set_ylabel("eje Y")
-            ax.set_zlabel("Eje Z")
-            ax.scatter3D(listas[0],listas[1], listas[2],c = 'red', s = 100, edgecolor = 'k', linewidth = 1.5)
+        #     listas = np.array(self.listas_para_david())
+        #     all_scatters = plt.gca().collections
+        #     for scatter in all_scatters:
+        #         scatter.remove()
+        #     ax.plot_surface(x,y,z, cmap ='viridis', alpha = 0.6)
+        #     ax.set_title("gráfica 3D")
+        #     ax.set_xlabel("eje X")
+        #     ax.set_ylabel("eje Y")
+        #     ax.set_zlabel("Eje Z")
+        #     ax.scatter3D(listas[0],listas[1], listas[2],c = 'red', s = 100, edgecolor = 'k', linewidth = 1.5)
             
-            ax_2 = fig.add_subplot(2,1,2)
-            contour = ax_2.contourf(x, y, z, cmap ="viridis")
-            ax_2.scatter(listas[0],listas[1],c = 'red', s = 100, edgecolor = 'k', linewidth = 1.5)
-            fig.colorbar(contour, ax = ax_2, shrink = 0.5, aspect = 5) #!problema con los colores, luego arreglar
+        #     ax_2 = fig.add_subplot(2,1,2)
+        #     contour = ax_2.contourf(x, y, z, cmap ="viridis")
+        #     ax_2.scatter(listas[0],listas[1],c = 'red', s = 100, edgecolor = 'k', linewidth = 1.5)
+        #     fig.colorbar(contour, ax = ax_2, shrink = 0.5, aspect = 5) #!problema con los colores, luego arreglar
             
-            ax_2.set_title("vista superior")
-            ax_2.set_xlabel("eje X")
-            ax_2.set_ylabel("eje Y")
-            plt.pause(1/100)
-            print(number_iterations)
-        plt.ioff()
-        plt.show()
+        #     ax_2.set_title("vista superior")
+        #     ax_2.set_xlabel("eje X")
+        #     ax_2.set_ylabel("eje Y")
+        #     plt.pause(1/500)
+        #     # print(number_iterations)
+        # plt.ioff()
+        # plt.show()
         return print(f"la mejor posicion es {round(self.g_best_position, 5)}, con valor de {round(self.g_best_value, 5)}")
     
     def listas_para_david(self):
@@ -235,3 +241,4 @@ class Swarm: #enjambre
         lista_de_listas.append(lista_y)
         lista_de_listas.append(lista_z)
         return lista_de_listas
+    
