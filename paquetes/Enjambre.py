@@ -191,7 +191,8 @@ class Swarm: #enjambre
         z = np.array(z)
         # print(z)
         ax = fig.add_subplot(1,2,1,projection = '3d') #gráfica #1 de la malla 2x2
-        ax_2 = fig.add_subplot(1,2,2)
+        ax_2 = fig.add_subplot(2,2,2)
+        ax_3 = fig.add_subfigure(224) #(2,2,4)
         contour = ax_2.contourf(x, y, z, cmap ="viridis")
         fig.colorbar(contour, ax = ax_2, shrink = 0.5, aspect = 5)
         it = number_iterations
@@ -215,8 +216,10 @@ class Swarm: #enjambre
             ax_2.set_title("vista superior")
             ax_2.set_xlabel("eje X")
             ax_2.set_ylabel("eje Y")
+            ax_2.set_label(f"iteración # {number_iterations}")
             
             ax_2.scatter(listas[0],listas[1],c = 'red', s = 100, edgecolor = 'k', linewidth = 1.5)
+            
             plt.pause(1/500)
             
             print(number_iterations)
