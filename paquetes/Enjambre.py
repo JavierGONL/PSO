@@ -33,7 +33,7 @@ class Particle: # particula
     (normalmente iniciada como cero), el resto de valores no se conocen hasta que 
     la partícula es evaluada.
     """
-    def __init__(self,  dimension = 2, ):
+    def __init__(self,  dimension = 2):
         self.p_position= Point(0,0)
         self.speed = Vector(0,0)
         self.value: float = 0
@@ -43,7 +43,7 @@ class Particle: # particula
         self.initialize = False
         self.dimension = dimension
         self.maximice : bool = False
-
+        self.poco_movimiento : int = 0
 
     def initialize_particle(self, maximice, dominio):
         """definirle una posicion y velocidad inicial aleatoria"""
@@ -88,6 +88,7 @@ class Swarm: #enjambre
         self.g_best_position = Point(0,0)  # Inicializa como Point
         self.dimension : int = dimension
         self.w = 0.7
+        self.particulas_poco_mov : int = 0
 
     def inicialize_each_particle(self): #! falta revisar si funciona D:
         for i in self.particulas:
@@ -102,7 +103,14 @@ class Swarm: #enjambre
                 self.g_best_value = i.value
                 self.g_best_position = i.p_position
 
-    def update_particles(self, c1, c2, iteraciones): #! creo que esto si va en swarm, la velocidad es un vector
+    def comprobacion_convergencia_por_poco_movimiento(self): # si el 3/4 de particulas presentan poco mov sale
+        for i in self.particulas:
+            if i.poco_movimiento > 3:
+                self.particulas_poco_mov += 1
+        porcentaje_particulas = self.particulas_poco_mov/self.number_of_particles
+        porcentaje_salida = (self.number_of_particles*3/4)/self.number_of_particles
+        return porcentaje_particulas > porcentaje_salida
+    def update_particles(self, c1, c2, iteraciones):
         """
         Mover una partícula implica actualizar su velocidad y posición. 
         Este paso es el más importante ya que otorga al algoritmo la capacidad de optimizar.
@@ -126,7 +134,7 @@ class Swarm: #enjambre
             self.w = self.w - decaimiento  # actualiza la inercia
         else:
             self.w = 0.1
-        # print(self.w)
+
         valores_randoms_1 = [random.uniform(0,1) for _ in range(self.dimension)]
         valores_randoms_2 = [random.uniform(0,1) for _ in range(self.dimension)]
         r1 = Vector(*valores_randoms_1)
@@ -141,7 +149,7 @@ class Swarm: #enjambre
             # Actualiza la velocidad
             i.speed = primer_termino + segundo_termino + tercer_termino
 
-    #! los limites de vel y pos deberiamos colocar una funcion aparte para eso
+    #! los limites de vel y pos deberiamos colocar una funcion aparte para eso @ivan
 
             speed_limit = (self.dominio[1] - self.dominio[0]) * 0.2
             if i.speed.x > speed_limit:
@@ -152,9 +160,14 @@ class Swarm: #enjambre
                 i.speed.y = speed_limit
             elif i.speed.y < -speed_limit:
                 i.speed.y = -speed_limit
-
-            # Actualiza la posición
-            i.p_position = i.p_position + i.speed
+            
+            # Actualizar la posición
+            next_position = i.p_position + i.speed
+            if abs(next_position - i.p_position) < Point(0.1,0.1):
+                i.poco_movimiento += 1
+            elif abs(next_position - i.p_position) > Point(1,1):
+                i.poco_movimiento = 0 
+            i.p_position = next_position
 
             #! Restringe la posición al dominio
             if i.p_position.x < self.dominio[0]:
@@ -182,7 +195,6 @@ class Swarm: #enjambre
             z_momentaneo = funcion((x[k],y[k]))
             z.append(z_momentaneo)
         z = np.array(z)
-        # print(z)
         ax = fig.add_subplot(1,2,1,projection = '3d') #gráfica #1 de la malla 2x2
         ax_2 = fig.add_subplot(2,2,2)
         ax_2.set_xlim(self.dominio[1])
@@ -194,6 +206,9 @@ class Swarm: #enjambre
         inicio = time.time()
         fin = 0
         while number_iterations > 0: #! *colocar condición de salida urgentemente 
+            if self.comprobacion_convergencia_por_poco_movimiento():
+                print(f"salida por convergencia")
+                break
             fin = round(time.time() - inicio, 3)
             self.update_particles(c1, c2, it)
             number_iterations -= 1
@@ -226,8 +241,7 @@ class Swarm: #enjambre
             ax_3.set_title(f" hola, estamos en la iteración {str( it - number_iterations)} / {it} \n ha pasado {fin} tiempo ")
             
             plt.pause(1/500)
-            
-            # print(number_iterations)#
+
         plt.ioff()
         plt.show()
         return print(f"la mejor posicion es {round(self.g_best_position, 5)}, con valor de {round(self.g_best_value, 5)}")
