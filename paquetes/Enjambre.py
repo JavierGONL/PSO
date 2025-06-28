@@ -9,7 +9,6 @@
     * --------------------------------- ISSUES -----------------------------------------------
     * Lista de problemas conocidos:
     * - optimizar el codigo y seguir el pep8
-    * - las graficas, 2 veces ejecute el programa y en la segunda casi no sobrevive el pc
     * ----------------------------------------------------------------------------------------
 '''
 import random
@@ -22,7 +21,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
 
-funcion = sphere_function
+funcion = rastrigin_function
 
 class Particle: # particula
     """
