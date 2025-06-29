@@ -87,6 +87,8 @@ class Point: #este es el punto que me robe de la clase shape, tiene un metodo pa
         if not isinstance(other, [Point, Vector]):
             raise TypeError(f"No se puede comparar con datos del tipo {type(other)}")
         return self.x == other.x and self.y == other.y
+    def __abs__(self):
+        return Point(abs(self.x), abs(self.y))
 class Vector(Point):
 
     def __init__(self, x:float, y:float):
@@ -134,3 +136,5 @@ class Vector(Point):
         if not isinstance(other, [Point, Vector]):
             raise TypeError(f"No se puede comparar con datos del tipo {type(other)}")
         return self.x == other.x and self.y == other.y
+    def __abs__(self):
+        return Vector(abs(self.x), abs(self.y))
