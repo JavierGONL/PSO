@@ -110,6 +110,29 @@ class Swarm: #enjambre
         porcentaje_particulas = self.particulas_poco_mov/self.number_of_particles
         porcentaje_salida = (self.number_of_particles*3/4)/self.number_of_particles
         return porcentaje_particulas > porcentaje_salida
+    def correct_position(self, position):
+        """
+        Restringe la posición de la partícula al dominio definido.
+        """
+        if position.x < self.dominio[0] or position.x > self.dominio[1]:
+            position.x = self.dominio[0]/2
+        if position.y < self.dominio[0] or position.y > self.dominio[1]:
+            position.y = (self.dominio[0])/2
+        return position
+    def correct_speed(self, speed):
+        """
+        Restringe la velocidad de la partícula al dominio definido.
+        """
+        speed_limit = (self.dominio[1] - self.dominio[0]) * 0.2
+        if speed.x > speed_limit :
+            speed.x = 0.5(speed_limit)
+        elif speed.x < -speed_limit:
+            speed.x = -0.5(speed_limit) 
+        if speed.y > speed_limit:
+            speed.y = 0.5(speed_limit)
+        elif speed.y < -speed_limit:
+            speed.y = -0.5(speed_limit)
+        return speed
     def update_particles(self, c1, c2, iteraciones):
         """
         Mover una partícula implica actualizar su velocidad y posición. 
@@ -149,17 +172,7 @@ class Swarm: #enjambre
             # Actualiza la velocidad
             i.speed = primer_termino + segundo_termino + tercer_termino
 
-    #! los limites de vel y pos deberiamos colocar una funcion aparte para eso @ivan
-
-            speed_limit = (self.dominio[1] - self.dominio[0]) * 0.2
-            if i.speed.x > speed_limit:
-                i.speed.x = speed_limit
-            elif i.speed.x < -speed_limit:
-                i.speed.x = -speed_limit
-            if i.speed.y > speed_limit:
-                i.speed.y = speed_limit
-            elif i.speed.y < -speed_limit:
-                i.speed.y = -speed_limit
+            i.speed = self.correct_speed(i.speed) #! Restringe la velocidad al dominio
             
             # Actualizar la posición
             next_position = i.p_position + i.speed
@@ -170,14 +183,7 @@ class Swarm: #enjambre
             i.p_position = next_position
 
             #! Restringe la posición al dominio
-            if i.p_position.x < self.dominio[0]:
-                i.p_position.x = self.dominio[0]
-            elif i.p_position.x > self.dominio[1]:
-                i.p_position.x = self.dominio[1]
-            if i.p_position.y < self.dominio[0]:
-                i.p_position.y = self.dominio[0]
-            elif i.p_position.y > self.dominio[1]:
-                i.p_position.y = self.dominio[1]
+            i.p_position = self.correct_position(i.p_position)
 
             # calcula el valor y actualiza las best globales
             i.calculate_value()
