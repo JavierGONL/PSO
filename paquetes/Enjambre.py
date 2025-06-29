@@ -115,8 +115,10 @@ class Swarm: #enjambre
         Restringe la posición de la partícula al dominio definido.
         """
         if position.x < self.dominio[0] or position.x > self.dominio[1]:
+            print(f"el componente x de la posicion se salio del domino por{position.x -self.dominio[1]}")
             position.x = self.dominio[0]/2
         if position.y < self.dominio[0] or position.y > self.dominio[1]:
+            print(f"el componente y de la posicion se salio del domino por{position.y -self.dominio[1]}")
             position.y = (self.dominio[0])/2
         return position
     def correct_speed(self, speed):
