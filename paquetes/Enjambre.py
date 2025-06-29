@@ -300,4 +300,3 @@ class Swarm:  # enjambre
         lista_de_listas.append(lista_y)
         lista_de_listas.append(lista_z)
         return lista_de_listas
-    
