@@ -151,7 +151,7 @@ class Swarm:  # enjambre
         Este paso es el mas importante ya que otorga al algoritmo la capacidad
         de optimizar.
 
-        vi(t+1)= wvi(t)+c1r1[^xi(t)- xi(t)]+c2r2[g(t) - xi(t)]
+        vi(t+1)= wvi(t)+c1r1[**xi(t)- xi(t)]+c2r2[g(t) - xi(t)]
 
         donde:
         vi(t+1): velocidad de la particula i en el momento t+1, es decir,
@@ -163,7 +163,7 @@ class Swarm:  # enjambre
         c1: coeficiente cognitivo.
         r1: vector de valores aleatorios entre 0 y 1 de longitud igual a la
             del vector velocidad.
-        ^xi(t): mejor posicion en la que ha estado la particula i hasta
+        **xi(t): mejor posicion en la que ha estado la particula i hasta
                 el momento.
         xi(t): posicion de la particula i en el momento t.
         c2: coeficiente social.
