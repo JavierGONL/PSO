@@ -15,7 +15,7 @@ import random
 import time
 
 from paquetes.Funciones_objetivo import rastrigin_function,shekel_function, himmelblaus_function,sphere_function
-from paquetes.vector import Point, Vector
+from paquetes.Vector_v2 import Point, Vector
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -121,20 +121,22 @@ class Swarm: #enjambre
             print(f"el componente y de la posicion se salio del domino por{position.y -self.dominio[1]}")
             position.y = (self.dominio[0])/2
         return position
+    
     def correct_speed(self, speed):
         """
         Restringe la velocidad de la partícula al dominio definido.
         """
         speed_limit = (self.dominio[1] - self.dominio[0]) * 0.2
         if speed.x > speed_limit :
-            speed.x = 0.5(speed_limit)
+            speed.x = 0.5*(speed_limit)
         elif speed.x < -speed_limit:
-            speed.x = -0.5(speed_limit) 
+            speed.x = -0.5*(speed_limit) 
         if speed.y > speed_limit:
-            speed.y = 0.5(speed_limit)
+            speed.y = 0.5*(speed_limit)
         elif speed.y < -speed_limit:
-            speed.y = -0.5(speed_limit)
+            speed.y = -0.5*(speed_limit)
         return speed
+    
     def update_particles(self, c1, c2, iteraciones):
         """
         Mover una partícula implica actualizar su velocidad y posición. 

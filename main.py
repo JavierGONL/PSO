@@ -5,6 +5,6 @@
 '''
 from paquetes.Enjambre import Swarm
 
-enjambre = Swarm(100, [-5.12, 5.12], True)
+enjambre = Swarm(100, [-5.12, 5.12])
 enjambre.inicialize_each_particle()
 enjambre.iterations(20, 2, 1.5)

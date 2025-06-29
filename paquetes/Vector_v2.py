@@ -2,15 +2,6 @@
     * Descripción: 
     * documentos relacionados: paquetes
     * autores: kevin javier gonzalez luna, ivan felipe maluche, david Montes
-    * --------------------------------- TODO -------------------------------------------------
-    * Lista de feature por hacer:
-    * - 
-    *
-    * --------------------------------- ISSUES -----------------------------------------------
-    * Lista de problemas conocidos:
-    * - 
-    *
-    * ----------------------------------------------------------------------------------------
 '''
 
 class Point: #este es el punto que me robe de la clase shape, tiene un metodo para rehacerlo en tal caso que lo necesitemos
@@ -56,35 +47,35 @@ class Point: #este es el punto que me robe de la clase shape, tiene un metodo pa
     def __round__(self, n=0):
         return Point(round(self.x, n), round(self.y, n))
     def __lt__(self, other):
-        if not isinstance(other, [Point, Vector]):
+        if not isinstance(other, (Point, Vector)):
             raise TypeError(f"No se puede comparar con datos del tipo {type(other)}")
         if (self.x**2 + self.y**2)**0.5 < (other.x**2 + other.y**2)**0.5:
             return True
         else:
             return False
     def __le__(self, other):
-        if not isinstance(other, [Point, Vector]):
+        if not isinstance(other, (Point, Vector)):
             raise TypeError(f"No se puede comparar con datos del tipo {type(other)}")
         if (self.x**2 + self.y**2)**0.5 <= (other.x**2 + other.y**2)**0.5:
             return True
         else:
             return False
     def __gt__(self, other):
-        if not isinstance(other, [Point, Vector]):
+        if not isinstance(other, (Point, Vector)):
             raise TypeError(f"No se puede comparar con datos del tipo {type(other)}")
         if (self.x**2 + self.y**2)**0.5 > (other.x**2 + other.y**2)**0.5:
             return True
         else:
             return False
     def __ge__(self, other):
-        if not isinstance(other, [Point, Vector]):
+        if not isinstance(other, (Point, Vector)):
             raise TypeError(f"No se puede comparar con datos del tipo {type(other)}")
         if (self.x**2 + self.y**2)**0.5 >= (other.x**2 + other.y**2)**0.5:
             return True
         else:
             return False
     def __eq__(self, other):
-        if not isinstance(other, [Point, Vector]):
+        if not isinstance(other, (Point, Vector)):
             raise TypeError(f"No se puede comparar con datos del tipo {type(other)}")
         return self.x == other.x and self.y == other.y
     def __abs__(self):
@@ -105,35 +96,35 @@ class Vector(Point):
     def __round__(self, n=0):
         return Vector(round(self.x, n), round(self.y, n))
     def __lt__(self, other):
-        if not isinstance(other, [Point, Vector]):
+        if not isinstance(other, (Point, Vector)):
             raise TypeError(f"No se puede comparar con datos del tipo {type(other)}")
         if self.magnitud < (other.x**2 + other.y**2)**0.5:
             return True
         else:
             return False
     def __le__(self, other):
-        if not isinstance(other, [Point, Vector]):
+        if not isinstance(other, (Point, Vector)):
             raise TypeError(f"No se puede comparar con datos del tipo {type(other)}")
         if self.magnitud <= (other.x**2 + other.y**2)**0.5:
             return True
         else:
             return False
     def __gt__(self, other):
-        if not isinstance(other, [Point, Vector]):
+        if not isinstance(other, (Point, Vector)):
             raise TypeError(f"No se puede comparar con datos del tipo {type(other)}")
         if self.magnitud > (other.x**2 + other.y**2)**0.5:
             return True
         else:
             return False
     def __ge__(self, other):
-        if not isinstance(other, [Point, Vector]):
+        if not isinstance(other, (Point, Vector)):
             raise TypeError(f"No se puede comparar con datos del tipo {type(other)}")
         if self.magnitud >= (other.x**2 + other.y**2)**0.5:
             return True
         else:
             return False
     def __eq__(self, other):
-        if not isinstance(other, [Point, Vector]):
+        if not isinstance(other, (Point, Vector)):
             raise TypeError(f"No se puede comparar con datos del tipo {type(other)}")
         return self.x == other.x and self.y == other.y
     def __abs__(self):
