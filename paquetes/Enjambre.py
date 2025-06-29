@@ -13,7 +13,7 @@ from paquetes.Vector_v2 import Point, Vector
 
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits import mplot3d
+from mpl_toolkits import mplot3d #! esto para que esta?
 
 funcion = rastrigin_function
 
