@@ -40,7 +40,9 @@ class Particle:  # particula
         self.poco_movimiento: int = 0
 
     def initialize_particle(self, maximice, dominio):
-        """Definirle una posicion y velocidad inicial aleatoria"""
+        """
+        Definirle una posicion y velocidad inicial aleatoria
+        """
         # Usando list comprehension para generar los randoms
         random_para_V = [random.uniform(-1, 1) for _ in range(self.dimension)]
         random_para_p = [random.uniform(dominio[1], dominio[0])
