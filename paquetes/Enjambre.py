@@ -224,6 +224,10 @@ class Swarm:  # enjambre
         tiempos = []
         inicio = time.time()
         fin = 0
+        lista_retorno = []
+        lista_X = []
+        lista_Y = []
+        lista_Z = []
         while number_iterations > 0:
             if self.comprobacion_convergencia_por_poco_movimiento():
                 print(f"salida por convergencia")
@@ -235,7 +239,9 @@ class Swarm:  # enjambre
         best_position = round(self.g_best_position, 5)
         best_value = round(self.g_best_value, 5)
         return print(f"la mejor posicion es {best_position}, "
-                     f"con valor de {best_value}"), listas
+                     f"con valor de {best_value}")
+        #creo que lo mejor es que esto retorne un diccionario
+        
     def listas_para_david(self):
         lista_x = []
         lista_y = []
@@ -252,7 +258,6 @@ class Swarm:  # enjambre
     
     def graphs(self, lista):
         self.lista = list(lista)
-        it = self.iterations.it
         """ graphs tomará los datos entregados por iterations y los graficara
         si el usuario desea ver la representación gráfica"""
         print(it)
