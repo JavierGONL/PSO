@@ -7,14 +7,16 @@ import random
 import time
 
 from paquetes.Funciones_objetivo import (rastrigin_function, shekel_function,
-                                        himmelblaus_function, sphere_function)
+                                        himmelblaus_function, sphere_function,
+                                        ackley_function_invertida
+                                        )
 from paquetes.Vector_v2 import Point, Vector
 
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d #! esto para que esta?
 
-funcion = rastrigin_function
+funcion = ackley_function_invertida
 
 class Particle:  # particula
     """
@@ -108,6 +110,7 @@ class Swarm:  # enjambre
         """
         Si el 3/4 de particulas presentan poco movimiento sale
         """
+        self.particulas_poco_mov = 0
         for i in self.particulas:
             if i.poco_movimiento > 3:
                 self.particulas_poco_mov += 1
@@ -274,7 +277,6 @@ class Swarm:  # enjambre
         return lista_de_listas
     
     def graphs(self, lista):
-    
         """ graphs tomará los datos entregados por iterations y los graficara
         si el usuario desea ver la representación gráfica"""
         self.lista = lista
@@ -324,28 +326,35 @@ class Swarm:  # enjambre
             ax_2.scatter(self.lista[0][i], self.lista[1][i], c='red', s=100,
                          edgecolor='k', linewidth=1.5)
 
+            # Mostrar texto informativo en la esquina inferior derecha, igual que el resumen final
+            info_text = (f"Iteracion: {self.lista[3][i]}  "
+                         f"Tiempo: {self.lista[4][i]:.6f}s  "
+                         f"Mejor posicion: [{self.lista[8].x:.5f}, {self.lista[8].y:.5f}]  "
+                         f"Valor: {self.lista[9]:.5f}")
+            # Eliminar texto previo si existe
+            if hasattr(self, '_info_text_obj') and self._info_text_obj:
+                self._info_text_obj.remove()
+            # y=0.01 lo pone justo debajo del área de los subplots, sin tapar los ejes
+            self._info_text_obj = fig.text(0.99, 0.01, info_text, ha='right', va='bottom',
+                                          fontsize=11, bbox=dict(facecolor='white', alpha=0.7, edgecolor='none'))
+
             ax_3.axis('off')
-            iteration_text = (f" Hola, estamos en la iteracion "
-                             f"{str(self.lista[3][i])} / {self.lista[5]} \n"
-                             f"ha pasado {str(self.lista[4][i])} s tiempo \n "
-                             f"la mejor posición hasta ahora es: \n"
-                             f" X: { self.lista[6][i].x} \n"
-                             f" Y: { self.lista[6][i].y} \n"
-                             f" Z: { self.lista[7][i]} \n")
             iteration_actual = self.lista[3][i]
-            ax_3.set_title(iteration_text)
-            plt.pause(1/120)
+            plt.pause(1/150)
+        # Al finalizar, mostrar el resumen final más abajo, bien separado
         if iteration_actual != self.lista[5]:
+            if hasattr(self, '_info_text_obj') and self._info_text_obj:
+                self._info_text_obj.remove()
             ax_3.clear()
             ax_3.axis('off')
-            iteration_text = (f" Hola, el programa se acabó en la iteracion "
-                            f"{str(iteration_actual)} / {self.lista[5]} \n"
-                             f" y se ejecutó durante {str(self.lista[4][i])} s tiempo \n "
-                             f"la mejor posición obtenida es: \n"
-                             f" X: { self.lista[8].x} \n"
-                             f" Y: { self.lista[8].y} \n"
-                             f" Z: { self.lista[9]} \n")
-            ax_3.set_title(iteration_text)
+            tiempo_ejecucion = sum(self.lista[4])
+            resumen_text = (f"El programa se acabó en la iteracion {str(iteration_actual)}\n"
+                            f"tiempo ejecucion: {tiempo_ejecucion:.6f}s\n"
+                            f"mejor posición: (x,y) -> [{self.lista[8].x:.5f}, {self.lista[8].y:.5f}]\n"
+                            f"con valor: {self.lista[9]:.5f}")
+            # Mostrar resumen final en la esquina inferior derecha
+            fig.text(0.99, 0.01, resumen_text, ha='right', va='bottom', fontsize=12,
+                     bbox=dict(facecolor='white', alpha=0.9, edgecolor='none'))
         plt.ioff()
         plt.show()
         return None

@@ -5,7 +5,7 @@
 '''
 from paquetes.Enjambre import Swarm
 
-enjambre = Swarm(10, [-5.12, 5.12])
+enjambre = Swarm(100, [-5.12, 5.12], maximice= True)
 enjambre.inicialize_each_particle()
-listillas = list(enjambre.iterations(80, 2, 1.5))
+listillas = list(enjambre.iterations(100, 1.5, 2))
 enjambre.graphs(listillas)
