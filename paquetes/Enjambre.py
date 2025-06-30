@@ -225,6 +225,8 @@ class Swarm:  # enjambre
         lista_Z = []
         lista_iterations = []
         lista_tiempos = []
+        lista_mejores_posiciones = []
+        lista_mejores_valores = []
         inicio = time.time()
         while number_iterations > 0:
             if self.comprobacion_convergencia_por_poco_movimiento():
@@ -237,13 +239,22 @@ class Swarm:  # enjambre
             lista_Y.append(np.array(listas_1[1]))
             lista_Z.append(np.array(listas_1[2]))
             lista_iterations.append(it - number_iterations)
+            lista_mejores_posiciones.append(round(self.g_best_position,7))
+            lista_mejores_valores.append(round(self.g_best_value,7))
             fin = round(time.time() - inicio, 6)
             lista_tiempos.append(fin)
         best_position = round(self.g_best_position, 5)
         best_value = round(self.g_best_value, 5)
-        lista_retorno = [np.array(lista_X),np.array(lista_Y),
-                         np.array(lista_Z),np.array(lista_iterations),
-                         np.array(lista_tiempos),it,best_position,best_value]
+        lista_retorno = [np.array(lista_X),
+                         np.array(lista_Y),
+                         np.array(lista_Z),
+                         np.array(lista_iterations),
+                         np.array(lista_tiempos),
+                         it,
+                         np.array(lista_mejores_posiciones),
+                         np.array(lista_mejores_valores),
+                         best_position,
+                         best_value]
         print(f"la mejor posicion es {best_position}, "
                      f"con valor de {best_value}")
         return lista_retorno
@@ -267,7 +278,6 @@ class Swarm:  # enjambre
         """ graphs tomará los datos entregados por iterations y los graficara
         si el usuario desea ver la representación gráfica"""
         self.lista = lista
-        print(self.lista)
         x = np.linspace(self.dominio[0], self.dominio[1], 100)
         y = np.linspace(self.dominio[0], self.dominio[1], 100)
         x, y = np.meshgrid(x, y)  # hace el sistema de coordenadas
@@ -319,9 +329,9 @@ class Swarm:  # enjambre
                              f"{str(self.lista[3][i])} / {self.lista[5]} \n"
                              f"ha pasado {str(self.lista[4][i])} s tiempo \n "
                              f"la mejor posición hasta ahora es: \n"
-                             f" X: { self.lista[0][i][0]} \n"
-                             f" Y: { self.lista[1][i][0]} \n"
-                             f" Z: { self.lista[2][i][0]} \n")
+                             f" X: { self.lista[6][i].x} \n"
+                             f" Y: { self.lista[6][i].y} \n"
+                             f" Z: { self.lista[7][i]} \n")
             iteration_actual = self.lista[3][i]
             ax_3.set_title(iteration_text)
             plt.pause(1/120)
@@ -332,9 +342,9 @@ class Swarm:  # enjambre
                             f"{str(iteration_actual)} / {self.lista[5]} \n"
                              f" y se ejecutó durante {str(self.lista[4][i])} s tiempo \n "
                              f"la mejor posición obtenida es: \n"
-                             f" X: { self.lista[6].x} \n"
-                             f" Y: { self.lista[6].y} \n"
-                             f" Z: { self.lista[7]} \n")
+                             f" X: { self.lista[8].x} \n"
+                             f" Y: { self.lista[8].y} \n"
+                             f" Z: { self.lista[9]} \n")
             ax_3.set_title(iteration_text)
         plt.ioff()
         plt.show()
