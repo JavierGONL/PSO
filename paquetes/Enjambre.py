@@ -218,16 +218,14 @@ class Swarm:  # enjambre
         iterations grafica y pasa la iteracion, comprobando tambien si sale por
         convergencia
         """
-        global it 
-        it = int(number_iterations)
-        listas = []
-        tiempos = []
-        inicio = time.time()
+        it = int(number_iterations) #it
         fin = 0
-        lista_retorno = []
         lista_X = []
         lista_Y = []
         lista_Z = []
+        lista_iterations = []
+        lista_tiempos = []
+        inicio = time.time()
         while number_iterations > 0:
             if self.comprobacion_convergencia_por_poco_movimiento():
                 print(f"salida por convergencia")
@@ -235,12 +233,18 @@ class Swarm:  # enjambre
             self.update_particles(c1, c2, it)
             number_iterations -= 1
             listas_1 = np.array(self.listas_para_david())
-            fin = round(time.time() - inicio, 5)
+            lista_X.append(listas_1[0])
+            lista_Y.append(listas_1[1])
+            lista_Z.append(listas_1[2])
+            lista_iterations.append(it - number_iterations)
+            fin = round(time.time() - inicio, 6)
+            lista_tiempos.append(fin)
         best_position = round(self.g_best_position, 5)
         best_value = round(self.g_best_value, 5)
-        return print(f"la mejor posicion es {best_position}, "
+        lista_retorno = [lista_X,lista_Y,lista_Z,lista_iterations,lista_tiempos,it]
+        print(f"la mejor posicion es {best_position}, "
                      f"con valor de {best_value}")
-        #creo que lo mejor es que esto retorne un diccionario
+        return lista_retorno
         
     def listas_para_david(self):
         lista_x = []
@@ -257,10 +261,11 @@ class Swarm:  # enjambre
         return lista_de_listas
     
     def graphs(self, lista):
-        self.lista = list(lista)
+    
         """ graphs tomará los datos entregados por iterations y los graficara
         si el usuario desea ver la representación gráfica"""
-        print(it)
+        self.lista = lista
+        
         x = np.linspace(self.dominio[0], self.dominio[1], 100)
         y = np.linspace(self.dominio[0], self.dominio[1], 100)
         x, y = np.meshgrid(x, y)  # hace el sistema de coordenadas
@@ -280,19 +285,9 @@ class Swarm:  # enjambre
         ax_3 = fig.add_subplot(3, 2, 6)
         contour = ax_2.contourf(x, y, z, cmap="viridis")
         fig.colorbar(contour, ax=ax_2, shrink=0.5, aspect=5)
-        it = int(number_iterations)
         #inicio = time.time()
-        fin = 0
-        while number_iterations > 0:
-            if self.comprobacion_convergencia_por_poco_movimiento():
-                print(f"salida por convergencia")
-                break
-            #fin = round(time.time() - inicio, 3)
-            self.update_particles(c1, c2, it)
-            number_iterations -= 1
-            # actualizar grafica
-            listas = np.array(self.listas_para_david())
-
+        for i in range(0, len(self.lista[3]),1):
+            
             ax.clear()
             ax_2.clear()
             ax_3.clear()
@@ -303,8 +298,8 @@ class Swarm:  # enjambre
             ax.set_ylabel("eje Y")
             ax.set_zlabel("Eje Z")
 
-            ax.scatter3D(listas[0], listas[1], listas[2], c='red', s=100,
-                         edgecolor='k', linewidth=1.5)
+            ax.scatter3D(self.lista[0][i], self.lista[1][i], self.lista[2][i], 
+                         c='red', s=100, edgecolor='k', linewidth=1.5)
 
             # se grafica la vista superior
             contour = ax_2.contourf(x, y, z, cmap="viridis")
@@ -314,16 +309,15 @@ class Swarm:  # enjambre
             ax_2.set_xlabel("eje X")
             ax_2.set_ylabel("eje Y")
 
-            ax_2.scatter(listas[0], listas[1], c='red', s=100,
+            ax_2.scatter(self.lista[0][i], self.lista[1][i], c='red', s=100,
                          edgecolor='k', linewidth=1.5)
 
             ax_3.axis('off')
-            iteration_text = (f" hola, estamos en la iteracion "
-                             f"{str(it - number_iterations)} / {it} \n"
-                             f"ha pasado {fin} tiempo ")
+            iteration_text = (f" Hola, estamos en la iteracion "
+                             f"{str(self.lista[3][i])} / {self.lista[5]} \n"
+                             f"ha pasado {str(self.lista[4][i])} tiempo ")
             ax_3.set_title(iteration_text)
-            plt.pause(1/500)
+            plt.pause(1/75)
         plt.ioff()
         plt.show()
-        best_position = round(self.g_best_position, 5)
-        best_value = round(self.g_best_value, 5)
+        return None
