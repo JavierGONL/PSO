@@ -2,7 +2,6 @@
 import random
 from Enjambre import *
 from Funciones_objetivo import rastrigin_function
-from vector import *
 
 import numpy as np
 

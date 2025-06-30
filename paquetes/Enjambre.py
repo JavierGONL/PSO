@@ -212,13 +212,50 @@ class Swarm:  # enjambre
 
             # calcula el valor y actualiza las best globales
             i.calculate_value()
-            self.update_gbestv_and_gbestpos()
-
+            self.update_gbestv_and_gbestpos()     
     def iterations(self, number_iterations, c1, c2):
         """
         iterations grafica y pasa la iteracion, comprobando tambien si sale por
         convergencia
         """
+        global it 
+        it = int(number_iterations)
+        listas = []
+        tiempos = []
+        inicio = time.time()
+        fin = 0
+        while number_iterations > 0:
+            if self.comprobacion_convergencia_por_poco_movimiento():
+                print(f"salida por convergencia")
+                break
+            self.update_particles(c1, c2, it)
+            number_iterations -= 1
+            listas_1 = np.array(self.listas_para_david())
+            fin = round(time.time() - inicio, 3)
+        best_position = round(self.g_best_position, 5)
+        best_value = round(self.g_best_value, 5)
+        return print(f"la mejor posicion es {best_position}, "
+                     f"con valor de {best_value}"), listas
+    def listas_para_david(self):
+        lista_x = []
+        lista_y = []
+        lista_z = []
+        lista_de_listas = []
+        for i in self.particulas:
+            lista_x.append(i.p_position.x)
+            lista_y.append(i.p_position.y)
+            lista_z.append(i.value)
+        lista_de_listas.append(lista_x)
+        lista_de_listas.append(lista_y)
+        lista_de_listas.append(lista_z)
+        return lista_de_listas
+    
+    def graphs(self, lista):
+        self.lista = list(lista)
+        it = self.iterations.it
+        """ graphs tomará los datos entregados por iterations y los graficara
+        si el usuario desea ver la representación gráfica"""
+        print(it)
         x = np.linspace(self.dominio[0], self.dominio[1], 100)
         y = np.linspace(self.dominio[0], self.dominio[1], 100)
         x, y = np.meshgrid(x, y)  # hace el sistema de coordenadas
@@ -239,13 +276,13 @@ class Swarm:  # enjambre
         contour = ax_2.contourf(x, y, z, cmap="viridis")
         fig.colorbar(contour, ax=ax_2, shrink=0.5, aspect=5)
         it = int(number_iterations)
-        inicio = time.time()
+        #inicio = time.time()
         fin = 0
         while number_iterations > 0:
             if self.comprobacion_convergencia_por_poco_movimiento():
                 print(f"salida por convergencia")
                 break
-            fin = round(time.time() - inicio, 3)
+            #fin = round(time.time() - inicio, 3)
             self.update_particles(c1, c2, it)
             number_iterations -= 1
             # actualizar grafica
@@ -285,19 +322,3 @@ class Swarm:  # enjambre
         plt.show()
         best_position = round(self.g_best_position, 5)
         best_value = round(self.g_best_value, 5)
-        return print(f"la mejor posicion es {best_position}, "
-                     f"con valor de {best_value}")
-    
-    def listas_para_david(self):
-        lista_x = []
-        lista_y = []
-        lista_z = []
-        lista_de_listas = []
-        for i in self.particulas:
-            lista_x.append(i.p_position.x)
-            lista_y.append(i.p_position.y)
-            lista_z.append(i.value)
-        lista_de_listas.append(lista_x)
-        lista_de_listas.append(lista_y)
-        lista_de_listas.append(lista_z)
-        return lista_de_listas
