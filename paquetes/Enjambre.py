@@ -47,8 +47,8 @@ class Particle:  # particula
         """
         # Usando list comprehension para generar los randoms
         random_para_V = [random.uniform(-1, 1) for _ in range(self.dimension)]
-        random_para_p = [random.uniform(dominio[1], dominio[0])
-                         for _ in range(self.dimension)]
+        random_para_p = [random.uniform(dominio[0], dominio[1])
+                        for _ in range(self.dimension)]
         self.speed = Vector(*random_para_V)
         self.p_position = Point(*random_para_p)
         self.initialize: bool = True
@@ -115,9 +115,9 @@ class Swarm:  # enjambre
             if i.poco_movimiento > 3:
                 self.particulas_poco_mov += 1
         porcentaje_particulas = (self.particulas_poco_mov /
-                                 self.number_of_particles)
+                                self.number_of_particles)
         porcentaje_salida = ((self.number_of_particles * 3 / 4) /
-                             self.number_of_particles)
+                            self.number_of_particles)
         return porcentaje_particulas > porcentaje_salida
     
     def correct_position(self, position):
@@ -184,9 +184,9 @@ class Swarm:  # enjambre
             self.w = 0.1 # mantener una inercia minima
 
         valores_randoms_1 = [random.uniform(0, 1)
-                             for _ in range(self.dimension)]
+                            for _ in range(self.dimension)]
         valores_randoms_2 = [random.uniform(0, 1)
-                             for _ in range(self.dimension)]
+                            for _ in range(self.dimension)]
         r1 = Vector(*valores_randoms_1)
         r2 = Vector(*valores_randoms_2)
         for i in self.particulas:
