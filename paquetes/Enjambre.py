@@ -233,15 +233,17 @@ class Swarm:  # enjambre
             self.update_particles(c1, c2, it)
             number_iterations -= 1
             listas_1 = np.array(self.listas_para_david())
-            lista_X.append(listas_1[0])
-            lista_Y.append(listas_1[1])
-            lista_Z.append(listas_1[2])
+            lista_X.append(np.array(listas_1[0]))
+            lista_Y.append(np.array(listas_1[1]))
+            lista_Z.append(np.array(listas_1[2]))
             lista_iterations.append(it - number_iterations)
             fin = round(time.time() - inicio, 6)
             lista_tiempos.append(fin)
         best_position = round(self.g_best_position, 5)
         best_value = round(self.g_best_value, 5)
-        lista_retorno = [lista_X,lista_Y,lista_Z,lista_iterations,lista_tiempos,it]
+        lista_retorno = [np.array(lista_X),np.array(lista_Y),
+                         np.array(lista_Z),np.array(lista_iterations),
+                         np.array(lista_tiempos),it,best_position,best_value]
         print(f"la mejor posicion es {best_position}, "
                      f"con valor de {best_value}")
         return lista_retorno
@@ -265,7 +267,7 @@ class Swarm:  # enjambre
         """ graphs tomará los datos entregados por iterations y los graficara
         si el usuario desea ver la representación gráfica"""
         self.lista = lista
-        
+        print(self.lista)
         x = np.linspace(self.dominio[0], self.dominio[1], 100)
         y = np.linspace(self.dominio[0], self.dominio[1], 100)
         x, y = np.meshgrid(x, y)  # hace el sistema de coordenadas
@@ -315,9 +317,25 @@ class Swarm:  # enjambre
             ax_3.axis('off')
             iteration_text = (f" Hola, estamos en la iteracion "
                              f"{str(self.lista[3][i])} / {self.lista[5]} \n"
-                             f"ha pasado {str(self.lista[4][i])} tiempo ")
+                             f"ha pasado {str(self.lista[4][i])} s tiempo \n "
+                             f"la mejor posición hasta ahora es: \n"
+                             f" X: { self.lista[0][i][0]} \n"
+                             f" Y: { self.lista[1][i][0]} \n"
+                             f" Z: { self.lista[2][i][0]} \n")
+            iteration_actual = self.lista[3][i]
             ax_3.set_title(iteration_text)
-            plt.pause(1/75)
+            plt.pause(1/120)
+        if iteration_actual != self.lista[5]:
+            ax_3.clear()
+            ax_3.axis('off')
+            iteration_text = (f" Hola, el programa se acabó en la iteracion "
+                            f"{str(iteration_actual)} / {self.lista[5]} \n"
+                             f" y se ejecutó durante {str(self.lista[4][i])} s tiempo \n "
+                             f"la mejor posición obtenida es: \n"
+                             f" X: { self.lista[6].x} \n"
+                             f" Y: { self.lista[6].y} \n"
+                             f" Z: { self.lista[7]} \n")
+            ax_3.set_title(iteration_text)
         plt.ioff()
         plt.show()
         return None
