@@ -235,7 +235,7 @@ class Swarm:  # enjambre
             self.update_particles(c1, c2, it)
             number_iterations -= 1
             listas_1 = np.array(self.listas_para_david())
-            fin = round(time.time() - inicio, 3)
+            fin = round(time.time() - inicio, 5)
         best_position = round(self.g_best_position, 5)
         best_value = round(self.g_best_value, 5)
         return print(f"la mejor posicion es {best_position}, "
