@@ -1,3 +1,5 @@
+import pdb
+# pdb.set_trace()
 '''
     * Descripcion: clase particula y enjambre
     * documentos relacionados:  
@@ -58,7 +60,6 @@ class Particle:  # particula
     def calculate_value(self):
         if self.initialize:
             self.historial_positions.append(self.p_position)
-            # De ejemplo toca ver como variar la funcion
             self.value = funcion(self.p_position.comp_to_list)
             if self.value < self.p_best_value and not self.maximice:  # minimizar
                 self.p_best_value = self.value
@@ -138,7 +139,7 @@ class Swarm:  # enjambre
         """
         Restringe la velocidad de la particula al dominio definido.
         """
-        speed_limit = (self.dominio[1] - self.dominio[0]) * 0.2
+        speed_limit = (self.dominio[1] - self.dominio[0]) * 0.4
         if speed.x > speed_limit:
             speed.x = 0.5 * (speed_limit)
         elif speed.x < -speed_limit:
@@ -178,7 +179,7 @@ class Swarm:  # enjambre
         """
         # Para mas exploracion al inicio y convergencia al final
         if self.w > 0.1:
-            decaimiento = 0.7 / iteraciones  # decaimiento inercia
+            decaimiento = 1 / iteraciones  # decaimiento inercia
             self.w = self.w - decaimiento  # actualiza la inercia
         else:
             self.w = 0.1 # mantener una inercia minima
@@ -285,6 +286,12 @@ class Swarm:  # enjambre
         x, y = np.meshgrid(x, y)  # hace el sistema de coordenadas
         plt.ion()
         fig = plt.figure(figsize=(16, 12))
+        # Pantalla completa en Windows
+        figManager = plt.get_current_fig_manager()
+        try:
+            figManager.window.state('zoomed')
+        except Exception:
+            pass  # Si no está en Windows o no funciona, ignora
         # graficar la funcion:
         z = []  # funcion de X,Y aun sin valores
         for k in range(0, len(x), 1):
@@ -298,7 +305,7 @@ class Swarm:  # enjambre
         ax_2.set_ylim(self.dominio[1])
         ax_3 = fig.add_subplot(3, 2, 6)
         contour = ax_2.contourf(x, y, z, cmap="viridis")
-        fig.colorbar(contour, ax=ax_2, shrink=0.5, aspect=5)
+        fig.colorbar(contour, ax=ax_2, shrink=0.5, aspect=4)
         #inicio = time.time()
         for i in range(0, len(self.lista[3]),1):
             
@@ -313,7 +320,7 @@ class Swarm:  # enjambre
             ax.set_zlabel("Eje Z")
 
             ax.scatter3D(self.lista[0][i], self.lista[1][i], self.lista[2][i], 
-                         c='red', s=100, edgecolor='k', linewidth=1.5)
+                         c='red', s=50, edgecolor='k', linewidth=1.5)
 
             # se grafica la vista superior
             contour = ax_2.contourf(x, y, z, cmap="viridis")
@@ -323,38 +330,27 @@ class Swarm:  # enjambre
             ax_2.set_xlabel("eje X")
             ax_2.set_ylabel("eje Y")
 
-            ax_2.scatter(self.lista[0][i], self.lista[1][i], c='red', s=100,
+            ax_2.scatter(self.lista[0][i], self.lista[1][i], c='red', s=50,
                          edgecolor='k', linewidth=1.5)
 
-            # Mostrar texto informativo en la esquina inferior derecha, igual que el resumen final
-            info_text = (f"Iteracion: {self.lista[3][i]}  "
-                         f"Tiempo: {self.lista[4][i]:.6f}s  "
-                         f"Mejor posicion: [{self.lista[8].x:.5f}, {self.lista[8].y:.5f}]  "
+            # telemetria estilo 'main' pero en la posición de ax_3
+            info_text = (f"Iteracion: {self.lista[3][i]} \n "
+                         f"Tiempo: {self.lista[4][i]:.6f}s  \n"
+                         f"Mejor posicion: \n [{self.lista[8].x:.5f}, {self.lista[8].y:.5f}]  "
                          f"Valor: {self.lista[9]:.5f}")
-            # Eliminar texto previo si existe
-            if hasattr(self, '_info_text_obj') and self._info_text_obj:
-                self._info_text_obj.remove()
-            # y=0.01 lo pone justo debajo del área de los subplots, sin tapar los ejes
-            self._info_text_obj = fig.text(0.99, 0.01, info_text, ha='right', va='bottom',
-                                          fontsize=11, bbox=dict(facecolor='white', alpha=0.7, edgecolor='none'))
-
+            ax_3.set_title(info_text)
             ax_3.axis('off')
             iteration_actual = self.lista[3][i]
-            plt.pause(1/150)
-        # Al finalizar, mostrar el resumen final más abajo, bien separado
+            plt.pause(1/500)
+        # resumen final 
         if iteration_actual != self.lista[5]:
-            if hasattr(self, '_info_text_obj') and self._info_text_obj:
-                self._info_text_obj.remove()
             ax_3.clear()
             ax_3.axis('off')
-            tiempo_ejecucion = sum(self.lista[4])
             resumen_text = (f"El programa se acabó en la iteracion {str(iteration_actual)}\n"
-                            f"tiempo ejecucion: {tiempo_ejecucion:.6f}s\n"
-                            f"mejor posición: (x,y) -> [{self.lista[8].x:.5f}, {self.lista[8].y:.5f}]\n"
+                            f"tiempo ejecucion: {sum(self.lista[4]):.6f}s\n"
+                            f"mejor posición: (x,y)\n [{self.lista[8].x:.5f}, {self.lista[8].y:.5f}]"
                             f"con valor: {self.lista[9]:.5f}")
-            # Mostrar resumen final en la esquina inferior derecha
-            fig.text(0.99, 0.01, resumen_text, ha='right', va='bottom', fontsize=12,
-                     bbox=dict(facecolor='white', alpha=0.9, edgecolor='none'))
+            ax_3.set_title(resumen_text)
         plt.ioff()
         plt.show()
         return None
