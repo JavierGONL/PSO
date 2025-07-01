@@ -241,7 +241,7 @@ class Swarm:  # enjambre
             lista_iterations.append(it - number_iterations)
             lista_mejores_posiciones.append(round(self.g_best_position,7))
             lista_mejores_valores.append(round(self.g_best_value,7))
-            fin = time.time() - inicio
+            fin = round(time.time() - inicio,6)
             lista_tiempos.append(fin)
         best_position = round(self.g_best_position, 5)
         best_value = round(self.g_best_value, 5)
