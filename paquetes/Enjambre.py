@@ -217,6 +217,7 @@ class Swarm:  # enjambre
             # calcula el valor y actualiza las best globales
             i.calculate_value()
             self.update_gbestv_and_gbestpos()     
+            
     def iterations(self, number_iterations, c1, c2):
         """
         iterations grafica y pasa la iteracion, comprobando tambien si sale por
