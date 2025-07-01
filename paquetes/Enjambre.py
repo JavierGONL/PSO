@@ -241,7 +241,7 @@ class Swarm:  # enjambre
             lista_iterations.append(it - number_iterations)
             lista_mejores_posiciones.append(round(self.g_best_position,7))
             lista_mejores_valores.append(round(self.g_best_value,7))
-            fin = round(time.time() - inicio, 6)
+            fin = time.time() - inicio
             lista_tiempos.append(fin)
         best_position = round(self.g_best_position, 5)
         best_value = round(self.g_best_value, 5)
@@ -327,7 +327,7 @@ class Swarm:  # enjambre
             ax_3.axis('off')
             iteration_text = (f" Hola, estamos en la iteracion "
                              f"{str(self.lista[3][i])} / {self.lista[5]} \n"
-                             f"ha pasado {str(self.lista[4][i])} s tiempo \n "
+                             f"ha pasado {self.lista[4][i]} s tiempo \n "
                              f"la mejor posición hasta ahora es: \n"
                              f" X: { self.lista[6][i].x} \n"
                              f" Y: { self.lista[6][i].y} \n"
@@ -340,7 +340,7 @@ class Swarm:  # enjambre
             ax_3.axis('off')
             iteration_text = (f" Hola, el programa se acabó en la iteracion "
                             f"{str(iteration_actual)} / {self.lista[5]} \n"
-                             f" y se ejecutó durante {str(self.lista[4][i])} s tiempo \n "
+                             f" y se ejecutó durante {self.lista[4][i]} s tiempo \n "
                              f"la mejor posición obtenida es: \n"
                              f" X: { self.lista[8].x} \n"
                              f" Y: { self.lista[8].y} \n"
