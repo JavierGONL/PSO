@@ -1,5 +1,4 @@
-import pdb
-# pdb.set_trace()
+
 '''
     * Descripcion: clase particula y enjambre
     * documentos relacionados:  
@@ -16,7 +15,7 @@ from paquetes.Vector_v2 import Point, Vector
 
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits import mplot3d #! esto para que esta?
+
 
 funcion = ackley_function_invertida
 
@@ -217,7 +216,7 @@ class Swarm:  # enjambre
             # calcula el valor y actualiza las best globales
             i.calculate_value()
             self.update_gbestv_and_gbestpos()     
-            
+
     def iterations(self, number_iterations, c1, c2):
         """
         iterations grafica y pasa la iteracion, comprobando tambien si sale por
