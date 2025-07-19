@@ -1,5 +1,17 @@
 from numpy import pi, cos, exp, sqrt
 
+def elegir_funcion(funcion, parametros): # si hago esto? o busco algo mas decente?
+    print("que funcion quiere optimizar:"
+          "\n1. rastrigin function"
+          "\n2. himmelblaus"
+          "\n3. sphere function"
+          "\n4. shekel function"
+          "\n5. ackley function (invertida)"
+          "-"*5 + "solo ingrese el numero" +"-"*5 
+          )
+    seleccion = int(input("\n-> "))
+    return
+
 def rastrigin_function(posicion:list, A_constante = 10)-> float: # le entra la posicion y calcula el valor
     # where A=10 (generalmente and posicion ∈ [-5.12,5.12]
     n = len(posicion) # dimension
@@ -42,7 +54,9 @@ def ackley_function_invertida(posicion): # algo de ejemplo para maximizar
     b = 0.2
     c = 2 * pi
     n = len(posicion)
-    sum_sq = sum(x**2 for x in posicion)
-    sum_cos = sum(cos(c * x) for x in posicion)
-    ackley = -a * exp(-b * sqrt(sum_sq / n)) - exp(sum_cos / n) + a + exp(1)
+    primer_termino = sum(x**2 for x in posicion)
+    segundo_termino = sum(cos(c*x) for x in posicion)
+    ackley = (-a * exp(-b * sqrt(primer_termino / n)) 
+            - exp(segundo_termino / n) + a + exp(1)
+            )
     return -ackley 
