@@ -1,3 +1,8 @@
+'''
+    * Descripción: se definen una serie de funciones de ejemplo que permitiran demostrar el funcionamiento del pso 
+    * documentos relacionados: paquetes
+    * autores: kevin javier gonzalez luna, ivan felipe maluche, david Montes
+'''
 from numpy import pi, cos, exp, sqrt
 
 def elegir_funcion(funcion, parametros): # si hago esto? o busco algo mas decente?
