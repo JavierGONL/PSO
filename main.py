@@ -7,7 +7,7 @@ import time
 from paquetes.Enjambre import Swarm
 
 inicio_programa = time.time()
-enjambre = Swarm(50, [-5.12, 5.12], maximice= True)
+enjambre = Swarm(50, [-5.12, 5.12], maximice= False)
 enjambre.inicialize_each_particle()
-listillas = list(enjambre.iterations(100, 2, 1))
+listillas = list(enjambre.iterations(200, 2, 1))
 enjambre.graphs(listillas, inicio_programa) 

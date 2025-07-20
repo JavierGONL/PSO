@@ -16,7 +16,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-funcion = ackley_function_invertida
+funcion = shekel_function
 
 class Particle:  # particula
 	"""
@@ -248,18 +248,18 @@ class Swarm:
 			# print(lista_mejores_posiciones)
 		best_position = round(self.g_best_position, 5)
 		best_value = round(self.g_best_value, 5)
-		lista_retorno = [np.array(lista_X),
-										np.array(lista_Y),
-										np.array(lista_Z),
-										np.array(lista_iterations),
-										np.array(lista_tiempos),
-										it,
-										np.array(lista_mejores_posiciones),
-										np.array(lista_mejores_valores),
-										best_position,
-										best_value]
-		print(f"la mejor posicion es {best_position}, "
-								 f"con valor de {best_value}")
+		lista_retorno = [np.array(lista_X), 
+						np.array(lista_Y),
+						np.array(lista_Z),
+						np.array(lista_iterations),
+						np.array(lista_tiempos),
+						it,
+						np.array(lista_mejores_posiciones),
+						np.array(lista_mejores_valores),
+						best_position,
+						best_value]
+		print(f"la mejor posicion es:\n{best_position}\n"
+				f"valor: {best_value}")
 		return lista_retorno
         
 	def listas_para_david(self):
@@ -283,11 +283,12 @@ class Swarm:
 		self.lista = lista
 		self.tiempo_inicio_programa = tiempo_inicio_programa
 		# resolucion
-		x = np.linspace(self.dominio[0], self.dominio[1], 60)
+  		# linspace de numpy crea un arreglo de n datos a distancia uniforme entrew los límites del dominio
+		x = np.linspace(self.dominio[0], self.dominio[1], 60) 
 		y = np.linspace(self.dominio[0], self.dominio[1], 60)
 		x, y = np.meshgrid(x, y)  # hace el sistema de coordenadas
 		plt.ion()
-		fig = plt.figure(figsize=(12, 10))
+		fig = plt.figure(figsize=(16, 12)) # definición inicial tamaño ventana
 
 		# Pantalla completa en Windows
 		figManager = plt.get_current_fig_manager()
@@ -296,13 +297,13 @@ class Swarm:
 		except Exception:
 			pass  # Si no esta en Windows o no funciona lo ignora
 
-		z = funcion((x, y))  # Calculo vectorizado
+		z = funcion((x, y))  # Calculo vectorizado de la función
 
 		ax = fig.add_subplot(1, 2, 1, projection='3d')
 		ax_2 = fig.add_subplot(2, 2, 2)
 		ax_2.set_xlim(self.dominio[0], self.dominio[1])
 		ax_2.set_ylim(self.dominio[0], self.dominio[1])
-		ax_3 = fig.add_subplot(3, 2, 6)
+		ax_3 = fig.add_subplot(4, 2, 8)
 		
 		# titulos ejes
 		ax.set_xlabel("eje X")
@@ -340,9 +341,10 @@ class Swarm:
 			tiempo_programa_actual = time.time() - self.tiempo_inicio_programa
 			# telemetria de cada iteracion
 			telemetria = (f"Iteracion: {self.lista[3][i]} \n "
-										f"Tiempo: {tiempo_programa_actual:.2f}s \n"
-										f"Mejor posicion actual: \nX: {self.lista[6][i].x:.4f}\nY: {self.lista[6][i].y:.4f}"
-										f"\nValor: {self.lista[7][i]:.5f}")
+							f"Tiempo de ejecución total del programa: {tiempo_programa_actual:.2f}s \n"
+          					f"Tiempo ejecución PSO: {self.lista[4][i]} s \n "
+							f"Mejor posicion actual: \nX: {self.lista[6][i].x:.4f}\nY: {self.lista[6][i].y:.4f}"
+							f"\nValor: {self.lista[7][i]:.5f}")
 			ax_3.set_title(telemetria)
 			ax_3.axis('off')
 			iteration_actual = self.lista[3][i]
@@ -354,9 +356,10 @@ class Swarm:
 			ax_3.axis('off')
 			tiempo_total_programa = time.time() - self.tiempo_inicio_programa
 			telemetria_final = (f"El programa acabo en la iteracion {iteration_actual}\n"
-													f"Tiempo Total de ejecucion: {tiempo_total_programa:.2f}s\n"
-													f"mejor posición: \nX: {self.lista[8].x:.4f}\nY: {self.lista[8].y:.4f}"
-													f"\nvalor: {self.lista[9]:.4f}")
+									f"Tiempo Total de ejecucion: {tiempo_total_programa:.2f}s\n"
+             						f"Tiempo ejecución final PSO: {self.lista[4][i]} s \n "
+									f"mejor posición: \nX: {self.lista[8].x:.4f}\nY: {self.lista[8].y:.4f}"
+									f"\nvalor: {self.lista[9]:.4f}")
 			ax_3.set_title(telemetria_final)
 		plt.ioff()
 		plt.show()
