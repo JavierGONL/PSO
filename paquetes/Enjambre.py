@@ -287,7 +287,7 @@ class Swarm:
 		y = np.linspace(self.dominio[0], self.dominio[1], 60)
 		x, y = np.meshgrid(x, y)  # hace el sistema de coordenadas
 		plt.ion()
-		fig = plt.figure(figsize=(16, 12))
+		fig = plt.figure(figsize=(12, 10))
 
 		# Pantalla completa en Windows
 		figManager = plt.get_current_fig_manager()
