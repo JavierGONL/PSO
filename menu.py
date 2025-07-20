@@ -40,14 +40,13 @@ class MenuPso:
 						  font=("Arial", 16, "bold"), bg='#f0f0f0', fg='#2c3e50')
 		titulo.pack(pady=10)  # .pack() organiza el elemento en la ventana con margen vertical
 		
-		# CONTENEDOR PRINCIPAL
+		# frame principal
 		main_frame = tk.Frame(self.root, bg="#f0f0f0")
 		main_frame.pack(fill="both", expand=True, padx=20, pady=10)
 		
+		# subs frames
 		self.seleccionar_funcion(main_frame)
-		
 		self.max_min_coeficientes(main_frame)
-
 		self.ejecutar_boton(main_frame)
 
 	def seleccionar_funcion(self,parent):
@@ -72,38 +71,48 @@ class MenuPso:
 		# Frame para parametros optimizacion
 		frame_optimizacion_parametros = ttk.LabelFrame(parent, text="tipo de Optimizacion y parametros", padding="10")
 		frame_optimizacion_parametros.pack(fill="x", padx=20, pady=10)
-		
+
 		# maximizar o minimizar
+		info_label_1  = ttk.Label(frame_optimizacion_parametros, 
+							  text="Objetivo optimizacion", 
+							  font=("Arial", 9), foreground="gray")
+		info_label_1.pack(anchor="w", pady=2)
 		ttk.Radiobutton(frame_optimizacion_parametros, text="Minimizar", 
 						variable=self.funcion_seleccionada, value="minimizar").pack(anchor="w", pady=2)
 		ttk.Radiobutton(frame_optimizacion_parametros, text="Maximizar", 
 						variable=self.funcion_seleccionada, value="maximizar").pack(anchor="w", pady=2)
 		
-		# Iteraciones
+		# parametros
+		info_label_2 = ttk.Label(frame_optimizacion_parametros, 
+							  text=" selecion de parametros de la optimizacion", 
+							  font=("Arial", 9), foreground="gray")
+		info_label_2.pack(anchor="w", pady=2)
+			# Iteraciones
 		frame_iter = tk.Frame(frame_optimizacion_parametros)
 		frame_iter.pack(fill="x", padx=10, pady=5)
 		tk.Label(frame_iter, text="Iteraciones:", font=("Arial", 9)).pack(side="left")
 		self.iteraciones_var = tk.IntVar(value=200)
 		tk.Spinbox(frame_iter, from_=50, to=1000, width=10, 
 				  textvariable=self.iteraciones_var).pack(side="right")
-		
-		# C1
+			# C1
 		frame_c1 = tk.Frame(frame_optimizacion_parametros)
 		frame_c1.pack(fill="x", padx=10, pady=5)
 		tk.Label(frame_c1, text="C1 (cognitivo):", font=("Arial", 9)).pack(side="left")
 		self.c1_var = tk.DoubleVar(value=2.0)
 		tk.Spinbox(frame_c1, from_=0.1, to=5.0, increment=0.1, width=10, 
 				  textvariable=self.c1_var, format="%.1f").pack(side="right")
-		
-		# C2
+			# C2
 		frame_c2 = tk.Frame(frame_optimizacion_parametros)
 		frame_c2.pack(fill="x", padx=10, pady=5)
 		tk.Label(frame_c2, text="C2 (social):", font=("Arial", 9)).pack(side="left")
 		self.c2_var = tk.DoubleVar(value=1.0)
 		tk.Spinbox(frame_c2, from_=0.1, to=5.0, increment=0.1, width=10, 
 				  textvariable=self.c2_var, format="%.1f").pack(side="right")
-
 		# Grabar
+		info_label_3 = ttk.Label(frame_optimizacion_parametros, 
+							  text="Desea grabar?", 
+							  font=("Arial", 9), foreground="gray")
+		info_label_3.pack(anchor="w", pady=2)
 		ttk.Checkbutton(frame_optimizacion_parametros, text="grabar", 
 						variable=self.funcion_seleccionada).pack(anchor="w", pady=5)
 
