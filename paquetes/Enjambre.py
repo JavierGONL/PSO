@@ -245,7 +245,7 @@ class Swarm:
 			lista_mejores_valores.append(round(self.g_best_value,7))
 			fin = round(time.time() - inicio, 6)
 			lista_tiempos.append(fin)
-			print(lista_mejores_posiciones)
+			# print(lista_mejores_posiciones)
 		best_position = round(self.g_best_position, 5)
 		best_value = round(self.g_best_value, 5)
 		lista_retorno = [np.array(lista_X),
@@ -337,8 +337,8 @@ class Swarm:
 
 			ax_2.scatter(self.lista[0][i], self.lista[1][i], c='red', s=50,
 									edgecolor='black', linewidth=1.5)
-
 			tiempo_programa_actual = time.time() - self.tiempo_inicio_programa
+			# telemetria de cada iteracion
 			telemetria = (f"Iteracion: {self.lista[3][i]} \n "
 										f"Tiempo: {tiempo_programa_actual:.2f}s \n"
 										f"Mejor posicion actual: \nX: {self.lista[6][i].x:.4f}\nY: {self.lista[6][i].y:.4f}"
@@ -347,13 +347,11 @@ class Swarm:
 			ax_3.axis('off')
 			iteration_actual = self.lista[3][i]
 			
-			plt.pause(1/1000)
+			plt.pause(1/500)
 
-		# resumen telemetria
-		if iteration_actual != self.lista[5]:
+		if iteration_actual != self.lista[5]: # telemetria final
 			ax_3.clear()
 			ax_3.axis('off')
-
 			tiempo_total_programa = time.time() - self.tiempo_inicio_programa
 			telemetria_final = (f"El programa acabo en la iteracion {iteration_actual}\n"
 													f"Tiempo Total de ejecucion: {tiempo_total_programa:.2f}s\n"
