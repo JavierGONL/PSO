@@ -75,6 +75,10 @@ class Point: #este es el punto que me robe de la clase shape, tiene un metodo pa
         return self.x == other.x and self.y == other.y #este compara los componentes
     def __abs__(self):
         return Point(abs(self.x), abs(self.y)) #devuelve un punto con el valor absoluto de ambos componentes
+    def __str__(self):
+        return f"X: {self.x}\nY:{self.y}"
+    def __repr__(self):
+        return f"X: {self.x}\nY:{self.y}"
 class Vector(Point):
     def __init__(self, x:float, y:float):
         super().__init__(x,y) #hereda los metodos dunder de operaciones de la clase Point

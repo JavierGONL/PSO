@@ -245,6 +245,7 @@ class Swarm:
 			lista_mejores_valores.append(round(self.g_best_value,7))
 			fin = round(time.time() - inicio, 6)
 			lista_tiempos.append(fin)
+			print(lista_mejores_posiciones)
 		best_position = round(self.g_best_position, 5)
 		best_value = round(self.g_best_value, 5)
 		lista_retorno = [np.array(lista_X),
@@ -326,18 +327,21 @@ class Swarm:
 			ax.scatter3D(self.lista[0][i], self.lista[1][i], self.lista[2][i], 
 									c='red', s=50, edgecolor='k', linewidth=1.5)
 			
-			contour = ax_2.contourf(x, y, z, cmap="viridis")
-			ax_2.set_title("vista superior")
+			# Recrear el mapa de calor en cada iteración
+			contour = ax_2.contourf(x, y, z, cmap="viridis", levels=20)
+			ax_2.set_title("Mapa de Temperatura - Vista Superior")
 			ax_2.set_xlabel("eje X")
 			ax_2.set_ylabel("eje Y")
+			ax_2.set_xlim(self.dominio[0], self.dominio[1])
+			ax_2.set_ylim(self.dominio[0], self.dominio[1])
 
 			ax_2.scatter(self.lista[0][i], self.lista[1][i], c='red', s=50,
-									edgecolor='k', linewidth=1.5)
+									edgecolor='black', linewidth=1.5)
 
 			tiempo_programa_actual = time.time() - self.tiempo_inicio_programa
 			telemetria = (f"Iteracion: {self.lista[3][i]} \n "
-										f"Tiempo actual: {tiempo_programa_actual:.2f}s \n"
-										f"Mejor posicion: \nX: {self.lista[8].x:.4f}\nY: {self.lista[8].y:.4f}"
+										f"Tiempo: {tiempo_programa_actual:.2f}s \n"
+										f"Mejor posicion actual: \nX: {self.lista[6][i].x:.4f}\nY: {self.lista[6][i].y:.4f}"
 										f"\nValor: {self.lista[9]:.5f}")
 			ax_3.set_title(telemetria)
 			ax_3.axis('off')
@@ -352,8 +356,8 @@ class Swarm:
 
 			tiempo_total_programa = time.time() - self.tiempo_inicio_programa
 			telemetria_final = (f"El programa acabo en la iteracion {iteration_actual}\n"
-													f"Tiempo Total: {tiempo_total_programa:.2f}s\n"
-													f"mejor posición: \nX: {self.lista[8].x:.4f}\nY: {self.lista[8].y:.4f}"
+													f"Tiempo Total de ejecucion: {tiempo_total_programa:.2f}s\n"
+													f"mejor posición: \nX: {self.lista[6][i].x:.4f}\nY: {self.lista[6][i].y:.4f}"
 													f"\nvalor: {self.lista[9]:.4f}")
 			ax_3.set_title(telemetria_final)
 		plt.ioff()
