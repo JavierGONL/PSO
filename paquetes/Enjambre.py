@@ -5,7 +5,7 @@
 '''
 import random
 import time
-
+import os
 from paquetes.Funciones_objetivo import (rastrigin_function, shekel_function,
                                         himmelblaus_function, sphere_function,
                                         ackley_function_invertida
@@ -16,7 +16,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-funcion = shekel_function
+funcion = rastrigin_function
 
 class Particle:  # particula
 	"""
@@ -276,14 +276,22 @@ class Swarm:
 		lista_de_listas.append(lista_z)
 		return lista_de_listas
 	
-	def graphs(self, lista, tiempo_inicio_programa=None):
+	def graphs(self, lista, record:bool, tiempo_inicio_programa=None):
 		""" 
 		graphs toma los datos entregados por iterations y los grafica con su telemetria
 		"""
 		self.lista = lista
 		self.tiempo_inicio_programa = tiempo_inicio_programa
+		self.record = record
+		if self.record == True: #se borran las imagenes existentes en la carpeta images
+			iter = 1
+			while True:
+				try: 
+					os.remove(f"images/{iter}.png")
+					iter += 1
+				except: break
 		# resolucion
-  		# linspace de numpy crea un arreglo de n datos a distancia uniforme entrew los límites del dominio
+		# linspace de numpy crea un arreglo de n datos a distancia uniforme entre los límites del dominio
 		x = np.linspace(self.dominio[0], self.dominio[1], 60) 
 		y = np.linspace(self.dominio[0], self.dominio[1], 60)
 		x, y = np.meshgrid(x, y)  # hace el sistema de coordenadas
@@ -348,8 +356,11 @@ class Swarm:
 			ax_3.set_title(telemetria)
 			ax_3.axis('off')
 			iteration_actual = self.lista[3][i]
+			plt.pause(1/5000)
+			if self.record == True:
+				plt.savefig(f"images/{self.lista[3][i]}",dpi=150, bbox_inches='tight')
+			else: pass
 			
-			plt.pause(1/500)
 
 		if iteration_actual != self.lista[5]: # telemetria final
 			ax_3.clear()
@@ -361,5 +372,9 @@ class Swarm:
 									f"mejor posición: \nX: {self.lista[8].x:.4f}\nY: {self.lista[8].y:.4f}"
 									f"\nvalor: {self.lista[9]:.4f}")
 			ax_3.set_title(telemetria_final)
+			plt.savefig(f"images/{self.lista[3][i]}",dpi=150, bbox_inches='tight')
+		
 		plt.ioff()
 		plt.show()
+		if self.record == True: #aquí se renderiza el video
+				pass
