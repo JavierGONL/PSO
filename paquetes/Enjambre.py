@@ -56,6 +56,10 @@ class Particle:  # particula
 		self.value = self.calculate_value()
 
 	def calculate_value(self):
+		"""
+		calcula el valor de la funcion aplicado en la posicion actual y lo compara con el mejor valor
+		Dependiendo de lo que se desee se actualizara la mejor posicion
+		"""
 		if self.initialize:
 			self.historial_positions.append(self.p_position)
 			self.value = funcion(self.p_position.comp_to_list)
@@ -97,6 +101,10 @@ class Swarm:
 			i.initialize_particle(self.maximice, self.dominio)
 
 	def update_gbestv_and_gbestpos(self):
+		"""
+		revisa en cada particula si su valor es mejor que el global
+		y lo actualiza si es necesario
+		"""
 		for i in self.particulas:
 			if i.value < self.g_best_value and not self.maximice:
 				self.g_best_value = i.value
