@@ -82,7 +82,7 @@ class MenuPso:
 		# Numero de iteraciones
 		frame_iter = ttk.Frame(frame_optimizacion_parametros)
 		frame_iter.pack(fill="x", pady=5)
-		ttk.Label(frame_iter, text="🔄 Número de iteraciones:").pack(side="left")
+		ttk.Label(frame_iter, text="Número de iteraciones:").pack(side="left")
 		spinbox_iter = tk.Spinbox(frame_iter, from_=50, to=1000, width=10, 
 								 textvariable=self.funcion_seleccionada)
 		spinbox_iter.pack(side="right")
