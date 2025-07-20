@@ -6,6 +6,7 @@
 import random
 import time
 import os
+import cv2
 from paquetes.Funciones_objetivo import (rastrigin_function, shekel_function,
                                         himmelblaus_function, sphere_function,
                                         ackley_function_invertida
@@ -16,7 +17,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-funcion = rastrigin_function
+funcion = shekel_function
 
 class Particle:  # particula
 	"""
@@ -283,13 +284,11 @@ class Swarm:
 		self.lista = lista
 		self.tiempo_inicio_programa = tiempo_inicio_programa
 		self.record = record
-		if self.record == True: #se borran las imagenes existentes en la carpeta images
-			iter = 1
-			while True:
-				try: 
-					os.remove(f"images/{iter}.png")
-					iter += 1
-				except: break
+		actual_images = os.listdir("images_temp") #lista con los nombres de las imágenes
+		#se borran las imagenes existentes en la carpeta images
+		if self.record == True:
+			for i in actual_images:
+				os.remove(f"images_temp/{i}")
 		# resolucion
 		# linspace de numpy crea un arreglo de n datos a distancia uniforme entre los límites del dominio
 		x = np.linspace(self.dominio[0], self.dominio[1], 60) 
@@ -358,7 +357,7 @@ class Swarm:
 			iteration_actual = self.lista[3][i]
 			plt.pause(1/5000)
 			if self.record == True:
-				plt.savefig(f"images/{self.lista[3][i]}",dpi=150, bbox_inches='tight')
+				plt.savefig(f"images_temp/{self.lista[3][i]}",dpi=150, bbox_inches='tight')
 			else: pass
 			
 
@@ -372,9 +371,39 @@ class Swarm:
 									f"mejor posición: \nX: {self.lista[8].x:.4f}\nY: {self.lista[8].y:.4f}"
 									f"\nvalor: {self.lista[9]:.4f}")
 			ax_3.set_title(telemetria_final)
-			plt.savefig(f"images/{self.lista[3][i]}",dpi=150, bbox_inches='tight')
+			plt.savefig(f"images_temp/{self.lista[3][i]}",dpi=150, bbox_inches='tight')
 		
 		plt.ioff()
 		plt.show()
 		if self.record == True: #aquí se renderiza el video
-				pass
+			# Obtener lista actualizada de imágenes después de guardar todas
+			updated_images = os.listdir("images_temp")
+			# Ordenar numéricamente en lugar de alfabéticamente 
+   			# #esto definitivamente lo hizo copilot
+			updated_images.sort(key=lambda x: int(x.split('.')[0]))
+			
+			images_path = []
+			for i in updated_images:
+				images_path.append(f"images_temp/{i}")
+			num_frames = len(images_path)
+			fps_dinamico = len(images_path)/10 #asegura una cantidad de FPS acorde a la cantidad de frames
+			print(f"Creando video con {num_frames} frames a {fps_dinamico:.2f} ")
+			print(f"Orden de frames: {[img.split('/')[-1] for img in images_path[:5]]}...")  # Mostrar primeros 5
+			
+			try: 
+				str_ultimo_video = os.listdir("videos")[-1]
+				nombre_ultimo_video = int(str_ultimo_video[:-4]) #esto borra el .mp4 del nombre del archivo.
+			except IndexError: nombre_ultimo_video = 0 #esto evita errores si la lista está vacía
+			video_name = nombre_ultimo_video + 1
+			cv2_fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+			frame = cv2.imread(images_path[0])
+			size = list(frame.shape)
+			del size[2]
+			size.reverse()
+			video = cv2.VideoWriter(f"videos/{video_name}.mp4", cv2_fourcc,
+                           fps_dinamico, size)
+			for i in range(0,len(images_path),1):
+				video.write(cv2.imread(images_path[i]))
+				print(f"frame {i+1} de {len(images_path)}")
+			video.release()
+			print(f"Video guardado: videos/{video_name}.mp4")
