@@ -342,12 +342,12 @@ class Swarm:
 			telemetria = (f"Iteracion: {self.lista[3][i]} \n "
 										f"Tiempo: {tiempo_programa_actual:.2f}s \n"
 										f"Mejor posicion actual: \nX: {self.lista[6][i].x:.4f}\nY: {self.lista[6][i].y:.4f}"
-										f"\nValor: {self.lista[9]:.5f}")
+										f"\nValor: {self.lista[7][i]:.5f}")
 			ax_3.set_title(telemetria)
 			ax_3.axis('off')
 			iteration_actual = self.lista[3][i]
 			
-			plt.pause(1/500)
+			plt.pause(1/1000)
 
 		# resumen telemetria
 		if iteration_actual != self.lista[5]:
@@ -357,7 +357,7 @@ class Swarm:
 			tiempo_total_programa = time.time() - self.tiempo_inicio_programa
 			telemetria_final = (f"El programa acabo en la iteracion {iteration_actual}\n"
 													f"Tiempo Total de ejecucion: {tiempo_total_programa:.2f}s\n"
-													f"mejor posición: \nX: {self.lista[6][i].x:.4f}\nY: {self.lista[6][i].y:.4f}"
+													f"mejor posición: \nX: {self.lista[8].x:.4f}\nY: {self.lista[8].y:.4f}"
 													f"\nvalor: {self.lista[9]:.4f}")
 			ax_3.set_title(telemetria_final)
 		plt.ioff()
