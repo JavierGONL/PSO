@@ -9,9 +9,9 @@ integrantes: Kevin Javier Gonzalez Luna, Iván Felipe Maluche Suárez, David Ale
 
 ## Descripción del procedimiento:
 
-El Particle Swarm Optimization (PSO) es un algoritmo computacional metaheuristico, es decir; que finaliza con una solución lo suficientemente buena para el problema que se busca optimizar.
+El Particle Swarm Optimization (PSO) es un algoritmo computacional metaheuristico, es decir; que finaliza con una solución lo suficientemente buena para el problema que se busca optimizar. 
 
-El alma del PSO es un enjambre de partículas (como lo indica su nombre), en el cual muchas partículas buscan una posición objetivo (que puede ser bien o un máximo o un mínimo) a través de iteraciones. El PSO funciona especialmente bien en el caso de que se tengan problemas que no se puedan modelar mediante funciones diferenciables.
+El alma del PSO es un enjambre de partículas (como lo indica su nombre), en el cual muchas partículas buscan una posición objetivo (que puede ser bien o un máximo o un mínimo) a través de multiples iteraciones. El PSO funciona especialmente bien en el caso de que se tengan problemas que no se puedan modelar mediante funciones diferenciables.
 
 El comportamiento del PSO se puede entender de la siguiente manera:
 
