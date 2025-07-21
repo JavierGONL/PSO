@@ -17,7 +17,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-funcion = shekel_function
+
 
 class Particle:  # particula
 	"""
@@ -33,7 +33,7 @@ class Particle:  # particula
 		self.p_position = Point(0, 0)
 		self.speed = Vector(0, 0)
 		self.value: float = 0
-		self.p_best_value: float = 0
+		self.p_best_value: float = None  # Cambiado a None para detectar primera evaluación
 		self.p_best_position = Point(0, 0)
 		self.historial_positions: list = [] # por si acaso
 		self.initialize: bool = False
@@ -41,7 +41,7 @@ class Particle:  # particula
 		self.maximice: bool = False
 		self.poco_movimiento: int = 0
 
-	def initialize_particle(self, maximice, dominio):
+	def initialize_particle(self, maximice, dominio, funcion):
 		"""
 		Definirle una posicion y velocidad inicial aleatoria 
 		"""
@@ -53,17 +53,23 @@ class Particle:  # particula
 		self.p_position = Point(*random_para_p)
 		self.initialize: bool = True
 		self.maximice = maximice
-		self.value = self.calculate_value()
+		self.value = self.calculate_value(funcion)
 
-	def calculate_value(self):
+	def calculate_value(self, funcion):
 		"""
-		calcula el valor de la funcion aplicado en la posicion actual y lo compara con el mejor valor
-		Dependiendo de lo que se desee se actualizara la mejor posicion
+		calcula el valor de la funcion aplicado en la posicion actual 
+		y lo compara con el mejor valor, dependiendo de lo que se desee 
+		se actualizara la mejor posicion
 		"""
 		if self.initialize:
 			self.historial_positions.append(self.p_position)
 			self.value = funcion(self.p_position.comp_to_list)
-			if self.value < self.p_best_value and not self.maximice:  # minimizar
+			
+			# Si es la primera vez que se calcula, asignar como mejor valor
+			if self.p_best_value is None:  # Para cuando se ejecute por primera vez, si no va a joder en algun momento por algo que aun no se que fue :#
+				self.p_best_value = self.value
+				self.p_best_position = self.p_position
+			elif self.value < self.p_best_value and not self.maximice:  # minimizar
 				self.p_best_value = self.value
 				self.p_best_position = self.p_position
 			elif self.value > self.p_best_value and self.maximice:  # maximizar
@@ -74,13 +80,14 @@ class Particle:  # particula
 			return "hay que inicializar la particula antes"
 
 class Swarm:
-	def __init__(self,
-				number_of_particles=0,
-				dominio=None,
-				maximice=False,
-				dimension=2):
-		if dominio is None:
-			dominio = []
+	def __init__(
+			self,
+			number_of_particles=0,
+			dominio=None,
+			maximice=False,
+			dimension=2,
+			funcion = None
+			):
 		self.number_of_particles = number_of_particles
 		# Para el dominio solo pasamos como si fuera de una variable,
 		# pero en verdad seria para ambos ejes, como si fuera un rectangulo
@@ -95,10 +102,11 @@ class Swarm:
 		self.dimension: int = dimension
 		self.w = 0.7
 		self.particulas_poco_mov: int = 0
+		self.funcion = funcion
 
 	def inicialize_each_particle(self):  # Falta revisar si funciona
 		for i in self.particulas:
-			i.initialize_particle(self.maximice, self.dominio)
+			i.initialize_particle(self.maximice, self.dominio, self.funcion)
 
 	def update_gbestv_and_gbestpos(self):
 		"""
@@ -221,7 +229,7 @@ class Swarm:
 			i.p_position = self.correct_position(i.p_position)
 
 			# calcula el valor y actualiza las best globales
-			i.calculate_value()
+			i.calculate_value(self.funcion)
 			self.update_gbestv_and_gbestpos()     
 
 	def iterations(self, number_iterations, c1, c2):
@@ -312,7 +320,7 @@ class Swarm:
 		except Exception:
 			pass  # Si no esta en Windows o no funciona lo ignora
 
-		z = funcion((x, y))  # Calculo vectorizado de la función
+		z = self.funcion((x, y))  # Calculo vectorizado de la función
 
 		ax = fig.add_subplot(1, 2, 1, projection='3d')
 		ax_2 = fig.add_subplot(2, 2, 2)
@@ -335,7 +343,7 @@ class Swarm:
 			
 			# Superficie 3D
 			ax.plot_surface(x, y, z, cmap='viridis', alpha=0.6)
-			ax.set_title(f"grafica 3D de la funcion {str(funcion.__name__)}")
+			ax.set_title(f"grafica 3D de la funcion {str(self.funcion.__name__)}")
 			ax.set_xlabel("eje X")  # Necesario después de clear()
 			ax.set_ylabel("eje Y")
 			ax.set_zlabel("Eje Z")
