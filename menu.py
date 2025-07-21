@@ -1,13 +1,14 @@
 # aqui es donde me arrepiento D:
 
 import time
-import tkinter as tk
-from tkinter import ttk, messagebox
-import threading
-import TKinterModernThemes as TKMT
+
 from paquetes.Funciones_objetivo import (rastrigin_function, shekel_function,
                                         himmelblaus_function, sphere_function,
                                         ackley_function_invertida)
+from paquetes.Enjambre import Swarm
+
+import tkinter as tk
+from tkinter import ttk, messagebox
 
 class MenuPso:
 	def __init__(self,root):
@@ -26,13 +27,12 @@ class MenuPso:
 		# opciones a colocar en la interfaz
 		self.funcion_seleccionada = tk.StringVar(value="rastrigin_function")
 		self.dominio = None
-		self.maximizar_minimizar = tk.BooleanVar(value=True)
+		self.maximizar_minimizar = tk.BooleanVar(value=False)
 		self.particulas = tk.IntVar(value=10)
 		self.iteraciones = tk.IntVar(value=100) # esto al final no lo vamos a usar
-		self.c1 = tk.IntVar(value=1) # coeficiente cognitivo !acordarse
-		self.c2 = tk.IntVar(value=1) # coeficiente social
+		self.c1 = tk.DoubleVar(value=1.0) # coeficiente cognitivo !acordarse
+		self.c2 = tk.DoubleVar(value=1.0) # coeficiente social
 		self.grabar = tk.BooleanVar(value=False)
-		self.ejecutar_pso = tk.BooleanVar(value=True)
 		self.crear_interfaz()
     
 	def crear_interfaz(self):
@@ -86,11 +86,12 @@ class MenuPso:
 			foreground="gray"
 			)
 		info_label_1.pack(anchor="w", pady=2)
+
 		ttk.Radiobutton( 
 			frame_optimizacion_parametros, text="Minimizar", 
 			variable=self.maximizar_minimizar,
-			value=False).pack(anchor="w", pady=2
-			)
+			value=False).pack(anchor="w", pady=2)
+		
 		ttk.Radiobutton(
 			frame_optimizacion_parametros, 
 			text="Maximizar", 
@@ -152,9 +153,6 @@ class MenuPso:
 			variable=self.grabar).pack(anchor="w", pady=5)
 
 	def ejecutar_boton(self, parent):
-		"""
-		Crea botón de ejecutar y muestra valores seleccionados
-		"""
 		frame_botones = tk.Frame(parent)
 		frame_botones.pack(fill="x", padx=20, pady=20)
 		
@@ -167,7 +165,54 @@ class MenuPso:
 			font=("Arial", 10, "bold")
 			)
 		boton_ejecutar.pack(side="left", padx=5)
-		
+
+	def ejecutar_pso(self):
+		"""Ejecuta el algoritmo PSO con confirmación y cierre del menú"""
+		try:
+			# obteniendo las variables seleccionadas
+			funcion = self.funcion_seleccionada.get()
+			funcion_obj, dominio = self.funciones[funcion]
+			maximizar = self.maximizar_minimizar.get()
+			num_particulas = self.particulas.get()
+			num_iteraciones = self.iteraciones.get()
+			c1 = self.c1.get()
+			c2 = self.c2.get()
+			grabar = self.grabar.get()
+			
+			# Mostrar configuracion y confirmar
+			config_msg = f"""
+opciones seleccionadas PSO:
+==============================
+
+Función: {funcion}
+Objetivo: {'Maximizar' if maximizar else 'Minimizar'}
+Partículas: {num_particulas}
+Iteraciones: {num_iteraciones}
+C1: {c1:.1f} | C2: {c2:.1f}
+Grabar: {'Sí' if grabar else 'No'}
+
+Ejecutar PSO?
+"""
+			
+			respuesta = messagebox.askyesno("Confirmar Ejecución", config_msg)
+			if respuesta:
+				# Cerrar el menú antes de ejecutar
+				self.root.destroy()
+				
+				# iniciar el pso
+				inicio_programa = time.time()
+				enjambre = Swarm(num_particulas, dominio, maximice=maximizar, funcion=funcion_obj)
+				enjambre.inicialize_each_particle()
+				listillas = list(enjambre.iterations(num_iteraciones, c1, c2))
+				enjambre.graphs(listillas, grabar, inicio_programa)
+			else:
+				print("Error al ejecutar el PSO")
+				
+		except Exception as e:
+			print(f"Error al ejecutar el PSO: {e}")
+			messagebox.showerror("Error", f"Error al ejecutar PSO:\n{str(e)}")
+
+
 
 def main():
 	"""
@@ -184,6 +229,6 @@ def main():
 	
 	# Iniciar loop principal
 	root.mainloop()
-	print(menu.funcion_seleccionada.get())
+	
 if __name__ == "__main__":
 	main()
