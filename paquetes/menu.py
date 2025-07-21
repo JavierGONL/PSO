@@ -143,7 +143,7 @@ class MenuPso:
 		# Grabar
 		info_label_3 = ttk.Label(
 			frame_optimizacion_parametros, 
-			text="Desea grabar?", 
+			text="Desea grabar? (habrá más consumo de memoria y menor rendimiento en la presentación gráfica)", 
 			font=("Arial", 9), 
 			foreground="gray"
 			)
