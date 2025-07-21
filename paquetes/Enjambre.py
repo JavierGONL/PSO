@@ -6,6 +6,7 @@
 import random
 import time
 import os
+import cv2
 from paquetes.Funciones_objetivo import (rastrigin_function, shekel_function,
                                         himmelblaus_function, sphere_function,
                                         ackley_function_invertida
@@ -16,7 +17,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-funcion = rastrigin_function
+
 
 class Particle:  # particula
 	"""
@@ -32,7 +33,7 @@ class Particle:  # particula
 		self.p_position = Point(0, 0)
 		self.speed = Vector(0, 0)
 		self.value: float = 0
-		self.p_best_value: float = 0
+		self.p_best_value: float = None  # Cambiado a None para detectar primera evaluación
 		self.p_best_position = Point(0, 0)
 		self.historial_positions: list = [] # por si acaso
 		self.initialize: bool = False
@@ -40,7 +41,7 @@ class Particle:  # particula
 		self.maximice: bool = False
 		self.poco_movimiento: int = 0
 
-	def initialize_particle(self, maximice, dominio):
+	def initialize_particle(self, maximice, dominio, funcion):
 		"""
 		Definirle una posicion y velocidad inicial aleatoria 
 		"""
@@ -52,17 +53,23 @@ class Particle:  # particula
 		self.p_position = Point(*random_para_p)
 		self.initialize: bool = True
 		self.maximice = maximice
-		self.value = self.calculate_value()
+		self.value = self.calculate_value(funcion)
 
-	def calculate_value(self):
+	def calculate_value(self, funcion):
 		"""
-		calcula el valor de la funcion aplicado en la posicion actual y lo compara con el mejor valor
-		Dependiendo de lo que se desee se actualizara la mejor posicion
+		calcula el valor de la funcion aplicado en la posicion actual 
+		y lo compara con el mejor valor, dependiendo de lo que se desee 
+		se actualizara la mejor posicion
 		"""
 		if self.initialize:
 			self.historial_positions.append(self.p_position)
 			self.value = funcion(self.p_position.comp_to_list)
-			if self.value < self.p_best_value and not self.maximice:  # minimizar
+			
+			# Si es la primera vez que se calcula, asignar como mejor valor
+			if self.p_best_value is None:  # Para cuando se ejecute por primera vez, si no va a joder en algun momento por algo que aun no se que fue :#
+				self.p_best_value = self.value
+				self.p_best_position = self.p_position
+			elif self.value < self.p_best_value and not self.maximice:  # minimizar
 				self.p_best_value = self.value
 				self.p_best_position = self.p_position
 			elif self.value > self.p_best_value and self.maximice:  # maximizar
@@ -73,13 +80,14 @@ class Particle:  # particula
 			return "hay que inicializar la particula antes"
 
 class Swarm:
-	def __init__(self,
-				number_of_particles=0,
-				dominio=None,
-				maximice=False,
-				dimension=2):
-		if dominio is None:
-			dominio = []
+	def __init__(
+			self,
+			number_of_particles=0,
+			dominio=None,
+			maximice=False,
+			dimension=2,
+			funcion = None
+			):
 		self.number_of_particles = number_of_particles
 		# Para el dominio solo pasamos como si fuera de una variable,
 		# pero en verdad seria para ambos ejes, como si fuera un rectangulo
@@ -94,10 +102,11 @@ class Swarm:
 		self.dimension: int = dimension
 		self.w = 0.7
 		self.particulas_poco_mov: int = 0
+		self.funcion = funcion
 
 	def inicialize_each_particle(self):  # Falta revisar si funciona
 		for i in self.particulas:
-			i.initialize_particle(self.maximice, self.dominio)
+			i.initialize_particle(self.maximice, self.dominio, self.funcion)
 
 	def update_gbestv_and_gbestpos(self):
 		"""
@@ -220,7 +229,7 @@ class Swarm:
 			i.p_position = self.correct_position(i.p_position)
 
 			# calcula el valor y actualiza las best globales
-			i.calculate_value()
+			i.calculate_value(self.funcion)
 			self.update_gbestv_and_gbestpos()     
 
 	def iterations(self, number_iterations, c1, c2):
@@ -291,13 +300,11 @@ class Swarm:
 		self.lista = lista
 		self.tiempo_inicio_programa = tiempo_inicio_programa
 		self.record = record
-		if self.record == True: #se borran las imagenes existentes en la carpeta images
-			iter = 1
-			while True:
-				try: 
-					os.remove(f"images/{iter}.png")
-					iter += 1
-				except: break
+		actual_images = os.listdir("images_temp") #lista con los nombres de las imágenes
+		#se borran las imagenes existentes en la carpeta images
+		if self.record == True:
+			for i in actual_images:
+				os.remove(f"images_temp/{i}")
 		# resolucion
 		# linspace de numpy crea un arreglo de n datos a distancia uniforme entre los límites del dominio
 		x = np.linspace(self.dominio[0], self.dominio[1], 60) 
@@ -313,7 +320,7 @@ class Swarm:
 		except Exception:
 			pass  # Si no esta en Windows o no funciona lo ignora
 
-		z = funcion((x, y))  # Calculo vectorizado de la función
+		z = self.funcion((x, y))  # Calculo vectorizado de la función
 
 		ax = fig.add_subplot(1, 2, 1, projection='3d')
 		ax_2 = fig.add_subplot(2, 2, 2)
@@ -336,7 +343,7 @@ class Swarm:
 			
 			# Superficie 3D
 			ax.plot_surface(x, y, z, cmap='viridis', alpha=0.6)
-			ax.set_title(f"grafica 3D de la funcion {str(funcion.__name__)}")
+			ax.set_title(f"grafica 3D de la funcion {str(self.funcion.__name__)}")
 			ax.set_xlabel("eje X")  # Necesario después de clear()
 			ax.set_ylabel("eje Y")
 			ax.set_zlabel("Eje Z")
@@ -366,7 +373,7 @@ class Swarm:
 			iteration_actual = self.lista[3][i]
 			plt.pause(1/5000)
 			if self.record == True:
-				plt.savefig(f"images/{self.lista[3][i]}",dpi=150, bbox_inches='tight')
+				plt.savefig(f"images_temp/{self.lista[3][i]}",dpi=150, bbox_inches='tight')
 			else: pass
 			
 
@@ -380,9 +387,39 @@ class Swarm:
 									f"mejor posición: \nX: {self.lista[8].x:.4f}\nY: {self.lista[8].y:.4f}"
 									f"\nvalor: {self.lista[9]:.4f}")
 			ax_3.set_title(telemetria_final)
-			plt.savefig(f"images/{self.lista[3][i]}",dpi=150, bbox_inches='tight')
+			plt.savefig(f"images_temp/{self.lista[3][i]}",dpi=150, bbox_inches='tight')
 		
 		plt.ioff()
 		plt.show()
 		if self.record == True: #aquí se renderiza el video
-				pass
+			# Obtener lista actualizada de imágenes después de guardar todas
+			updated_images = os.listdir("images_temp")
+			# Ordenar numéricamente en lugar de alfabéticamente 
+   			# #esto definitivamente lo hizo copilot
+			updated_images.sort(key=lambda x: int(x.split('.')[0]))
+			
+			images_path = []
+			for i in updated_images:
+				images_path.append(f"images_temp/{i}")
+			num_frames = len(images_path)
+			fps_dinamico = len(images_path)/10 #asegura una cantidad de FPS acorde a la cantidad de frames
+			print(f"Creando video con {num_frames} frames a {fps_dinamico:.2f} ")
+			print(f"Orden de frames: {[img.split('/')[-1] for img in images_path[:5]]}...")  # Mostrar primeros 5
+			
+			try: 
+				str_ultimo_video = os.listdir("videos")[-1]
+				nombre_ultimo_video = int(str_ultimo_video[:-4]) #esto borra el .mp4 del nombre del archivo.
+			except IndexError: nombre_ultimo_video = 0 #esto evita errores si la lista está vacía
+			video_name = nombre_ultimo_video + 1
+			cv2_fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+			frame = cv2.imread(images_path[0])
+			size = list(frame.shape)
+			del size[2]
+			size.reverse()
+			video = cv2.VideoWriter(f"videos/{video_name}.mp4", cv2_fourcc,
+                           fps_dinamico, size)
+			for i in range(0,len(images_path),1):
+				video.write(cv2.imread(images_path[i]))
+				print(f"frame {i+1} de {len(images_path)}")
+			video.release()
+			print(f"Video guardado: videos/{video_name}.mp4")

@@ -4,10 +4,6 @@
     * autores: kevin javier gonzalez luna, ivan felipe maluche, david Montes
 '''
 import time
-from paquetes.Enjambre import Swarm
+from paquetes.menu import main
 
-inicio_programa = time.time()
-enjambre = Swarm(50, [-5.12, 5.12], maximice= False)
-enjambre.inicialize_each_particle()
-listillas = list(enjambre.iterations(200, 2, 1))
-enjambre.graphs(listillas,True,inicio_programa)
+main()
