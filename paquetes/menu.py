@@ -9,6 +9,7 @@ from paquetes.Enjambre import Swarm
 
 import tkinter as tk
 from tkinter import ttk, messagebox
+from PIL import Image, ImageTk
 
 class MenuPso:
 	def __init__(self,root):
@@ -36,6 +37,11 @@ class MenuPso:
 		self.crear_interfaz()
     
 	def crear_interfaz(self):
+		imagen_pil = Image.open("paquetes/error-418_dtb3ak.png")
+		imagen_resized = imagen_pil.resize((80, 80), Image.Resampling.LANCZOS)
+		self.imagen_418 = ImageTk.PhotoImage(imagen_resized)
+		label_imagen = tk.Label(self.root, image=self.imagen_418, bg="#f0f0f0")
+		label_imagen.pack(pady=10)
 		# titulo de la aplicación
 		titulo = tk.Label(self.root, text = "PSO",
 						  font=("Arial", 16, "bold"), bg='#f0f0f0', fg='#2c3e50')

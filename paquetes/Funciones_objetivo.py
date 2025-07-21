@@ -5,18 +5,6 @@
 '''
 from numpy import pi, cos, exp, sqrt
 
-def elegir_funcion(funcion, parametros): # si hago esto? o busco algo mas decente?
-    print("que funcion quiere optimizar:"
-          "\n1. rastrigin function"
-          "\n2. himmelblaus"
-          "\n3. sphere function"
-          "\n4. shekel function"
-          "\n5. ackley function (invertida)"
-          "-"*5 + "solo ingrese el numero" +"-"*5 
-          )
-    seleccion = int(input("\n-> "))
-    return
-
 def rastrigin_function(posicion:list, A_constante = 10)-> float: # le entra la posicion y calcula el valor
     # where A=10 (generalmente and posicion ∈ [-5.12,5.12]
     n = len(posicion) # dimension

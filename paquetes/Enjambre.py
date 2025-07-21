@@ -376,7 +376,6 @@ class Swarm:
 				plt.savefig(f"images_temp/{self.lista[3][i]}",dpi=150, bbox_inches='tight')
 			else: pass
 			
-
 		if iteration_actual != self.lista[5]: # telemetria final
 			ax_3.clear()
 			ax_3.axis('off')
