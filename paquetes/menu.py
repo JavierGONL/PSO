@@ -43,9 +43,12 @@ class MenuPso:
 		label_imagen = tk.Label(self.root, image=self.imagen_418, bg="#f0f0f0")
 		label_imagen.pack(pady=10)
 		# titulo de la aplicación
-		titulo = tk.Label(self.root, text = "PSO",
-						  font=("Arial", 16, "bold"), bg='#f0f0f0', fg='#2c3e50')
-		titulo.pack(pady=10)  # .pack() organiza el elemento en la ventana con margen vertical
+		titulo = tk.Label(
+			self.root, text = "PSO",
+			font=("Arial", 16, "bold"), 
+			bg='#f0f0f0', fg='#2c3e50'
+			)
+		titulo.pack(pady=10)  # .pack() organiza el elemento en la ventana con margen vertical por defecto
 		
 		# frame principal
 		main_frame = tk.Frame(self.root, bg="#f0f0f0")
@@ -218,11 +221,9 @@ Ejecutar PSO?
 			print(f"Error al ejecutar el PSO: {e}")
 			messagebox.showerror("Error", f"Error al ejecutar PSO:\n{str(e)}")
 
-
-
 def main():
 	"""
-	Función principal que lanza la GUI
+	Funcion principal que se ejecuta en el main.py
 	"""
 	root = tk.Tk()
 	menu = MenuPso(root)
