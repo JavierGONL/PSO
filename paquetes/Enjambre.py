@@ -302,9 +302,8 @@ class Swarm:
 		self.record = record
 		actual_images = os.listdir("images_temp") #lista con los nombres de las imágenes
 		#se borran las imagenes existentes en la carpeta images
-		if self.record == True:
-			for i in actual_images:
-				os.remove(f"images_temp/{i}")
+		for i in actual_images:
+			os.remove(f"images_temp/{i}")
 		# resolucion
 		# linspace de numpy crea un arreglo de n datos a distancia uniforme entre los límites del dominio
 		x = np.linspace(self.dominio[0], self.dominio[1], 60) 
