@@ -325,7 +325,7 @@ class Swarm:
 		ax_2 = fig.add_subplot(2, 2, 2)
 		ax_2.set_xlim(self.dominio[0], self.dominio[1])
 		ax_2.set_ylim(self.dominio[0], self.dominio[1])
-		ax_3 = fig.add_subplot(4, 2, 8)
+		ax_3 = fig.add_subplot(5, 2, 10)
 		
 		# titulos ejes
 		ax.set_xlabel("eje X")
