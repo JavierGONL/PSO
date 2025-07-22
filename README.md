@@ -129,7 +129,70 @@ direction TB
 
     Point <|-- Vector
 ```
+### Diagrama clase menu
+```mermaid
+classDiagram
+direction LR
+    class Swarm {
+	    +number_of_particles
+	    +dominio
+	    +maximice
+	    +dimension
+	    +funcion
+	    +particles
+	    +g_best_value
+	    +g_best_position
+	    +w
+	    +particulas_poco_mov
+	    +inicialize_each_particle()
+	    +update_gbestv_and_gbestpos()
+	    +comprobacion_convergencia_por_poco_mov()
+	    +correct_position()
+	    +correct_speed()
+	    +update_particles()
+	    +iterations()
+	    +listas_para_david()
+	    +graphs()
+    }
 
+    class Particle {
+	    +p_position
+	    +speed
+	    +value
+	    +p_best_value
+	    +p_best_position
+	    +historial_position
+	    +initialize
+	    +dimension
+	    +maximice
+	    +poco_movimiento
+	    +initialize_particle()
+	    +calculate_value()
+    }
+
+    class MenuPso {
+	    +root
+	    +funciones
+	    +funcion_seleccionada
+	    +dominio
+	    +maximizar_minimizar
+	    +particulas
+	    +iteraciones
+	    +c1
+	    +c2
+	    +grabar
+	    +crear_interfaz()
+	    +seleccionar_funcion()
+	    +max_min_coeficiente()
+	    +ejecutar_pso()
+	    +Main()
+    }
+
+    Swarm *-- Particle
+    MenuPso *-- Swarm
+
+
+```
 
 Cosas pendientes por hacer:
 * ~~dormir bien~~
