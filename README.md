@@ -8,7 +8,7 @@
 integrantes: Kevin Javier Gonzalez Luna, Iván Felipe Maluche Suárez, David Alejandro Montes Rodríguez.
 
 ## Descripción del procedimiento:
-
+### 1. Algoritmo del pso
 El Particle Swarm Optimization (PSO) es un algoritmo computacional metaheuristico, es decir; que finaliza con una solución lo suficientemente buena para el problema que se busca optimizar. 
 
 El alma del PSO es un enjambre de partículas (como lo indica su nombre), en el cual muchas partículas buscan una posición objetivo (que puede ser bien o un máximo o un mínimo) a través de multiples iteraciones. El PSO funciona especialmente bien en el caso de que se tengan problemas que no se puedan modelar mediante funciones diferenciables.
@@ -59,16 +59,18 @@ En primer lugar se crea la clase partícula (Particle) con los siguientes atribu
 ```mermaid
 classDiagram
     class Particle{
-        p_position
-        speed
-        value
-        p_best_value
-        p_best_position
-        historial_positions
-        initialize
-        dimension
-        initialize_particle()
-        calculate_value()
+        +p_position
+	    +speed
+	    +value
+	    +p_best_value
+	    +p_best_position
+	    +historial_position
+	    +initialize
+	    +dimension
+	    +maximice
+	    +poco_movimiento
+	    +initialize_particle()
+	    +calculate_value()
     }
 ```
 
@@ -77,17 +79,25 @@ Ya teniendo la clase partícula, se hace necesario crear la clase Swarm (enjambr
 ```mermaid
 classDiagram
     class Swarm{
-        number_of_particles
-        dominio
-        particulas
-        g_best_value
-        g_best_position
-        maximice
-        dimension
-        inicialize_each_particle()
-        update_gbestv_and_gbestpos()
-        update_particles()
-        iterations()
+        +number_of_particles
+	    +dominio
+	    +maximice
+	    +dimension
+	    +funcion
+	    +particles
+	    +g_best_value
+	    +g_best_position
+	    +w
+	    +particulas_poco_mov
+	    +inicialize_each_particle()
+	    +update_gbestv_and_gbestpos()
+	    +comprobacion_convergencia_por_poco_mov()
+	    +correct_position()
+	    +correct_speed()
+	    +update_particles()
+	    +iterations()
+	    +listas_para_david()
+	    +graphs()
     }
 ```
 
@@ -129,6 +139,7 @@ direction TB
 
     Point <|-- Vector
 ```
+Para ejecutar todo el codigo se creo una clase dedicada a encapsular las variables necesarios para ejecutar un menu interactivo por el cual el usuario sea capaz de elegir una funcion deseada junto con otras variables relacionadas (coeficientes social y cognitivo, inercia, numero de particulas e iteraciones, etc)
 ### Diagrama clase menu
 ```mermaid
 classDiagram
@@ -193,12 +204,6 @@ direction LR
 
 
 ```
-
-Cosas pendientes por hacer:
-* ~~dormir bien~~
-* hacer que los enjambres puedan recibir diferentes funciones
-* hacer que los enjambres devuelvan las listas X,Y,Z para gráficar
-* Crear una clase o función gráfica
- que reciba los argumentos de la función (como arreglos), la función y la grafique.
-* revisar si matplotlib puede implementar en una sola ventana varias gráficas que se muestran al pulsar algún lado de la pantalla.
-* optimizar codigo y hacerlo presentable
+### 2. Graficas
+Para realizar una representacion grafica del proceso por el cual el pso encuentra los puntos maximos y minimos se hizo uso de la libreria matplotlib, la cual por medio de un metodo dedicado integrado en la clase enjambre llamado **graphs()** permite dibujar la grafica en 3D de la funcion junto con una grafica de calor en la que se pueda ver claramente como las particulas recorren la funcion en el dominio.
+Para esto la clase enjambre por medio del metodo **iterations()** y el metodo **listas_para_david** envia los datos de la iteracion actual de tal forma que por medio de los metodos propios de la libreria los datos puedan ser interpretados como coordenadas y valores los cuales son graficados.
