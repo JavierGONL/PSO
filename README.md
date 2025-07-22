@@ -8,7 +8,7 @@
 integrantes: Kevin Javier Gonzalez Luna, Iván Felipe Maluche Suárez, David Alejandro Montes Rodríguez.
 
 ## Descripción del procedimiento:
-### 1. Algoritmo del pso
+### Algoritmo del pso
 El Particle Swarm Optimization (PSO) es un algoritmo computacional metaheuristico, es decir; que finaliza con una solución lo suficientemente buena para el problema que se busca optimizar. 
 
 El alma del PSO es un enjambre de partículas (como lo indica su nombre), en el cual muchas partículas buscan una posición objetivo (que puede ser bien o un máximo o un mínimo) a través de multiples iteraciones. El PSO funciona especialmente bien en el caso de que se tengan problemas que no se puedan modelar mediante funciones diferenciables.
@@ -204,6 +204,10 @@ direction LR
 
 
 ```
-### 2. Graficas
+### Graficas
 Para realizar una representacion grafica del proceso por el cual el pso encuentra los puntos maximos y minimos se hizo uso de la libreria matplotlib, la cual por medio de un metodo dedicado integrado en la clase enjambre llamado **graphs()** permite dibujar la grafica en 3D de la funcion junto con una grafica de calor en la que se pueda ver claramente como las particulas recorren la funcion en el dominio.
 Para esto la clase enjambre por medio del metodo **iterations()** y el metodo **listas_para_david** envia los datos de la iteracion actual de tal forma que por medio de los metodos propios de la libreria los datos puedan ser interpretados como coordenadas y valores los cuales son graficados.
+<div align='center'>
+<figure> <img src="https://github.com/user-attachments/assets/91c5a128-50f7-4c6e-9479-75401191b354" alt="" width="1800" height="auto"/></br>
+<figcaption><b></b></figcaption></figure>
+</div>
