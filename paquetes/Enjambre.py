@@ -198,10 +198,11 @@ class Swarm:
 		else:
 			self.w = 0.1 # mantener una inercia minima
 
-		valores_randoms_1 = [random.uniform(0, 1)
-							for _ in range(self.dimension)]
-		valores_randoms_2 = [random.uniform(0, 1)
-							for _ in range(self.dimension)]
+		valores_randoms_1 = [
+			random.uniform(0, 1) for _ in range(self.dimension)]
+		valores_randoms_2 = [
+			random.uniform(0, 1) for _ in range(self.dimension)
+			]
 		r1 = Vector(*valores_randoms_1) 
 		r2 = Vector(*valores_randoms_2)
 		for i in self.particulas:
@@ -265,16 +266,18 @@ class Swarm:
 			# print(lista_mejores_posiciones)
 		best_position = round(self.g_best_position, 5)
 		best_value = round(self.g_best_value, 5)
-		lista_retorno = [np.array(lista_X), 
-						np.array(lista_Y),
-						np.array(lista_Z),
-						np.array(lista_iterations),
-						np.array(lista_tiempos),
-						it,
-						np.array(lista_mejores_posiciones),
-						np.array(lista_mejores_valores),
-						best_position,
-						best_value]
+		lista_retorno = [
+			np.array(lista_X), 
+			np.array(lista_Y),
+			np.array(lista_Z),
+			np.array(lista_iterations),
+			np.array(lista_tiempos),
+			it,
+			np.array(lista_mejores_posiciones),
+			np.array(lista_mejores_valores),
+			best_position,
+			best_value
+			]
 		print(f"la mejor posicion es:\n{best_position}\n"
 				f"valor: {best_value}")
 		return lista_retorno
@@ -363,28 +366,33 @@ class Swarm:
 									edgecolor='black', linewidth=1.5)
 			tiempo_programa_actual = time.time() - self.tiempo_inicio_programa
 			# telemetria de cada iteracion
-			telemetria = (f"Iteracion: {self.lista[3][i]} \n "
-							f"Tiempo de ejecución total del programa: {tiempo_programa_actual:.2f}s \n"
-          					f"Tiempo ejecución PSO: {self.lista[4][i]} s \n "
-							f"Mejor posicion actual: \nX: {self.lista[6][i].x:.4f}\nY: {self.lista[6][i].y:.4f}"
-							f"\nValor: {self.lista[7][i]:.5f}")
+			telemetria = (
+			f"Iteracion: {self.lista[3][i]} \n "
+			f"Tiempo de ejecución total del programa: {tiempo_programa_actual:.2f}s \n"
+      f"Tiempo ejecución PSO: {self.lista[4][i]} s \n "
+			f"Mejor posicion actual: \nX: {self.lista[6][i].x:.4f}\nY: {self.lista[6][i].y:.4f}"
+			f"\nValor: {self.lista[7][i]:.5f}"
+			)
 			ax_3.set_title(telemetria)
 			ax_3.axis('off')
 			iteration_actual = self.lista[3][i]
 			plt.pause(1/5000)
 			if self.record == True:
 				plt.savefig(f"images_temp/{self.lista[3][i]}",dpi=150, bbox_inches='tight')
-			else: pass
+			else: 
+				pass
 			
 		if iteration_actual != self.lista[5]: # telemetria final
 			ax_3.clear()
 			ax_3.axis('off')
 			tiempo_total_programa = time.time() - self.tiempo_inicio_programa
-			telemetria_final = (f"El programa acabo en la iteracion {iteration_actual}\n"
-									f"Tiempo Total de ejecucion: {tiempo_total_programa:.2f}s\n"
-             						f"Tiempo ejecución final PSO: {self.lista[4][i]} s \n "
-									f"mejor posición: \nX: {self.lista[8].x:.4f}\nY: {self.lista[8].y:.4f}"
-									f"\nvalor: {self.lista[9]:.4f}")
+			telemetria_final = (
+				f"El programa acabo en la iteracion {iteration_actual}\n"
+				f"Tiempo Total de ejecucion: {tiempo_total_programa:.2f}s\n"
+        f"Tiempo ejecución final PSO: {self.lista[4][i]} s \n "
+				f"mejor posición: \nX: {self.lista[8].x:.4f}\nY: {self.lista[8].y:.4f}"
+				f"\nvalor: {self.lista[9]:.4f}"
+				)
 			ax_3.set_title(telemetria_final)
 			plt.savefig(f"images_temp/{self.lista[3][i]}",dpi=150, bbox_inches='tight')
 		
@@ -415,8 +423,10 @@ class Swarm:
 			size = list(frame.shape)
 			del size[2]
 			size.reverse()
-			video = cv2.VideoWriter(f"videos/{video_name}.mp4", cv2_fourcc,
-                           fps_dinamico, size)
+			video = cv2.VideoWriter(
+				f"videos/{video_name}.mp4", cv2_fourcc,
+        fps_dinamico, size
+				)
 			for i in range(0,len(images_path),1):
 				video.write(cv2.imread(images_path[i]))
 				print(f"frame {i+1} de {len(images_path)}")

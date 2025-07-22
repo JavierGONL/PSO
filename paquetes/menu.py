@@ -2,9 +2,11 @@
 
 import time
 
-from paquetes.Funciones_objetivo import (rastrigin_function, shekel_function,
-                                        himmelblaus_function, sphere_function,
-                                        ackley_function_invertida)
+from paquetes.Funciones_objetivo import (
+	rastrigin_function, shekel_function,
+  himmelblaus_function, sphere_function,
+  ackley_function_invertida
+	)
 from paquetes.Enjambre import Swarm
 
 import tkinter as tk
@@ -42,6 +44,7 @@ class MenuPso:
 		self.imagen_418 = ImageTk.PhotoImage(imagen_resized)
 		label_imagen = tk.Label(self.root, image=self.imagen_418, bg="#f0f0f0")
 		label_imagen.pack(pady=10)
+
 		# titulo de la aplicación
 		titulo = tk.Label(
 			self.root, text = "PSO",
@@ -236,6 +239,3 @@ def main():
 	
 	# Iniciar loop principal
 	root.mainloop()
-	
-if __name__ == "__main__":
-	main()
