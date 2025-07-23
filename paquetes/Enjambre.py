@@ -1,7 +1,7 @@
 '''
     * Descripcion: clase particula y enjambre
     * documentos relacionados:  
-    * autores: kevin javier gonzalez luna, ivan felipe maluche, david Montes
+    * autores: Kevin Javier Gonzalez, Ivan Felipe Maluche, David Alejandro Montes
 '''
 import random
 import time

@@ -1,7 +1,7 @@
 '''
     * Descripción: se definen una serie de funciones de ejemplo que permitiran demostrar el funcionamiento del pso 
     * documentos relacionados: paquetes
-    * autores: kevin javier gonzalez luna, ivan felipe maluche, david Montes
+    * autores: Kevin Javier Gonzalez, Ivan Felipe Maluche, David Alejandro Montes
 '''
 from numpy import pi, cos, exp, sqrt
 

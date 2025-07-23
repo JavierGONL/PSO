@@ -1,7 +1,7 @@
 '''
     * Descripción: 
     * documentos relacionados: paquetes
-    * autores: kevin javier gonzalez luna, ivan felipe maluche, david Montes
+    * autores: Kevin Javier Gonzalez, Ivan Felipe Maluche, David Alejandro Montes
 '''
 import tkinter as tk
 
