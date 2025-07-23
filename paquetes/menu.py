@@ -193,8 +193,8 @@ class MenuPso:
 			c2 = self.c2.get()
 			grabar = self.grabar.get()
 			
-			# Mostrar configuracion y confirmar
-			config_msg = f"""
+			# mostrar configuracion y confirmar
+			configuracion = f"""
 opciones seleccionadas PSO:
 ==============================
 
@@ -208,7 +208,7 @@ Grabar: {grabar}
 
 Ejecutar PSO?
 """
-			respuesta = messagebox.askyesno("", config_msg)
+			respuesta = messagebox.askyesno("configuracion", configuracion)
 			if respuesta:
 				# Cerrar el menu antes de ejecutar
 				self.root.destroy()
