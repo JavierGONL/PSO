@@ -140,7 +140,7 @@ direction TB
     Point <|-- Vector
 ```
 Para ejecutar todo el codigo se creo una clase dedicada a encapsular las variables necesarios para ejecutar un menu interactivo por el cual el usuario sea capaz de elegir una funcion deseada junto con otras variables relacionadas (coeficientes social y cognitivo, inercia, numero de particulas e iteraciones, etc)
-### Diagrama clase menu
+### Diagrama composicion de la solucion para el PSO
 ```mermaid
 classDiagram
 direction LR
