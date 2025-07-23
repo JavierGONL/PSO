@@ -7,10 +7,7 @@ import random
 import time
 import os
 import cv2
-from paquetes.Funciones_objetivo import (rastrigin_function, shekel_function,
-                                        himmelblaus_function, sphere_function,
-                                        ackley_function_invertida
-                                        )
+
 from paquetes.Vector_v2 import Point, Vector
 
 import numpy as np

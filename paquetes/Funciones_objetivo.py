@@ -19,14 +19,24 @@ def himmelblaus_function(posicion):
     segundo_termino = (posicion[0] + posicion[1]**2 - 7)**2
     return primer_termino + segundo_termino
 
-def sphere_function(posicion):
-    suma = 0
-    for i in posicion:
-        suma += i**2
-    return suma
+def shekel_function_maximizar(posicion):
+    m = 10
+    n = 2
+    c1 = [0.1, 0.2, 0.2, 0.4, 0.4, 0.6, 0.3, 0.7, 0.5, 0.5]
+    c2 = [
+        [4, 1, 8, 6, 3, 2, 5, 8, 6, 7],
+        [4, 1, 8, 6, 7, 9, 3, 1, 2, 3.6]
+    ]
+    total = 0
+    for i in range(m):
+        suma = 0
+        for j in range(n):
+            suma += (posicion[j] - c2[j][i]) ** 2
+        total += 1 / (suma + c1[i])
+    return total
 
 def shekel_function(posicion):
-    m = -10
+    m = 10
     n = 2
     c1 = [0.1, 0.2, 0.2, 0.4, 0.4, 0.6, 0.3, 0.7, 0.5, 0.5]
     c2 = [

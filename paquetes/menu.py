@@ -4,7 +4,7 @@ import time
 
 from paquetes.Funciones_objetivo import (
 	rastrigin_function, shekel_function,
-  himmelblaus_function, sphere_function,
+  himmelblaus_function, shekel_function_maximizar,
   ackley_function_invertida
 	)
 from paquetes.Enjambre import Swarm
@@ -23,7 +23,7 @@ class MenuPso:
 			"rastrigin_function": (rastrigin_function, [-5.12, 5.12]),
 			"shekel_function": (shekel_function, [0, 10]),
 			"himmelblaus_function": (himmelblaus_function, [-5, 5]),
-			"sphere_function": (sphere_function, [-5, 5]),
+			"shekel_function_maximizar": (shekel_function_maximizar, [0, 10]),
 			"ackley_function_invertida": (ackley_function_invertida, [-5, 5])
 		}
 
@@ -71,7 +71,7 @@ class MenuPso:
 			"rastrigin_function": "Rastrigin - la funcion que menos consume si se quere grabar",
 			"shekel_function": "Shekel - funcion con multiples minimos",
 			"himmelblaus_function": "Himmelblaus - otra funcion con multiples minimos",
-			"sphere_function": "Sphere - idk, esta de mas",
+			"shekel_function_maximizar": "Shekel para maximizar - funcion con multiples maximos",
 			"ackley_function_invertida": "Ackley invertida - para probar la maximizacion"
 		}
 
