@@ -196,7 +196,6 @@ direction LR
 	    +seleccionar_funcion()
 	    +max_min_coeficiente()
 	    +ejecutar_pso()
-	    +Main()
     }
 
     Swarm *-- Particle
