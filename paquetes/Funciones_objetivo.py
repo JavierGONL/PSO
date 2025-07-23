@@ -26,7 +26,7 @@ def sphere_function(posicion):
     return suma
 
 def shekel_function(posicion):
-    m = 10
+    m = -10
     n = 2
     c1 = [0.1, 0.2, 0.2, 0.4, 0.4, 0.6, 0.3, 0.7, 0.5, 0.5]
     c2 = [

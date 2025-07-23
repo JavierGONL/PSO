@@ -16,9 +16,6 @@ from paquetes.Vector_v2 import Point, Vector
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-
-
 class Particle:  # particula
 	"""
 	Cada particula esta definida por una posicion,
@@ -47,8 +44,9 @@ class Particle:  # particula
 		"""
 		# Usando list comprehension para generar los randoms
 		random_para_V = [random.uniform(-1, 1) for _ in range(self.dimension)]
-		random_para_p = [random.uniform(dominio[0], dominio[1])
-						for _ in range(self.dimension)]
+		random_para_p = [
+			random.uniform(dominio[0], dominio[1]) for _ in range(self.dimension)
+		]
 		self.speed = Vector(*random_para_V)
 		self.p_position = Point(*random_para_p)
 		self.initialize: bool = True
@@ -65,7 +63,7 @@ class Particle:  # particula
 			self.historial_positions.append(self.p_position)
 			self.value = funcion(self.p_position.comp_to_list)
 			
-			# Si es la primera vez que se calcula, asignar como mejor valor
+			# Si es la primera vez que se calcula se asigna como mejor valor
 			if self.p_best_value is None:  # Para cuando se ejecute por primera vez, si no va a joder en algun momento por algo que aun no se que fue :#
 				self.p_best_value = self.value
 				self.p_best_position = self.p_position
@@ -82,10 +80,10 @@ class Particle:  # particula
 class Swarm:
 	def __init__(
 			self,
-			number_of_particles=0,
-			dominio=None,
-			maximice=False,
-			dimension=2,
+			number_of_particles:int,
+			dominio:list,
+			maximice:bool =False,
+			dimension:int=2,
 			funcion = None
 			):
 		self.number_of_particles = number_of_particles
@@ -123,7 +121,7 @@ class Swarm:
 
 	def comprobacion_convergencia_por_poco_movimiento(self):
 		"""
-		Si el 3/4 de particulas presentan poco movimiento sale
+		Si el 3/4 de particulas en la iteracion presentan poco movimiento sale
 		"""
 		self.particulas_poco_mov = 0
 		for i in self.particulas:
@@ -149,7 +147,7 @@ class Swarm:
 			position.y = (self.dominio[0]) / 2
 		return position
 	
-	def correct_speed(self, speed):
+	def limit_speed(self, speed):
 		"""
 		Restringe la velocidad de la particula al dominio definido.
 		"""
@@ -183,7 +181,7 @@ class Swarm:
 		r1: vector de valores aleatorios entre 0 y 1 de longitud igual a la
 				del vector velocidad.
 		**xi(t): mejor posicion en la que ha estado la particula i hasta
-						 el momento.
+						el momento.
 		xi(t): posicion de la particula i en el momento t.
 					 c2: coeficiente social.
 		r2: vector de valores aleatorios entre 0 y 1 de longitud igual a la
@@ -216,7 +214,7 @@ class Swarm:
 			i.speed = primer_termino + segundo_termino + tercer_termino
 
 			# Restringe la velocidad al dominio
-			i.speed = self.correct_speed(i.speed)
+			i.speed = self.limit_speed(i.speed)
 
 			# Actualizar la posicion y revisar si hay poco movimiento
 			next_position = i.p_position + i.speed
@@ -278,8 +276,7 @@ class Swarm:
 			best_position,
 			best_value
 			]
-		print(f"la mejor posicion es:\n{best_position}\n"
-				f"valor: {best_value}")
+		print(f"la mejor posicion es:\n{best_position}\nvalor: {best_value}")
 		return lista_retorno
         
 	def listas_para_david(self):
@@ -329,7 +326,7 @@ class Swarm:
 		ax_2 = fig.add_subplot(2, 2, 2)
 		ax_2.set_xlim(self.dominio[0], self.dominio[1])
 		ax_2.set_ylim(self.dominio[0], self.dominio[1])
-		ax_3 = fig.add_subplot(4, 2, 8)
+		ax_3 = fig.add_subplot(8, 2, 16)
 		
 		# titulos ejes
 		ax.set_xlabel("eje X")
@@ -351,8 +348,10 @@ class Swarm:
 			ax.set_ylabel("eje Y")
 			ax.set_zlabel("Eje Z")
 
-			ax.scatter3D(self.lista[0][i], self.lista[1][i], self.lista[2][i], 
-									c='red', s=50, edgecolor='k', linewidth=1.5)
+			ax.scatter3D(
+				self.lista[0][i], self.lista[1][i], self.lista[2][i], 
+				c='red', s=50, edgecolor='k', linewidth=1.5
+				)
 			
 			# Recrear el mapa de calor en cada iteración
 			contour = ax_2.contourf(x, y, z, cmap="viridis", levels=20)
@@ -362,16 +361,18 @@ class Swarm:
 			ax_2.set_xlim(self.dominio[0], self.dominio[1])
 			ax_2.set_ylim(self.dominio[0], self.dominio[1])
 
-			ax_2.scatter(self.lista[0][i], self.lista[1][i], c='red', s=50,
-									edgecolor='black', linewidth=1.5)
+			ax_2.scatter(
+				self.lista[0][i], self.lista[1][i], 
+				c='red', s=50, edgecolor='black', linewidth=1.5
+				)
 			tiempo_programa_actual = time.time() - self.tiempo_inicio_programa
 			# telemetria de cada iteracion
 			telemetria = (
-			f"Iteracion: {self.lista[3][i]} \n "
-			f"Tiempo de ejecución total del programa: {tiempo_programa_actual:.2f}s \n"
-      f"Tiempo ejecución PSO: {self.lista[4][i]} s \n "
-			f"Mejor posicion actual: \nX: {self.lista[6][i].x:.4f}\nY: {self.lista[6][i].y:.4f}"
-			f"\nValor: {self.lista[7][i]:.5f}"
+				f"Iteracion: {self.lista[3][i]} \n "
+				f"Tiempo de ejecución total del programa: {tiempo_programa_actual:.2f}s \n"
+				f"Tiempo ejecución PSO: {self.lista[4][i]} s \n "
+				f"Mejor posicion actual: \nX: {self.lista[6][i].x:.4f}\nY: {self.lista[6][i].y:.4f}"
+				f"\nValor: {self.lista[7][i]:.5f}"
 			)
 			ax_3.set_title(telemetria)
 			ax_3.axis('off')

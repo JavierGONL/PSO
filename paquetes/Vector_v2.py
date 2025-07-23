@@ -79,6 +79,7 @@ class Point: #este es el punto que me robe de la clase shape, tiene un metodo pa
         return f"X: {self.x}\nY: {self.y}"
     def __repr__(self):
         return f"X: {self.x}\nY: {self.y}"
+        
 class Vector(Point):
     def __init__(self, x:float, y:float):
         super().__init__(x,y) #hereda los metodos dunder de operaciones de la clase Point
