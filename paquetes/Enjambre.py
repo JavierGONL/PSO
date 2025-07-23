@@ -27,7 +27,7 @@ class Particle:  # particula
 		self.p_position = Point(0, 0)
 		self.speed = Vector(0, 0)
 		self.value: float = 0
-		self.p_best_value: float = None  # Cambiado a None para detectar primera evaluación
+		self.p_best_value: float = None  # Cambiado a None para la primera evaluacion
 		self.p_best_position = Point(0, 0)
 		self.historial_positions: list = [] # por si acaso
 		self.initialize: bool = False
@@ -59,7 +59,6 @@ class Particle:  # particula
 		if self.initialize:
 			self.historial_positions.append(self.p_position)
 			self.value = funcion(self.p_position.comp_to_list)
-			
 			# Si es la primera vez que se calcula se asigna como mejor valor
 			if self.p_best_value is None:  # Para cuando se ejecute por primera vez, si no va a joder en algun momento por algo que aun no se que fue :#
 				self.p_best_value = self.value
@@ -192,12 +191,8 @@ class Swarm:
 			self.w = self.w - decaimiento  # actualiza la inercia
 		else:
 			self.w = 0.1 # mantener una inercia minima
-
-		valores_randoms_1 = [
-			random.uniform(0, 1) for _ in range(self.dimension)]
-		valores_randoms_2 = [
-			random.uniform(0, 1) for _ in range(self.dimension)
-			]
+		valores_randoms_1 = [random.uniform(0, 1) for _ in range(self.dimension)]
+		valores_randoms_2 = [random.uniform(0, 1) for _ in range(self.dimension)]
 		r1 = Vector(*valores_randoms_1) 
 		r2 = Vector(*valores_randoms_2)
 		for i in self.particulas:

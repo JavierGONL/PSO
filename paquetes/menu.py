@@ -1,11 +1,13 @@
-# aqui es donde me arrepiento D:
-
+'''
+	* Descripción: Paquete PSO - Particle Swarm Optimization
+	* documentos relacionados: https://docs.python.org/3/library/tkinter.html, https://www.pythontutorial.net/tkinter/
+	* autores: kevin javier gonzalez luna, ivan felipe maluche, david Montes
+'''
 import time
 
 from paquetes.Funciones_objetivo import (
-	rastrigin_function, shekel_function,
-  himmelblaus_function, shekel_function_maximizar,
-  ackley_function_invertida
+	rastrigin_function, shekel_function, himmelblaus_function, 
+	shekel_function_maximizar, ackley_function_invertida
 	)
 from paquetes.Enjambre import Swarm
 
@@ -64,24 +66,24 @@ class MenuPso:
 
 	def seleccionar_funcion(self,parent):
 		# Frame para función objetivo
-		frame_funcion = ttk.LabelFrame(parent, text="Funcion Objetivo", padding="10")
-		frame_funcion.pack(fill="x", padx=20, pady=10)
+		frame_funciones = ttk.LabelFrame(parent, text="Funcion Objetivo", padding="10")
+		frame_funciones.pack(fill="x", padx=20, pady=10)
 		
 		funciones_info = {
 			"rastrigin_function": "Rastrigin - la funcion que menos consume si se quere grabar",
 			"shekel_function": "Shekel - funcion con multiples minimos",
-			"himmelblaus_function": "Himmelblaus - otra funcion con multiples minimos",
 			"shekel_function_maximizar": "Shekel para maximizar - funcion con multiples maximos",
+			"himmelblaus_function": "Himmelblaus - otra funcion con multiples minimos",
 			"ackley_function_invertida": "Ackley invertida - para probar la maximizacion"
 		}
 
-		for func_name, descripcion in funciones_info.items():
-			rb = ttk.Radiobutton(
-				frame_funcion, text=descripcion, 
+		for funcion, texto_interfaz in funciones_info.items():
+			funciones_boton = ttk.Radiobutton(
+				frame_funciones, text=texto_interfaz, 
 				variable=self.funcion_seleccionada, 
-				value=func_name
+				value=funcion
 				)
-			rb.pack(anchor="w", pady=2)
+			funciones_boton.pack(anchor="w", pady=2)
 
 	def max_min_coeficientes(self, parent):
 		# Frame para parametros optimizacion
@@ -119,7 +121,7 @@ class MenuPso:
 			)
 		info_label_2.pack(anchor="w", pady=2)
 
-			# Particulas
+		# Particulas
 		frame_iter = tk.Frame(frame_optimizacion_parametros)
 		frame_iter.pack(fill="x", padx=10, pady=5)
 		tk.Label(frame_iter, text="Particulas:", font=("Arial", 9)).pack(side="left")
@@ -127,7 +129,7 @@ class MenuPso:
 			frame_iter, from_=10, to=1000,increment=10, width=10, 
 			textvariable=self.particulas).pack(side="right")
 		
-			# Iteraciones
+		# Iteraciones
 		frame_iter = tk.Frame(frame_optimizacion_parametros)
 		frame_iter.pack(fill="x", padx=10, pady=5)
 		tk.Label(frame_iter, text="Iteraciones:", font=("Arial", 9)).pack(side="left")
@@ -135,7 +137,7 @@ class MenuPso:
 			frame_iter, from_=100, to=1000,increment=10, width=10, 
 			textvariable=self.iteraciones).pack(side="right")
 		
-			# C1
+		# C1
 		frame_c1 = tk.Frame(frame_optimizacion_parametros)
 		frame_c1.pack(fill="x", padx=10, pady=5)
 		tk.Label(frame_c1, text="C1 (cognitivo):", font=("Arial",9)).pack(side="left")
@@ -143,7 +145,7 @@ class MenuPso:
 			frame_c1, from_=0.1, to=5.0, increment=0.1, width=10, 
 			textvariable=self.c1, format="%.1f").pack(side="right")
 		
-			# C2
+		# C2
 		frame_c2 = tk.Frame(frame_optimizacion_parametros)
 		frame_c2.pack(fill="x", padx=10, pady=5)
 		tk.Label(frame_c2, text="C2 (social):", font=("Arial", 9)).pack(side="left")
@@ -196,21 +198,20 @@ class MenuPso:
 opciones seleccionadas PSO:
 ==============================
 
-Función: {funcion}
+Funcion: {funcion}
 Objetivo: {'Maximizar' if maximizar else 'Minimizar'}
-Partículas: {num_particulas}
+Particulas: {num_particulas}
 Iteraciones: {num_iteraciones}
-C1: {c1:.1f} | C2: {c2:.1f}
-Grabar: {'Sí' if grabar else 'No'}
+C1: {c1}
+C2: {c2}
+Grabar: {grabar}
 
 Ejecutar PSO?
 """
-			
-			respuesta = messagebox.askyesno("Confirmar Ejecución", config_msg)
+			respuesta = messagebox.askyesno("", config_msg)
 			if respuesta:
-				# Cerrar el menú antes de ejecutar
+				# Cerrar el menu antes de ejecutar
 				self.root.destroy()
-				
 				# iniciar el pso
 				inicio_programa = time.time()
 				enjambre = Swarm(num_particulas, dominio, maximice=maximizar, funcion=funcion_obj)
@@ -220,22 +221,6 @@ Ejecutar PSO?
 			else:
 				print("Error al ejecutar el PSO")
 				
-		except Exception as e:
-			print(f"Error al ejecutar el PSO: {e}")
-			messagebox.showerror("Error", f"Error al ejecutar PSO:\n{str(e)}")
-
-def main():
-	"""
-	Funcion principal que se ejecuta en el main.py
-	"""
-	root = tk.Tk()
-	menu = MenuPso(root)
-	
-	# Centrar ventana
-	root.update_idletasks()
-	x = (root.winfo_screenwidth() // 2) - (root.winfo_width() // 2)
-	y = (root.winfo_screenheight() // 2) - (root.winfo_height() // 2)
-	root.geometry(f"+{x}+{y}")
-	
-	# Iniciar loop principal
-	root.mainloop()
+		except Exception as error:
+			print(f"Error al ejecutar el PSO: {error}")
+			messagebox.showerror(f"Error al ejecutar PSO: {str(error)}")
